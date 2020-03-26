@@ -1,5 +1,5 @@
 {
-    "name": "yii-diandi/addons",
+    "name": "yii-diandi/yii2-addons",
     "description": "模块扩展依赖使用",
     "type": "library",
     "keywords": ["yii2","extension"],
