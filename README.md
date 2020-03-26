@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist addons/yii2-addons "*"
+php composer.phar require --prefer-dist diandi/yii2-addons "*"
 ```
 
 or add
 
 ```
-"addons/yii2-addons": "*"
+"diandi/yii2-addons": "*"
 ```
 
 to the require section of your `composer.json` file.

@@ -1,0 +1,21 @@
+{
+    "name": "diandi/yii2-addons",
+    "description": "模块扩展依赖使用",
+    "type": "library",
+    "keywords": ["yii2","extension"],
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "wangchunsheng",
+            "email": "2192138785@qq.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "diandi\\addons\\": ""
+        }
+    }
+}
