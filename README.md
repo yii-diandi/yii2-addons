@@ -10,22 +10,14 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist diandi/yii2-addons "*"
+php composer.phar require --prefer-dist yii-diandi/yii2-addons "*"
 ```
 
 or add
 
 ```
-"diandi/yii2-addons": "*"
+"yii-diandi/yii2-addons": "*"
 ```
 
 to the require section of your `composer.json` file.
 
-
-Usage
------
-
-Once the extension is installed, simply use it in your code by  :
-
-```php
-<?= \diandi\addons\AutoloadExample::widget(); ?>```
