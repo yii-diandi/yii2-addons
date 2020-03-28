@@ -9,7 +9,7 @@ use yii\helpers\Inflector;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = '@diandi\addons\controllers';
+    public $controllerNamespace = 'diandi\addons\controllers';
 
     public $defaultRoute = 'addons';
 
