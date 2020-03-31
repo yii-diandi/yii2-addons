@@ -4,10 +4,10 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:56:38
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-28 19:06:21
+ * @Last Modified time: 2020-03-29 18:22:08
  */
 
-
+use common\helpers\ImageHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -39,13 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
-                        'logo' => [
-                            'attribute' => 'logo',
-                            'format' => ['raw'],
-                            'value' => function ($model) {
-                                return Html::img($model['logo'], ['height' => 50, 'width' => 50]);
-                            }
-                        ],
+                        // 'logo' => [
+                        //     'attribute' => 'logo',
+                        //     'format' => ['raw'],
+                        //     'value' => function ($model) {
+                        //         return Html::img(ImageHelper::tomedia($model->logo), ['height' => 50, 'width' => 'auto']);
+                        //     }
+                        // ],
                         'title',
                         'identifie',
                         'type',
@@ -63,14 +63,17 @@ $this->params['breadcrumbs'][] = $this->title;
                             'buttons' => [
                                 'install' => function ($url, $model, $key) {
                                     $url = Url::to(['manage/install', 'addon' => $model['identifie']]);
-                                    return  Html::a('<button type="button" class="btn btn-block btn-primary btn-sm">安装</button>', $url, 
-                                    [
-                                        'title' => '安装',
-                                        'data' => [
-                                            'confirm' => Yii::t('app', '确认安装该模块吗?'),
-                                            'method' => 'post',
-                                        ],
-                                    ]);
+                                    return  Html::a(
+                                        '<button type="button" class="btn btn-block btn-primary btn-sm">安装</button>',
+                                        $url,
+                                        [
+                                            'title' => '安装',
+                                            'data' => [
+                                                'confirm' => Yii::t('app', '确认安装该模块吗?'),
+                                                'method' => 'post',
+                                            ],
+                                        ]
+                                    );
                                 },
                             ],
                             // 'buttons' => [],

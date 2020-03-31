@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:58:26
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-22 20:59:17
+ * @Last Modified time: 2020-03-29 20:23:37
  */
 
 
@@ -17,15 +17,18 @@ $this->title = Yii::t('rbac-admin', 'Update Menu') . ': ' . ' ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('rbac-admin', 'Menus'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('rbac-admin', 'Update');
+$addon = Yii::$app->request->get('addon');
+
 ?>
 
 <ul class="nav nav-tabs">
     <ul class="nav nav-tabs">
-        <li class="active">
-            <?= Html::a('添加菜单', ['create'], ['class' => '']) ?>
-        </li>
+
         <li>
-            <?= Html::a('菜单管理', ['index'], ['class' => '']) ?>
+            <?= Html::a('菜单管理', ['index', 'addon' => $addon], ['class' => '']) ?>
+        </li>
+        <li class="active">
+            <?= Html::a('添加菜单', ['create', 'addon' => $addon], ['class' => '']) ?>
         </li>
     </ul>
 </ul>
@@ -36,8 +39,9 @@ $this->params['breadcrumbs'][] = Yii::t('rbac-admin', 'Update');
                 <?=
                     $this->render('_form', [
                         'model' => $model,
-                        'addons' => $addons,
-
+                        'addon' => $addon,
+                        'rules' => $rules,
+                        'parentMenu' => $parentMenu,
                     ])
                 ?>
             </div>

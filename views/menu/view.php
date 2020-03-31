@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 16:01:21
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-22 20:59:12
+ * @Last Modified time: 2020-03-29 19:29:55
  */
 
 
@@ -17,17 +17,20 @@ use yii\widgets\DetailView;
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('rbac-admin', 'Menus'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$addon = Yii::$app->request->get('addon');
+
 ?>
 <div id="tabs-container" class="align-center">
     <ul class="nav nav-tabs">
+
         <li>
-            <?= Html::a('添加菜单', ['create'], ['class' => '']) ?>
+            <?= Html::a('菜单管理', ['index', 'addon' => $addon], ['class' => '']) ?>
         </li>
         <li>
-            <?= Html::a('菜单管理', ['index'], ['class' => '']) ?>
+            <?= Html::a('添加菜单', ['create', 'addon' => $addon], ['class' => '']) ?>
         </li>
         <li class="active">
-            <?= Html::a('菜单查看', ['view'], ['class' => '']) ?>
+            <?= Html::a('菜单查看', ['view', 'addon' => $addon], ['class' => '']) ?>
         </li>
     </ul>
 </div>

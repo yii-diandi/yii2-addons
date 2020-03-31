@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-27 12:09:50
+ * @Last Modified time: 2020-03-31 18:08:30
  */
 
 namespace diandi\addons\controllers;
@@ -14,6 +14,7 @@ use diandi\admin\models\Menu;
 use diandi\admin\models\searchs\Menu as MenuSearch;
 use backend\controllers\BaseController;
 use diandi\addons\modules\searchs\DdAddons;
+use diandi\addons\services\addonsService;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use diandi\admin\components\Helper;
@@ -34,7 +35,6 @@ class MenuController extends BaseController
     public function behaviors()
     {
         Yii::$app->params['plugins'] = 'sysai';
-
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -53,8 +53,11 @@ class MenuController extends BaseController
     {
         $searchModel = new MenuSearch;
         // $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+        $addon = Yii::$app->request->get('addon');
+        $rules = addonsService::addonsRules($addon);
+        $parentMenu = Menu::findAll(['parent' => null]);
 
-        $query = Menu::find()->where(['is_sys' => 'addons', 'module_name' => Yii::$app->controller->module->id]);
+        $query = Menu::find()->where(['is_sys' => 'addons', 'module_name' => $addon]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false
@@ -62,6 +65,8 @@ class MenuController extends BaseController
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
+            'rules' => $rules,
+            'parentMenu' => $parentMenu,
         ]);
     }
 
@@ -85,16 +90,22 @@ class MenuController extends BaseController
     public function actionCreate()
     {
         $model = new Menu;
+        $addon = Yii::$app->request->get('addon');
+        $rules = addonsService::addonsRules($addon);
+        $parentMenu = Menu::findAll(['parent' => null, 'module_name' => $addon]);
+        $data = Yii::$app->request->post();
+        $data['Menu']['parent'] = $data['Menu']['parent']!='顶级导航'?$data['Menu']['parent']:null;
+        if ($model->load($data) && $model->save()) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id,'addon'=>$addon]);
         } else {
             $addons = DdAddons::find()->asArray()->all();
             return $this->render('create', [
                 'model' => $model,
-                'addons' => $addons,
-
+                'addon' => $addon,
+                'rules' => $rules,
+                'parentMenu' => $parentMenu,
             ]);
         }
     }
@@ -108,18 +119,28 @@ class MenuController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $addon = $this->findModel($id)->module_name;
+
         if ($model->menuParent) {
             $model->parent_name = $model->menuParent->name;
         }
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id]);
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            $data['Menu']['parent'] = $data['Menu']['parent']!='顶级导航'?$data['Menu']['parent']:null;
+            if($model->load($data) && $model->save()){
+                Helper::invalidate();
+                return $this->redirect(['view', 'addon' => $addon, 'id' => $model->id]);
+            }
         } else {
             $addons = DdAddons::find()->asArray()->all();
-
+            $rules = addonsService::addonsRules($addon);
+            $parentMenu = Menu::findAll(['parent' => null, 'module_name' => $addon]);
             return $this->render('update', [
                 'model' => $model,
                 'addons' => $addons,
+                'addon' => $addon,
+                'rules' => $rules,
+                'parentMenu' => $parentMenu,
             ]);
         }
     }
@@ -132,10 +153,11 @@ class MenuController extends BaseController
      */
     public function actionDelete($id)
     {
+        $addon = $this->findModel($id)->module_name;
+
         $this->findModel($id)->delete();
         Helper::invalidate();
-
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'addon' => $addon]);
     }
 
     /**

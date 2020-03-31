@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-28 21:45:41
+ * @Last Modified time: 2020-03-29 19:34:24
  */
 
 namespace diandi\addons\services;
@@ -14,6 +14,7 @@ use common\helpers\FileHelper;
 use Yii;
 use common\services\BaseService;
 use diandi\addons\modules\searchs\DdAddons;
+use diandi\admin\models\Route;
 use diandi\admin\models\searchs\Menu;
 use phpDocumentor\Reflection\Types\Null_;
 use yii\helpers\Json;
@@ -252,7 +253,6 @@ class addonsService extends BaseService
         $module_root = Yii::getAlias("@common/addons/");
         $module_path = $module_root . $module_name . '/';
         if (
-            !file_exists($module_path . 'logo.png') &&
             !file_exists($module_path . 'api.php') &&
             !file_exists($module_path . 'install.php') &&
             !file_exists($module_path . 'uninstall.php') &&
@@ -418,6 +418,8 @@ class addonsService extends BaseService
 
     }
 
+
+
     // 根据数组结构执行安装
     public static function unInstall($identifie)
     {
@@ -444,5 +446,16 @@ class addonsService extends BaseService
         }
 
         return true;
+    }
+
+    // 获取所有的路由
+    public static function addonsRules($addon)
+    {
+        $Route = new Route();
+        $routes = $Route->getAppRoutes($addon);
+        return $routes;
+        // $model = new Route();
+        // $model->addNew($routes);
+
     }
 }
