@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-05 16:04:51
+ * @Last Modified time: 2020-04-05 16:09:35
  */
 
 namespace diandi\addons;
@@ -50,7 +50,7 @@ class Loader implements BootstrapInterface
     public function afreshLoad($blocId)
     {
         try {
-            Yii::$app->service->commonGlobalsService->setMerchanId($blocId);
+            Yii::$app->service->commonGlobalsService->setBlocId($blocId);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
