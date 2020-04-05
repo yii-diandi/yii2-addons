@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-05 13:19:11
+ * @Last Modified time: 2020-04-05 16:04:51
  */
 
 namespace diandi\addons;
@@ -34,8 +34,11 @@ class Loader implements BootstrapInterface
     {
         $this->id =  Yii::$app->id;
         // 全局获取
-        $merchantId = Yii::$app->request->get('merchantId', '');
-        $this->afreshLoad($merchantId);
+        $blocId = Yii::$app->request->headers->get('blocId', '');
+        if (empty($blocId)) {
+            $blocId = Yii::$app->request->get('blocId', '');
+        }
+        $this->afreshLoad($blocId);
     }
 
     /**
@@ -44,10 +47,10 @@ class Loader implements BootstrapInterface
      * @param $merchant_id
      * @throws UnauthorizedHttpException
      */
-    public function afreshLoad($merchantId)
+    public function afreshLoad($blocId)
     {
         try {
-            Yii::$app->service->commonGlobalsService->setMerchanId($merchantId);
+            Yii::$app->service->commonGlobalsService->setMerchanId($blocId);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
