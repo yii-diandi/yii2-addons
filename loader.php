@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-28 12:12:32
+ * @Last Modified time: 2020-04-05 13:19:11
  */
 
 namespace diandi\addons;
@@ -48,7 +48,6 @@ class Loader implements BootstrapInterface
     {
         try {
             Yii::$app->service->commonGlobalsService->setMerchanId($merchantId);
-
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
@@ -78,16 +77,22 @@ class Loader implements BootstrapInterface
                 break;
             default:
         }
-        // 'common\addons\diandi_dingzuo\site'
-
-        // print_r($addons);
         $modules = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
+            $configPath = Yii::getAlias("@common/addons/" . $name . '/config/api.php');
+            if (file_exists($configPath)) {
+                $config = require($configPath);
+                if (!empty($config)) {
+                    Yii::$app->getUrlManager()->addRules($config);
+                }
+            }
+
             $modules[StringHelper::toUnderScore($name)] = [
                 'class' => "common\addons\\" . $name . "\\" . $moduleFile
             ];
         }
+
 
         return $modules;
     }
