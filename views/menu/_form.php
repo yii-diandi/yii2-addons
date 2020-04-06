@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-31 18:09:38
+ * @Last Modified time: 2020-04-06 11:59:47
  */
 
 
@@ -21,13 +21,13 @@ $menucate = MenuTop::find()->orderBy('sort')->asArray()->all();
 /* @var $this yii\web\View */
 /* @var $model diandi/admin\models\Menu */
 /* @var $form yii\widgets\ActiveForm */
-// AutocompleteAsset::register($this);
-// $opts = Json::htmlEncode([
-//     'menus' => Menu::getMenuSource(),
-//     'routes' => Menu::getSavedRoutes(),
-// ]);
-// $this->registerJs("var _opts = $opts;");
-// $this->registerJs($this->render('_script.js'));
+AutocompleteAsset::register($this);
+$opts = Json::htmlEncode([
+    'menus' => Menu::getMenuSource(),
+    'routes' => Menu::getSavedRoutes(),
+]);
+$this->registerJs("var _opts = $opts;");
+$this->registerJs($this->render('_script.js'));
 ?>
 
 <div class="menu-form">
@@ -39,13 +39,12 @@ $menucate = MenuTop::find()->orderBy('sort')->asArray()->all();
             <?= $form->field($model, 'parent')
                 ->dropDownList(ArrayHelper::map($parentMenu, 'id', 'name'), [
                     'prompt' => [
-                        'text' => '顶级导航', 
+                        'text' => '顶级导航',
                         'options' => ['value' => null]
                     ],
                 ])
                 ->label('父级菜单') ?>
-
-            <?= $form->field($model, 'route')->dropDownList($rules)->label('菜单路由') ?>
+            <?= $form->field($model, 'route')->textInput(['id' => 'route']) ?>
 
             <?= $form->field($model, 'type')->textInput()->hiddenInput(['value' => 'plugins'])->label(false); ?>
 
@@ -66,7 +65,7 @@ $menucate = MenuTop::find()->orderBy('sort')->asArray()->all();
             <?= $form->field($model, 'data')->textarea(['rows' => 4])->label('数据') ?>
 
         </div>
-        
+
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="form-group">
                 <?=
@@ -76,7 +75,7 @@ $menucate = MenuTop::find()->orderBy('sort')->asArray()->all();
             </div>
 
         </div>
-        
-     
+
+
         <?php ActiveForm::end(); ?>
     </div>

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-31 18:08:30
+ * @Last Modified time: 2020-04-06 11:52:45
  */
 
 namespace diandi\addons\controllers;
@@ -92,13 +92,14 @@ class MenuController extends BaseController
         $model = new Menu;
         $addon = Yii::$app->request->get('addon');
         $rules = addonsService::addonsRules($addon);
+
         $parentMenu = Menu::findAll(['parent' => null, 'module_name' => $addon]);
         $data = Yii::$app->request->post();
-        $data['Menu']['parent'] = $data['Menu']['parent']!='顶级导航'?$data['Menu']['parent']:null;
+        $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
         if ($model->load($data) && $model->save()) {
 
             Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id,'addon'=>$addon]);
+            return $this->redirect(['view', 'id' => $model->id, 'addon' => $addon]);
         } else {
             $addons = DdAddons::find()->asArray()->all();
             return $this->render('create', [
@@ -124,10 +125,10 @@ class MenuController extends BaseController
         if ($model->menuParent) {
             $model->parent_name = $model->menuParent->name;
         }
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-            $data['Menu']['parent'] = $data['Menu']['parent']!='顶级导航'?$data['Menu']['parent']:null;
-            if($model->load($data) && $model->save()){
+            $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
+            if ($model->load($data) && $model->save()) {
                 Helper::invalidate();
                 return $this->redirect(['view', 'addon' => $addon, 'id' => $model->id]);
             }
