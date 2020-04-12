@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-05 16:15:43
+ * @Last Modified time: 2020-04-12 12:54:50
  */
 
 namespace diandi\addons;
@@ -34,11 +34,13 @@ class Loader implements BootstrapInterface
     {
         $this->id =  Yii::$app->id;
         // 全局获取
-        $blocId = Yii::$app->request->headers->get('blocId', '');
-        if (empty($blocId)) {
-            $blocId = Yii::$app->request->get('blocId', '');
+        $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
+        $store_id = Yii::$app->request->headers->get('store_id', 0);
+        if (empty($bloc_id)) {
+            $bloc_id = Yii::$app->request->get('bloc_id', 0);
+            $store_id = Yii::$app->request->get('store_id', 0);
         }
-        $this->afreshLoad($blocId);
+        $this->afreshLoad($bloc_id, $store_id);
     }
 
     /**
@@ -47,10 +49,10 @@ class Loader implements BootstrapInterface
      * @param $merchant_id
      * @throws UnauthorizedHttpException
      */
-    public function afreshLoad($blocId)
+    public function afreshLoad($bloc_id, $store_id)
     {
         try {
-            Yii::$app->service->commonGlobalsService->setBlocId($blocId);
+            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
