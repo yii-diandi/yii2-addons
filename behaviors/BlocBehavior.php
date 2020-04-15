@@ -22,16 +22,26 @@ trait BlocBehavior
     /**
      * @return array
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         $behaviors = parent::behaviors();
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
+
+        // 后台用户使用
+        if (Yii::$app->user->identity->bloc_id) {
+            $bloc_id = Yii::$app->user->identity->bloc_id;
+            $store_id = Yii::$app->user->identity->store_id;
+        }
+
+
         // 集团id
         $behaviors[] = [
             'class' => BlameableBehavior::class,
             'attributes' => [
                 ActiveRecord::EVENT_BEFORE_INSERT => ['bloc_id'],
+                ActiveRecord::EVENT_BEFORE_UPDATE => ['bloc_id'],
+
             ],
             'value' => !empty($bloc_id) ? $bloc_id : 0,
         ];
@@ -40,6 +50,7 @@ trait BlocBehavior
             'class' => BlameableBehavior::class,
             'attributes' => [
                 ActiveRecord::EVENT_BEFORE_INSERT => ['store_id'],
+                ActiveRecord::EVENT_BEFORE_UPDATE => ['store_id'],
             ],
             'value' => !empty($store_id) ? $store_id : 0,
         ];
