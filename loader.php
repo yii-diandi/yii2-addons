@@ -18,41 +18,51 @@ use yii\web\UnauthorizedHttpException;
 class Loader implements BootstrapInterface
 {
     /**
-     * 应用ID
+     * 应用ID.
      *
      * @var
      */
     protected $id;
 
-
     /**
      * @param \yii\base\Application $application
+     *
      * @throws UnauthorizedHttpException
      * @throws \Exception
      */
     public function bootstrap($application)
     {
-        $this->id =  Yii::$app->id;
+        $this->id = Yii::$app->id;
         // 全局获取
         $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
         $store_id = Yii::$app->request->headers->get('store_id', 0);
+        $addons = Yii::$app->request->headers->get('addons', '');
         if (empty($bloc_id)) {
             $bloc_id = Yii::$app->request->get('bloc_id', 0);
+        }
+
+        if (empty($store_id)) {
             $store_id = Yii::$app->request->get('store_id', 0);
         }
-        $this->afreshLoad($bloc_id, $store_id);
+
+        if (empty($addons)) {
+            $addons = Yii::$app->request->get('addons', '');
+        }
+
+        $this->afreshLoad($bloc_id, $store_id, $addons);
     }
 
     /**
-     * 重载配置
+     * 重载配置.
      *
      * @param $merchant_id
+     *
      * @throws UnauthorizedHttpException
      */
-    public function afreshLoad($bloc_id, $store_id)
+    public function afreshLoad($bloc_id, $store_id, $addons)
     {
         try {
-            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id);
+            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
@@ -61,7 +71,7 @@ class Loader implements BootstrapInterface
     }
 
     /**
-     * 获取模块
+     * 获取模块.
      *
      * @throws \yii\base\InvalidConfigException
      */
@@ -85,19 +95,18 @@ class Loader implements BootstrapInterface
         $modules = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
-            $configPath = Yii::getAlias("@common/addons/" . $name . '/config/api.php');
+            $configPath = Yii::getAlias('@common/addons/'.$name.'/config/api.php');
             if (file_exists($configPath)) {
-                $config = require($configPath);
+                $config = require $configPath;
                 if (!empty($config)) {
                     Yii::$app->getUrlManager()->addRules($config);
                 }
             }
 
             $modules[StringHelper::toUnderScore($name)] = [
-                'class' => "common\addons\\" . $name . "\\" . $moduleFile
+                'class' => "common\addons\\".$name.'\\'.$moduleFile,
             ];
         }
-
 
         return $modules;
     }

@@ -20,6 +20,24 @@ use yii\helpers\Url;
 $this->title = 'Dd Addons';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    .flex-center-vertically {
+        align-items: center;
+}
+.afterRow-addons{
+    background: #f5f5f587;
+}
+.afterRow-addons a{
+    color: #777;
+    float: right;
+    padding-right: 15px;
+}
+.media-object{
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+}
+</style>
 <ul class="nav nav-tabs">
     <li class="active">
         <?= Html::a('已安装', ['index'], ['class' => '']) ?>
@@ -29,36 +47,71 @@ $this->params['breadcrumbs'][] = $this->title;
     </li>
 </ul>
 <div class="firetech-main">
+    
+    <div class="panel panel-info">
+          <div class="panel-heading">
+                <h3 class="panel-title">检索</h3>
+          </div>
+          <div class="panel-body">
+                  <?php  echo $this->render('_search', ['model' => $searchModel]);    ?>
+              
+          </div>
+    </div>
+    
 
     <div class="dd-addons-index ">
-        <?php // echo $this->render('_search', ['model' => $searchModel]); 
-        ?>
+
         <div class="panel panel-default">
+        <div class="panel-heading">
+                <h3 class="panel-title">扩展模块</h3>
+            </div>
             <div class="box-body table-responsive">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
-                    'columns' => [
-                        // 'logo' => [
-                        //     'attribute' => 'logo',
-                        //     'format' => ['raw'],
-                        //     'value' => function ($model) {
-                        //         return Html::img(ImageHelper::tomedia($model->logo), ['height' => 50, 'width' => 'auto']);
-                        //     }
-                        // ],
+                    'layout' => "{items}\n{pager}" ,
+                    'options'=>['class'=>'table-responsive'],
+                    'tableOptions' => ['class'=>'table table-bordered'],
+                    'afterRow'=>function($model,$key, $index,$grid){
+                        $html = "<tr class='afterRow-addons'><td colspan='2'>";
+                        $url1 = Url::to(['/module', 'addons' => $model['identifie']]);
+                        
+                        $html .=  Html::a('模块停用', $url1, [
+                            'title' => '模块停用',
+                            'data' => [
+                                'confirm' => Yii::t('app', '确认停用该模块吗?'),
+                                'method' => 'post',
+                            ]
+                        ]);
+
+                        $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
+                        $html .=  Html::a('菜单管理', $url2, [
+                            'title' => '菜单管理',
+                            // 'data' => [
+                            //     'confirm' => Yii::t('app', '确认权限初始化吗?'),
+                            //     'method' => 'post',
+                            // ]
+                        ]);
+
+
+                        $html .= "</td></tr>";
+
+                        
+                        return  $html;
+                    },
+                    'columns' => [                      
                         'title' => [
-                            'attribute' => 'logo',
+                            'attribute' => '模块信息',
                             'format' => ['raw'],
                             'value' => function ($model) {
                                 return $this->render('info', [
                                     'model' => $model
                                 ]);
-                                // return Html::img(ImageHelper::tomedia($model->logo), ['height' => 50, 'width' => 'auto']);
-                            }
+                            },
+
                         ],
                         // 'title',
                         // 'identifie',
-                        'type',
+                        // 'type',
                         // 'version',
                         //'ability',
                         //'description',
@@ -69,32 +122,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'class' => 'yii\grid\ActionColumn',
                             'header' => '操作',
-                            'template' => '{uninstall}{authorization}',
+                            'template' => '{management}',
                             'buttons' => [
-                                'uninstall' => function ($url, $model, $key) {
-                                    $url = Url::to(['manage/uninstall', 'addon' => $model['identifie']]);
-                                    return  Html::a('<button type="button" class="btn btn-block btn-primary btn-sm ">卸载</button>', $url, [
-                                        'title' => '卸载',
-                                        'class' => 'col-xs-6',
-                                        'data' => [
-                                            'confirm' => Yii::t('app', '确认卸载该模块吗?'),
-                                            'method' => 'post',
-                                        ]
-                                    ]);
-                                },
-                                'authorization' => function ($url, $model, $key) {
-                                    $url = Url::to(['menu/index', 'addon' => $model['identifie']]);
-                                    return  Html::a('<button type="button" class="btn btn-block btn-primary btn-sm col-xs-6">菜单管理</button>', $url, [
-                                        'title' => '菜单管理',
-                                        'class' => 'col-xs-6',
+                               
+                                'management' => function ($url, $model, $key) {
+                                    $url = Url::to(['/module', 'addons' => $model['identifie']]);
+                                    return  Html::a("<button type='button' class='btn btn-block btn-primary'>进入模块</button>", $url, [
+                                        'title' => '进入模块',
+                                        'target'=>'_block',
                                         // 'data' => [
-                                        //     'confirm' => Yii::t('app', '确认权限初始化吗?'),
+                                        //     'confirm' => Yii::t('app', '确认卸载该模块吗?'),
                                         //     'method' => 'post',
                                         // ]
                                     ]);
                                 },
 
                             ],
+                            'contentOptions' => ['class'=>'flex-center-vertically'],
                             // 'buttons' => [],
                             'headerOptions' => ['width' => '200px']
                         ],

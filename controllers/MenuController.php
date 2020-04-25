@@ -127,7 +127,7 @@ class MenuController extends BaseController
         }
         if (Yii::$app->request->isPost) {
             $data = Yii::$app->request->post();
-            $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
+            $data['Menu']['parent'] = $data['Menu']['parent'] == '顶级导航' ? null: $data['Menu']['parent'];
             if ($model->load($data) && $model->save()) {
                 Helper::invalidate();
                 return $this->redirect(['view', 'addon' => $addon, 'id' => $model->id]);

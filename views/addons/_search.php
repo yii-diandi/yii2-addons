@@ -1,4 +1,13 @@
 <?php
+/*** 
+ * @开源软件: 店滴AI-基于AI的软硬件开源解决方案
+ * @官方地址: http://www.wayfirer.com/
+ * @版本: 1.0
+ * @邮箱: 2192138785@qq.com
+ * @作者: Wang Chunsheng
+ * @Date: 2020-03-29 02:20:17
+ * @LastEditTime: 2020-04-25 16:51:53
+ */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -15,15 +24,25 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'mid') ?>
 
-    <?= $form->field($model, 'identifie') ?>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<?= $form->field($model, 'title') ?>
+    
+</div>
 
-    <?= $form->field($model, 'type') ?>
 
-    <?= $form->field($model, 'title') ?>
 
-    <?= $form->field($model, 'version') ?>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="form-group">
+        <?= Html::submitButton('搜索', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('重置', ['class' => 'btn btn-outline-secondary']) ?>
+    </div>
+</div>
+
+
+
+
+
 
     <?php // echo $form->field($model, 'ability') 
     ?>
@@ -43,11 +62,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'logo') 
     ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
 
-    <?php ActiveForm::end(); ?>
-
+<?php ActiveForm::end(); ?>
 </div>
