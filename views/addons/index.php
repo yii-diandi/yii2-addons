@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'tableOptions' => ['class'=>'table table-bordered'],
                     'afterRow'=>function($model,$key, $index,$grid){
                         $html = "<tr class='afterRow-addons'><td colspan='2'>";
-                        $url1 = Url::to(['/module', 'addons' => $model['identifie']]);
+                        $url1 = Url::to(['manage/uninstall', 'addon' => $model['identifie']]);
                         
                         $html .=  Html::a('模块停用', $url1, [
                             'title' => '模块停用',
