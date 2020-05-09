@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:55:28
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-31 13:36:55
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-03 22:06:34
  */
 
 
@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use leandrogehlen\treegrid\TreeGrid;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,18 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 $addon = Yii::$app->request->get('addon');
 ?>
 
+<?= $this->render('_tab') ?>
 
-<div id="tabs-container" class="align-center">
-    <ul class="nav nav-tabs">
 
-        <li class="active">
-            <?= Html::a('菜单管理', ['index', 'addon' => $addon], ['class' => '']) ?>
-        </li>
-        <li>
-            <?= Html::a('添加菜单', ['create', 'addon' => $addon], ['class' => '']) ?>
-        </li>
-    </ul>
-</div>
 <div class="firetech-main" style="margin-top:20px;">
 
     <div class="dd-category-index ">
@@ -54,7 +46,24 @@ $addon = Yii::$app->request->get('addon');
                         'name',
                         'route',
                         'order',
-                        ['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'class' => 'common\components\ActionColumn',
+                         'urlCreator' => function ($action, $model, $key, $index) {
+                            switch($action)
+                            {
+                                case 'delete':
+                                    return Url::to(['delete','id'=>$model->id,'addon'=>$model->module_name]);
+                                break;
+                                case 'view':
+                                    return Url::to(['view','id'=>$model->id,'addon'=>$model->module_name]);
+                                
+                                break;
+                                case 'update':
+                                    return Url::to(['update','id'=>$model->id,'addon'=>$model->module_name]);
+                                break;
+                            }
+                    
+                        },],
                     ]
                 ]);
 

@@ -1,4 +1,11 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2020-05-09 19:30:05
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-09 19:52:54
+ */
+ 
 
 namespace diandi\addons\modules\searchs;
 
@@ -11,6 +18,15 @@ use diandi\addons\modules\DdAddons as DdAddonsModel;
  */
 class DdAddons extends DdAddonsModel
 {
+    
+    public $module_names;
+    
+    public function __construct($item=null)
+    {
+        if($item['module_names']){
+            $this->module_names = $item['module_names']; 
+        }
+    }
     /**
      * {@inheritdoc}
      */
@@ -60,6 +76,7 @@ class DdAddons extends DdAddonsModel
         $query->andFilterWhere([
             'mid' => $this->mid,
             'settings' => $this->settings,
+            'identifie'=>$this->module_names
         ]);
 
         $query->andFilterWhere(['like', 'identifie', $this->identifie])

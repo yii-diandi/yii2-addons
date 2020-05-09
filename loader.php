@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-12 12:54:50
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-04 20:11:55
  */
 
 namespace diandi\addons;
@@ -63,11 +63,13 @@ class Loader implements BootstrapInterface
     {
         try {
             Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
+            Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
         } catch (\Exception $e) {
             throw $e;
         }
+
     }
 
     /**

@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:54:31
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-29 20:23:18
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-03 22:01:42
  */
 
 
@@ -20,16 +20,9 @@ $addon = Yii::$app->request->get('addon');
 
 ?>
 
+<?= $this->render('_tab') ?>
 
-<ul class="nav nav-tabs">
 
-    <li>
-        <?= Html::a('菜单管理', ['index', 'addon' => $addon], ['class' => '']) ?>
-    </li>
-    <li class="active">
-        <?= Html::a('添加菜单', ['create', 'addon' => $addon], ['class' => '']) ?>
-    </li>
-</ul>
 
 <div class="firetech-main" style="margin-top:20px;">
     <div class="panel panel-default">

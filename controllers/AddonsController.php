@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-28 21:41:59
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-09 19:52:21
  */
 
 namespace diandi\addons\controllers;
@@ -17,6 +17,7 @@ use yii\data\ArrayDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\controllers\BaseController;
+use diandi\admin\models\AddonsUser;
 
 /**
  * AddonsController implements the CRUD actions for DdAddons model.
@@ -45,7 +46,16 @@ class AddonsController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new DdAddonsSearch();
+        $module_names = [];
+        $AddonsUser = new AddonsUser();
+        $module_names = $AddonsUser->find()->where([
+            'user_id'=>Yii::$app->user->id
+        ])->select(['module_name'])->column();
+        
+        $searchModel = new DdAddonsSearch([
+            'module_names'=>$module_names
+        ]);
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
