@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-09 19:01:13
+ * @Last Modified time: 2020-05-10 12:17:38
  */
 use diandi\addons\services\addonsService;
 use yii\helpers\Html;
@@ -87,23 +87,21 @@ $this->params['breadcrumbs'][] = $this->title;
                             'title' => '菜单管理',
                         ]);
 
-                        
                         $url3 = Url::to(['/admin/group/index', 'module_name' => $model['identifie']]);
                         $html .= Html::a('用户组管理', $url3, [
                             'title' => '用户组管理',
                         ]);
-                        
+
                         $url4 = Url::to(['/admin/user/index', 'module_name' => $model['identifie']]);
                         $html .= Html::a('操作员管理', $url4, [
                             'title' => '操作员管理',
                         ]);
-                        
-                         
+
                         $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
                         $html .= Html::a('权限管理', $url5, [
                             'title' => '权限管理',
                         ]);
-                        
+
                         $html .= '</td></tr>';
 
                         return  $html;
