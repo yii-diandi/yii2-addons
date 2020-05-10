@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:56:38
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-29 18:22:08
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-10 23:11:25
  */
 
 use common\helpers\ImageHelper;
@@ -19,14 +19,8 @@ use yii\helpers\Url;
 $this->title = 'Dd Addons';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<ul class="nav nav-tabs">
-    <li>
-        <?= Html::a('已安装', ['index'], ['class' => '']) ?>
-    </li>
-    <li class="active">
-        <?= Html::a('未安装', ['uninstalled'], ['class' => '']) ?>
-    </li>
-</ul>
+<?= $this->render('_tab'); ?>
+
 <div class="firetech-main">
 
     <div class="dd-addons-index ">

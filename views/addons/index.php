@@ -4,9 +4,10 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-10 12:17:38
+ * @Last Modified time: 2020-05-10 23:15:17
  */
 use diandi\addons\services\addonsService;
+use diandi\admin\components\Helper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
@@ -37,14 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
     padding: 10px;
 }
 </style>
-<ul class="nav nav-tabs">
-    <li class="active">
-        <?= Html::a('已安装', ['index'], ['class' => '']); ?>
-    </li>
-    <li>
-        <?= Html::a('未安装', ['uninstalled'], ['class' => '']); ?>
-    </li>
-</ul>
+<?= $this->render('_tab'); ?>
 <div class="firetech-main">
     
     <div class="panel panel-info">
@@ -72,36 +66,49 @@ $this->params['breadcrumbs'][] = $this->title;
                     'tableOptions' => ['class' => 'table table-bordered'],
                     'afterRow' => function ($model, $key, $index, $grid) {
                         $html = "<tr class='afterRow-addons'><td colspan='2'>";
-                        $url1 = Url::to(['manage/uninstall', 'addon' => $model['identifie']]);
-
-                        $html .= Html::a('模块停用', $url1, [
-                            'title' => '模块停用',
-                            'data' => [
-                                'confirm' => Yii::t('app', '确认停用该模块吗?'),
-                                'method' => 'post',
-                            ],
-                        ]);
-
-                        $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
-                        $html .= Html::a('菜单管理', $url2, [
-                            'title' => '菜单管理',
-                        ]);
-
-                        $url3 = Url::to(['/admin/group/index', 'module_name' => $model['identifie']]);
-                        $html .= Html::a('用户组管理', $url3, [
-                            'title' => '用户组管理',
-                        ]);
-
-                        $url4 = Url::to(['/admin/user/index', 'module_name' => $model['identifie']]);
-                        $html .= Html::a('操作员管理', $url4, [
-                            'title' => '操作员管理',
-                        ]);
-
-                        $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
-                        $html .= Html::a('权限管理', $url5, [
-                            'title' => '权限管理',
-                        ]);
-
+                        
+                        if(Helper::checkRoute('manage/uninstall')){
+                            $url1 = Url::to(['manage/uninstall', 'addon' => $model['identifie']]);
+                            $html .= Html::a('模块停用', $url1, [
+                                'title' => '模块停用',
+                                'data' => [
+                                    'confirm' => Yii::t('app', '确认停用该模块吗?'),
+                                    'method' => 'post',
+                                ],
+                            ]);
+                        }
+                       
+                        if(Helper::checkRoute('menu/index')){
+                            $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
+                            $html .= Html::a('菜单管理', $url2, [
+                                'title' => '菜单管理',
+                            ]);
+                        }
+                       
+                        if(Helper::checkRoute('/admin/group/index')){
+                            $url3 = Url::to(['/admin/group/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::a('用户组管理', $url3, [
+                                'title' => '用户组管理',
+                            ]);
+                        }
+                        
+                        if(Helper::checkRoute('/admin/user/index')){
+                            $url4 = Url::to(['/admin/user/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::a('操作员管理', $url4, [
+                                'title' => '操作员管理',
+                            ]);
+                        }
+                        
+                       
+                        if(Helper::checkRoute('/admin/permission/index')){
+                            $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::a('权限管理', $url5, [
+                                'title' => '权限管理',
+                            ]);
+                        }
+                         
+                        
+                        
                         $html .= '</td></tr>';
 
                         return  $html;
