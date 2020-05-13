@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-04 20:11:55
+ * @Last Modified time: 2020-05-11 08:53:30
  */
 
 namespace diandi\addons;
@@ -35,12 +35,12 @@ class Loader implements BootstrapInterface
         $this->id = Yii::$app->id;
         // 全局获取
         $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
+
         $store_id = Yii::$app->request->headers->get('store_id', 0);
         $addons = Yii::$app->request->headers->get('addons', '');
         if (empty($bloc_id)) {
             $bloc_id = Yii::$app->request->get('bloc_id', 0);
         }
-
         if (empty($store_id)) {
             $store_id = Yii::$app->request->get('store_id', 0);
         }
@@ -69,7 +69,6 @@ class Loader implements BootstrapInterface
         } catch (\Exception $e) {
             throw $e;
         }
-
     }
 
     /**
