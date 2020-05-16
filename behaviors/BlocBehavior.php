@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-04-12 12:36:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-11 11:30:52
+ * @Last Modified time: 2020-05-15 22:50:39
  */
 
 namespace diandi\addons\behaviors;
@@ -18,6 +18,8 @@ use yii\db\ActiveRecord;
  */
 trait BlocBehavior
 {
+    
+    
     /**
      * @return array
      */
@@ -26,7 +28,7 @@ trait BlocBehavior
         $behaviors = parent::behaviors();
         $bloc_id = Yii::$app->service->commonGlobalsService->getBloc_id();
         $store_id = Yii::$app->service->commonGlobalsService->getStore_id();
-        
+     
         // 后台用户使用
         if (Yii::$app->user->identity->bloc_id) {
             $bloc_id = Yii::$app->user->identity->bloc_id;
