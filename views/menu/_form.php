@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-06 11:59:47
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-21 09:46:02
  */
 
 
@@ -51,9 +51,8 @@ $this->registerJs($this->render('_script.js'));
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'order')->input('number')->label('排序') ?>
-            <?= $form->field($model, 'icon')->widget('diandi\adminlte\ModalHepler', ['options' => [
+            <?= $form->field($model, 'icon')->widget('diandi\adminlte\widgets\icon', ['options' => [
                 'label' => '选择图标',
-                'url' => \yii\helpers\Url::to(['/modal/modal/icons'])
             ]]); ?>
             <?= $form->field($model, 'is_sys')->textInput()->hiddenInput(['value' => 'addons'])->label(false); ?>
             <?= $form->field($model, 'module_name')->textInput()->hiddenInput(['value' => $addon])->label(false); ?>

@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-29 19:34:24
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-05-20 23:42:59
  */
 
 namespace diandi\addons\services;
@@ -383,7 +383,6 @@ class addonsService extends BaseService
                             'module_name' => $application['identifie'],
                         ];
                         // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
-
                         $_Menuchild->setAttributes($MenuData);
                         $_Menuchild->save();
                     }
