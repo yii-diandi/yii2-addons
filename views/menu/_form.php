@@ -4,10 +4,8 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-21 09:46:02
+ * @Last Modified time: 2020-05-31 07:21:14
  */
-
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use diandi\admin\models\Menu;
@@ -34,24 +32,24 @@ $this->registerJs($this->render('_script.js'));
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'name')->textInput(['maxlength' => 128])->label('菜单名称') ?>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => 128])->label('菜单名称'); ?>
 
             <?= $form->field($model, 'parent')
                 ->dropDownList(ArrayHelper::map($parentMenu, 'id', 'name'), [
                     'prompt' => [
                         'text' => '顶级导航',
-                        'options' => ['value' => null]
+                        'options' => ['value' => null],
                     ],
                 ])
-                ->label('父级菜单') ?>
-            <?= $form->field($model, 'route')->textInput(['id' => 'route']) ?>
+                ->label('父级菜单'); ?>
+            <?= $form->field($model, 'route')->textInput(['id' => 'route']); ?>
 
             <?= $form->field($model, 'type')->textInput()->hiddenInput(['value' => 'plugins'])->label(false); ?>
 
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'order')->input('number')->label('排序') ?>
-            <?= $form->field($model, 'icon')->widget('diandi\adminlte\widgets\icon', ['options' => [
+            <?= $form->field($model, 'order')->input('number')->label('排序'); ?>
+            <?= $form->field($model, 'icon')->widget('common\widgets\adminlte\icon', ['options' => [
                 'label' => '选择图标',
             ]]); ?>
             <?= $form->field($model, 'is_sys')->textInput()->hiddenInput(['value' => 'addons'])->label(false); ?>
@@ -61,7 +59,7 @@ $this->registerJs($this->render('_script.js'));
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <?= $form->field($model, 'data')->textarea(['rows' => 4])->label('数据') ?>
+            <?= $form->field($model, 'data')->textarea(['rows' => 4])->label('数据'); ?>
 
         </div>
 
@@ -69,7 +67,7 @@ $this->registerJs($this->render('_script.js'));
             <div class="form-group">
                 <?=
                     Html::submitButton($model->isNewRecord ? Yii::t('rbac-admin', 'Create') : Yii::t('rbac-admin', 'Update'), ['class' => $model->isNewRecord
-                        ? 'btn btn-success' : 'btn btn-primary'])
+                        ? 'btn btn-success' : 'btn btn-primary', ]);
                 ?>
             </div>
 
