@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-15 20:16:46
+ * @Last Modified time: 2020-06-04 20:35:54
  */
 
 namespace diandi\addons;
@@ -32,6 +32,9 @@ class Loader implements BootstrapInterface
      */
     public function bootstrap($application)
     {
+        global $_W,$_GPC;
+        $_W = Yii::$app->params;
+        $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
         $this->id = Yii::$app->id;
         // 全局获取
         $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
@@ -107,7 +110,6 @@ class Loader implements BootstrapInterface
                 'class' => "common\addons\\".$name.'\\'.$moduleFile,
             ];
         }
-
         return $modules;
     }
 }
