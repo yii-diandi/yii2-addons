@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-31 07:21:14
+ * @Last Modified time: 2020-06-08 15:50:22
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -49,7 +49,7 @@ $this->registerJs($this->render('_script.js'));
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'order')->input('number')->label('排序'); ?>
-            <?= $form->field($model, 'icon')->widget('common\widgets\adminlte\icon', ['options' => [
+            <?= $form->field($model, 'icon')->widget('common\widgets\adminlte\Icon', ['options' => [
                 'label' => '选择图标',
             ]]); ?>
             <?= $form->field($model, 'is_sys')->textInput()->hiddenInput(['value' => 'addons'])->label(false); ?>
