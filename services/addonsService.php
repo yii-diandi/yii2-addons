@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-24 17:41:13
+ * @Last Modified time: 2020-06-24 17:56:15
  */
 
 namespace diandi\addons\services;
@@ -253,20 +253,20 @@ class addonsService extends BaseService
         $module_root = Yii::getAlias("@common/addons/");
         $module_path = $module_root . $module_name . '/';
         if(!file_exists($module_path . 'api.php')){
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件中api.php文件是否存在！');
+            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'api.php文件是否存在！');
         }
 
         if(!file_exists($module_path . 'install.php')){
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件中install.php文件是否存在！');
+            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'install.php文件是否存在！');
         }
         if(!file_exists($module_path . 'uninstall.php')){
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件中uninstall.php文件是否存在！');
+            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'uninstall.php文件是否存在！');
         }
         if(!file_exists($module_path . 'upgrade.php')){
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件中upgrade.php文件是否存在！');
+            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'upgrade.php文件是否存在！');
         }
         if(!file_exists($module_path . 'site.php')){
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件中site.php文件是否存在！');
+            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'site.php文件是否存在！');
         }
         return true;
     }
