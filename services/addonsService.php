@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-24 17:56:15
+ * @Last Modified time: 2020-06-24 18:02:04
  */
 
 namespace diandi\addons\services;
@@ -413,7 +413,7 @@ class addonsService extends BaseService
             // 插入数据库
             $addonsInstallPath = "common\addons\\".$application['identifie']."\\Install";
             $class = new $addonsInstallPath;
-            $class->run();
+            $class->run($application);
             
             Yii::$app->cache->delete('unAddons');
             $transaction->commit();
