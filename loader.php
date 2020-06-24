@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-24 12:05:36
+ * @Last Modified time: 2020-06-24 19:10:39
  */
 
 namespace diandi\addons;
@@ -34,7 +34,7 @@ class Loader implements BootstrapInterface
     {
         global $_W,$_GPC;
         $_W = Yii::$app->params;
-        
+        $this->id = Yii::$app->id; 
         if(Yii::$app->id=='app-console'){
             $this->afreshLoad('','','');
         }else{
