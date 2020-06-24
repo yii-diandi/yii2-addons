@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-23 15:20:16
+ * @Last Modified time: 2020-06-24 17:41:13
  */
 
 namespace diandi\addons\services;
@@ -409,6 +409,12 @@ class addonsService extends BaseService
             // FileHelper::writeLog($logPath, '模块入口：' . Json::encode($MenuIndex));
             $Menu->setAttributes($MenuData);
             $Menu->save();
+
+            // 插入数据库
+            $addonsInstallPath = "common\addons\\".$application['identifie']."\\Install";
+            $class = new $addonsInstallPath;
+            $class->run();
+            
             Yii::$app->cache->delete('unAddons');
             $transaction->commit();
         } catch (\Exception $e) {
@@ -433,6 +439,8 @@ class addonsService extends BaseService
         // 写入基础信息进入模块目录
         $logPath = Yii::getAlias("@runtime/log/install");
         $DdAddons = new DdAddons();
+        $config = $DdAddons::findOne(['identifie' => $identifie]);
+
         $transaction =  $DdAddons::getDb()->beginTransaction();
         try {
 
@@ -442,6 +450,13 @@ class addonsService extends BaseService
             $Menu = new Menu();
             $Menu->deleteAll(['module_name' => $identifie]);
             Yii::$app->cache->delete('unAddons');
+
+            
+            // 删除数据库
+            $addonsInstallPath = "common\addons\\".$identifie."\\UnInstall";
+            $class = new $addonsInstallPath;
+            $class->run($config);
+            
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();
