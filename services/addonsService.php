@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-27 14:39:32
+ * @Last Modified time: 2020-06-27 16:24:14
  */
 
 namespace diandi\addons\services;
@@ -398,7 +398,7 @@ class addonsService extends BaseService
             // 写入主入口菜单
             $MenuData = [
                 'name' => $application['title'],
-                'parent' => 12,
+                'parent' => null,
                 'route' => '/' . $application['identifie'] . '/default/index',
                 'order' => null,
                 'type' => 'plugins',
