@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-27 13:05:02
+ * @Last Modified time: 2020-06-27 14:39:32
  */
 
 namespace diandi\addons\services;
@@ -451,7 +451,7 @@ class addonsService extends BaseService
             $Menu->deleteAll(['module_name' => $identifie]);
             Yii::$app->cache->delete('unAddons');
 
-            require_once(Yii::getAlias("@common/addons/".$application['identifie']."/uninstall.php"));
+            require_once(Yii::getAlias("@common/addons/".$identifie."/uninstall.php"));
             
             // 删除数据库
             $addonsInstallPath = "common\addons\\".$identifie."\\UnInstall";
