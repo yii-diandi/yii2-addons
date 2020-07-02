@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-26 13:34:34
+ * @Last Modified time: 2020-07-02 13:52:05
  */
 
 namespace diandi\addons;
@@ -105,7 +105,10 @@ class Loader implements BootstrapInterface
                 $moduleFile = 'frontend';
                 break;
             default:
+            $moduleFile = 'api';
+
         }
+
         $modules = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
