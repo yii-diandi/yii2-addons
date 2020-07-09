@@ -38,6 +38,7 @@ class Loader implements BootstrapInterface
         if(Yii::$app->id=='app-console'){
             $this->afreshLoad('','','');
         }else{
+			
             $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
             
             if($_GPC['access-token']){
