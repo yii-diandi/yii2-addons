@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-08 21:27:56
+ * @Last Modified time: 2020-07-09 16:13:56
  */
 
 namespace diandi\addons;
@@ -32,12 +32,18 @@ class Loader implements BootstrapInterface
      */
     public function bootstrap($application)
     {
-        global $_GPC;
+        global $_W,$_GPC;
+        $_W = Yii::$app->params;
         $this->id = Yii::$app->id; 
         if(Yii::$app->id=='app-console'){
             $this->afreshLoad('','','');
         }else{
             $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
+            
+            if($_GPC['access-token']){
+                 Yii::$app->service->commonMemberService->setAccessToken($_GPC['access-token']);
+            }
+            
             // 全局获取
             $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
     
