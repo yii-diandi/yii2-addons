@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-05 07:31:24
+ * @Last Modified time: 2020-07-10 18:31:49
  */
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
@@ -53,17 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
     
 
     <div class="dd-addons-index ">
-
-        <div class="panel panel-default">
-        <div class="panel-heading">
-                <h3 class="panel-title">扩展模块</h3>
-            </div>
-            <div class="box-body table-responsive">
+            <div class="box-body">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'layout' => "{items}\n{pager}",
                     'options' => ['class' => 'table-responsive'],
-                    'tableOptions' => ['class' => 'table table-bordered'],
+                    'tableOptions' => ['class' => 'table table-hoverd'],
                     'afterRow' => function ($model, $key, $index, $grid) {
                         $html = "<tr class='afterRow-addons'><td colspan='2'>";
                         
@@ -80,8 +75,10 @@ $this->params['breadcrumbs'][] = $this->title;
                        
                         if(Helper::checkRoute('menu/index')){
                             $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
-                            $html .= Html::a('菜单管理', $url2, [
+                            $html .= Html::a('菜单管理','javascript:void(0);', [
                                 'title' => '菜单管理',
+                                'class'=>'tabsOpen',
+                                'onclick'=>"addTabs({title: '修改密码',close: true,url: '{$url2}',urlType: 'relative'});"
                             ]);
                         }
                        
@@ -160,7 +157,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]); ?>
 
 
-            </div>
         </div>
     </div>
 </div>
