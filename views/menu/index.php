@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:55:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-03 22:06:34
+ * @Last Modified time: 2020-07-17 23:10:51
  */
 
 
@@ -26,7 +26,7 @@ $addon = Yii::$app->request->get('addon');
 <?= $this->render('_tab') ?>
 
 
-<div class="firetech-main" style="margin-top:20px;">
+<div class="firetech-main">
 
     <div class="dd-category-index ">
         <div class="panel panel-default">

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-10 18:31:49
+ * @Last Modified time: 2020-07-17 23:09:19
  */
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
@@ -16,7 +16,7 @@ use yii\helpers\Url;
 /* @var $searchModel diandi\addons\modules\searchs\DdAddons */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Dd Addons';
+$this->title = '模块列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style>
@@ -25,11 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 }
 .afterRow-addons{
     background: #f5f5f587;
-}
-.afterRow-addons a{
-    color: #777;
-    float: right;
-    padding-right: 15px;
+    text-align: right;
 }
 .media-object{
     width: 70px;
@@ -50,6 +46,8 @@ $this->params['breadcrumbs'][] = $this->title;
               
           </div>
     </div>
+   
+    
     
 
     <div class="dd-addons-index ">
@@ -61,49 +59,62 @@ $this->params['breadcrumbs'][] = $this->title;
                     'tableOptions' => ['class' => 'table table-hoverd'],
                     'afterRow' => function ($model, $key, $index, $grid) {
                         $html = "<tr class='afterRow-addons'><td colspan='2'>";
+                        $html .= '<div class="btn-group">';
+                       
+                       
+                        if(Helper::checkRoute('menu/index')){
+                            $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
+                            $html .= Html::button('菜单管理', [
+                                'title' => '菜单管理',
+                                'class'=>'tabsOpen btn btn-default btn-sm',
+                                'onclick'=>"dialog('菜单管理', '{$url2}')",
+                            ]);
+                        }
+
+                             
+                        if(Helper::checkRoute('/admin/permission/index')){
+                            $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::button('权限管理', [
+                                'title' => '权限管理',
+                                'class'=>'tabsOpen btn btn-default btn-sm',
+                                'onclick'=>"dialog('权限管理', '{$url5}')",
+
+                            ]);
+                        }
+                       
+                        if(Helper::checkRoute('/admin/group/index')){
+                            $url3 = Url::to(['/admin/group/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::button('用户组管理', [
+                                'class'=>'tabsOpen btn btn-default btn-sm',
+                                'title' => '用户组管理',
+                                'onclick'=>"dialog('用户组管理', '{$url3}')",
+                            ]);
+                        }
+                        
+                        if(Helper::checkRoute('/admin/user/index')){
+                            $url4 = Url::to(['/admin/user/index', 'module_name' => $model['identifie']]);
+                            $html .= Html::button('操作员管理', [
+                                'class'=>'tabsOpen btn btn-default btn-sm',
+                                'title' => '操作员管理',
+                                'onclick'=>"dialog('操作员管理', '{$url4}')",
+
+                            ]);
+                        }
                         
                         if(Helper::checkRoute('manage/uninstall')){
                             $url1 = Url::to(['manage/uninstall', 'addon' => $model['identifie']]);
                             $html .= Html::a('模块停用', $url1, [
                                 'title' => '模块停用',
+                                'class'=>'tabsOpen btn btn-default  btn-sm',
                                 'data' => [
                                     'confirm' => Yii::t('app', '确认停用该模块吗?'),
                                     'method' => 'post',
                                 ],
                             ]);
                         }
-                       
-                        if(Helper::checkRoute('menu/index')){
-                            $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
-                            $html .= Html::a('菜单管理','javascript:void(0);', [
-                                'title' => '菜单管理',
-                                'class'=>'tabsOpen',
-                                'onclick'=>"addTabs({title: '修改密码',close: true,url: '{$url2}',urlType: 'relative'});"
-                            ]);
-                        }
-                       
-                        if(Helper::checkRoute('/admin/group/index')){
-                            $url3 = Url::to(['/admin/group/index', 'module_name' => $model['identifie']]);
-                            $html .= Html::a('用户组管理', $url3, [
-                                'title' => '用户组管理',
-                            ]);
-                        }
-                        
-                        if(Helper::checkRoute('/admin/user/index')){
-                            $url4 = Url::to(['/admin/user/index', 'module_name' => $model['identifie']]);
-                            $html .= Html::a('操作员管理', $url4, [
-                                'title' => '操作员管理',
-                            ]);
-                        }
-                        
-                       
-                        if(Helper::checkRoute('/admin/permission/index')){
-                            $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
-                            $html .= Html::a('权限管理', $url5, [
-                                'title' => '权限管理',
-                            ]);
-                        }
+                  
                          
+                        $html .= "</div>";
                         
                         
                         $html .= '</td></tr>';
