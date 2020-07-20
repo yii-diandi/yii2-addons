@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-09 16:13:56
+ * @Last Modified time: 2020-07-20 16:33:21
  */
 
 namespace diandi\addons;
@@ -40,7 +40,7 @@ class Loader implements BootstrapInterface
         }else{
             $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
             
-            if($_GPC['access-token']){
+            if(key_exists($_GPC,'access-token')){
                  Yii::$app->service->commonMemberService->setAccessToken($_GPC['access-token']);
             }
             
