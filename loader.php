@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-20 17:01:46
+ * @Last Modified time: 2020-07-28 23:26:05
  */
 
 namespace diandi\addons;
@@ -36,7 +36,11 @@ class Loader implements BootstrapInterface
         $_W = Yii::$app->params;
         $this->id = Yii::$app->id; 
         if(Yii::$app->id=='app-console'){
-            $this->afreshLoad('','','');
+            // 迁移不执行相关的全局方法
+            $argvStr = implode(',',$_SERVER['argv']);
+            if(strpos($argvStr,'migrate') == false){ 
+                $this->afreshLoad('','','');
+            }
         }else{
             $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
             

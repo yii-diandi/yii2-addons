@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:01:53
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-27 12:01:55
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-07-29 01:43:40
  */
 
 
@@ -34,7 +34,7 @@ class DdAddons extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'dd_addons';
+        return '{{%addons}}';
     }
 
     /**
