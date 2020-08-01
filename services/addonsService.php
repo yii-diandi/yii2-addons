@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-27 16:24:14
+ * @Last Modified time: 2020-08-01 23:34:40
  */
 
 namespace diandi\addons\services;
@@ -309,6 +309,7 @@ class addonsService extends BaseService
             // 获取所有已经安装的模块
             $DdAddons = new DdAddons();
             $addonsAll = $DdAddons->find()->select('identifie')->column();
+            $list = [];
             foreach ($module_path_list as $path) {
                 $modulename = pathinfo($path, PATHINFO_BASENAME);
 
@@ -402,7 +403,7 @@ class addonsService extends BaseService
                 'route' => '/' . $application['identifie'] . '/default/index',
                 'order' => null,
                 'type' => 'plugins',
-                'icon' => $application['icon'] ? $application['icon'] : '',
+                'icon' => '',
                 'is_sys' => 'addons',
                 'module_name' => $application['identifie'],
             ];
