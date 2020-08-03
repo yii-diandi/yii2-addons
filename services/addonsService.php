@@ -4,19 +4,17 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-01 23:34:40
+ * @Last Modified time: 2020-08-03 09:10:16
  */
 
 namespace diandi\addons\services;
 
-use common\helpers\ErrorsHelper;
 use common\helpers\FileHelper;
 use Yii;
 use common\services\BaseService;
 use diandi\addons\modules\searchs\DdAddons;
 use diandi\admin\models\Route;
 use diandi\admin\models\searchs\Menu;
-use phpDocumentor\Reflection\Types\Null_;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
@@ -24,11 +22,8 @@ use yii\web\NotFoundHttpException;
 
 class addonsService extends BaseService
 {
-
-
-    public static function  ext_module_manifest_parse($xml)
+    public static function ext_module_manifest_parse($xml)
     {
-
         if (false === strpos($xml, '<manifest')) {
             $xml = base64_decode($xml);
         }
@@ -64,7 +59,7 @@ class addonsService extends BaseService
         $manifest['application'] = array(
             'logo' => self::getlogoUrl($identifie),
             'title' => trim($application->getElementsByTagName('title')->item(0)->textContent),
-            'identifie' =>  $identifie,
+            'identifie' => $identifie,
             'version' => trim($application->getElementsByTagName('version')->item(0)->textContent),
             'type' => trim($application->getElementsByTagName('type')->item(0)->textContent),
             'ability' => trim($application->getElementsByTagName('ability')->item(0)->textContent),
@@ -85,6 +80,7 @@ class addonsService extends BaseService
                 }
             }
         }
+
         return $manifest;
     }
 
@@ -92,6 +88,7 @@ class addonsService extends BaseService
     public static function getLogo($addon)
     {
         $logog = Yii::getAlias("@common/addons/{$addon}/logo.png");
+
         return self::imgToBase64($logog);
     }
 
@@ -99,25 +96,25 @@ class addonsService extends BaseService
     {
         static $bindings = array(
             'menus' => array(
-                'name' => "name",
-                'route' => "route",
-                'order' => "order",
-                'icon' => "icon",
+                'name' => 'name',
+                'route' => 'route',
+                'order' => 'order',
+                'icon' => 'icon',
                 'menu' => array(
-                    'name' => "name",
-                    'route' => "route",
-                    'order' => "order",
-                    'icon' => "icon",
-                )
-            )
+                    'name' => 'name',
+                    'route' => 'route',
+                    'order' => 'order',
+                    'icon' => 'icon',
+                ),
+            ),
         );
+
         return $bindings;
     }
 
-
-
     /**
-     * 获取图片的Base64编码(不支持url)
+     * 获取图片的Base64编码(不支持url).
+     *
      * @date 2017-02-20 19:41:22
      *
      * @param $img_file 传入本地图片地址
@@ -126,14 +123,13 @@ class addonsService extends BaseService
      */
     public static function imgToBase64($img_file)
     {
-
         $img_base64 = '';
         if (file_exists($img_file)) {
             $app_img_file = $img_file; // 图片路径
             $img_info = getimagesize($app_img_file); // 取得图片的大小，类型等
 
             //echo '<pre>' . print_r($img_info, true) . '</pre><br>';
-            $fp = fopen($app_img_file, "r"); // 图片是否可读权限
+            $fp = fopen($app_img_file, 'r'); // 图片是否可读权限
 
             if ($fp) {
                 $filesize = filesize($app_img_file);
@@ -141,18 +137,17 @@ class addonsService extends BaseService
                 $file_content = chunk_split(base64_encode($content)); // base64编码
                 switch ($img_info[2]) {           //判读图片类型
                     case 1:
-                        $img_type = "gif";
+                        $img_type = 'gif';
                         break;
                     case 2:
-                        $img_type = "jpg";
+                        $img_type = 'jpg';
                         break;
                     case 3:
-                        $img_type = "png";
+                        $img_type = 'png';
                         break;
                 }
 
-                $img_base64 = 'data:image/' . $img_type . ';base64,' . $file_content; //合成图片的base64编码
-
+                $img_base64 = 'data:image/'.$img_type.';base64,'.$file_content; //合成图片的base64编码
             }
             fclose($fp);
         }
@@ -160,14 +155,12 @@ class addonsService extends BaseService
         return $img_base64; //返回图片的base64
     }
 
-
-    public static function  _ext_module_manifest_entries($elm)
+    public static function _ext_module_manifest_entries($elm)
     {
         $ret = array();
         if (!empty($elm)) {
-
             $entries = $elm->getElementsByTagName('menu');
-            for ($i = 0; $i < $entries->length; $i++) {
+            for ($i = 0; $i < $entries->length; ++$i) {
                 $entry = $entries->item($i);
                 $direct = $entry->getAttribute('direct');
                 $is_multilevel_menu = $entry->getAttribute('multilevel');
@@ -188,14 +181,15 @@ class addonsService extends BaseService
                 }
             }
         }
+
         return $ret;
     }
 
     // xml配置校验
-    public static function  ext_manifest_check($module_name, $manifest)
+    public static function ext_manifest_check($module_name, $manifest)
     {
         if (is_string($manifest)) {
-            $message = '模块 mainfest.xml 配置文件有误, 具体错误内容为: <br />' . $manifest;
+            $message = '模块 mainfest.xml 配置文件有误, 具体错误内容为: <br />'.$manifest;
             throw new BadRequestHttpException($message);
         }
         $error_msg = '';
@@ -224,8 +218,8 @@ class addonsService extends BaseService
             foreach ($points as $name => $point) {
                 if (is_array($manifest[$name])) {
                     foreach ($manifest[$name] as $menu) {
-                        if (trim($menu['title']) == ''  || !preg_match('/^[a-z\d]+$/i', $menu['do']) && empty($menu['call'])) {
-                            $error_msg .= "<br/>&lt;$name&gt;节点" . $point['title'] . ' 扩展项功能入口定义错误, (操作标题[title], 入口方法[do])格式不正确.';
+                        if (trim($menu['title']) == '' || !preg_match('/^[a-z\d]+$/i', $menu['do']) && empty($menu['call'])) {
+                            $error_msg .= "<br/>&lt;$name&gt;节点".$point['title'].' 扩展项功能入口定义错误, (操作标题[title], 入口方法[do])格式不正确.';
                         }
                     }
                 }
@@ -233,8 +227,8 @@ class addonsService extends BaseService
         }
         if (is_array($manifest['permissions']) && !empty($manifest['permissions'])) {
             foreach ($manifest['permissions'] as $permission) {
-                if (trim($permission['title']) == ''  || !preg_match('/^[a-z\d_]+$/i', $permission['permission'])) {
-                    $error_msg .= '<br/>' . "&lt;permissions&gt;节点名称为： {$permission['title']} 的权限标识格式不正确,请检查标识名称或标识格式是否正确";
+                if (trim($permission['title']) == '' || !preg_match('/^[a-z\d_]+$/i', $permission['permission'])) {
+                    $error_msg .= '<br/>'."&lt;permissions&gt;节点名称为： {$permission['title']} 的权限标识格式不正确,请检查标识名称或标识格式是否正确";
                 }
             }
         }
@@ -242,41 +236,43 @@ class addonsService extends BaseService
             $error_msg .= '<br/>&lt;versions&gt;节点兼容版本格式错误';
         }
         if (!empty($error_msg)) {
-            throw new BadRequestHttpException('模块 mainfest.xml 配置文件有误<br/>' . $error_msg);
+            throw new BadRequestHttpException('模块 mainfest.xml 配置文件有误<br/>'.$error_msg);
         }
+
         return true;
     }
 
     // 文件完整校验
-    public static function  ext_file_check($module_name)
+    public static function ext_file_check($module_name)
     {
-        $module_root = Yii::getAlias("@common/addons/");
-        $module_path = $module_root . $module_name . '/';
-        if(!file_exists($module_path . 'api.php')){
+        $module_root = Yii::getAlias('@common/addons/');
+        $module_path = $module_root.$module_name.'/';
+        if (!file_exists($module_path.'api.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'api.php文件是否存在！');
         }
 
-        if(!file_exists($module_path . 'install.php')){
+        if (!file_exists($module_path.'install.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'install.php文件是否存在！');
         }
-        if(!file_exists($module_path . 'uninstall.php')){
+        if (!file_exists($module_path.'uninstall.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'uninstall.php文件是否存在！');
         }
-        if(!file_exists($module_path . 'upgrade.php')){
+        if (!file_exists($module_path.'upgrade.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'upgrade.php文件是否存在！');
         }
-        if(!file_exists($module_path . 'site.php')){
+        if (!file_exists($module_path.'site.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'site.php文件是否存在！');
         }
+
         return true;
     }
 
     // 获取单个未安装的
-    public static  function unAddon($addon)
+    public static function unAddon($addon)
     {
         // 获取模块目录下所有的模块
-        $module_root = Yii::getAlias("@common/addons");
-        $module_path_list = glob($module_root . '/*');
+        $module_root = Yii::getAlias('@common/addons');
+        $module_path_list = glob($module_root.'/*');
         // 获取所有已经安装的模块
         $DdAddons = new DdAddons();
         $addonsAll = $DdAddons->find()->all();
@@ -285,41 +281,45 @@ class addonsService extends BaseService
             if (!in_array($modulename, $addonsAll) && $addon == $modulename) {
                 // 检查文件
                 addonsService::ext_file_check($modulename);
-                $xmlPath = trim($module_root . '/' . $modulename . '/manifest.xml');
+                $xmlPath = trim($module_root.'/'.$modulename.'/manifest.xml');
                 // 检查配置
-                $xml = file_get_contents($module_root . '/' . $modulename . '/manifest.xml');
+                $xml = file_get_contents($module_root.'/'.$modulename.'/manifest.xml');
                 $addonsXml = addonsService::ext_module_manifest_parse($xml);
                 continue;
             }
         }
+
         return $addonsXml;
     }
 
     // 获取未安装的
     public static function unAddons()
     {
-
         $unAddons = Yii::$app->cache->get('unAddons');
+      
         if ($unAddons) {
             return $unAddons;
         } else {
             // 获取模块目录下所有的模块
-            $module_root = Yii::getAlias("@common/addons");
-            $module_path_list = glob($module_root . '/*');
+            $module_root = Yii::getAlias('@common/addons');
+            $module_path_list = glob($module_root.'/*');
             // 获取所有已经安装的模块
             $DdAddons = new DdAddons();
             $addonsAll = $DdAddons->find()->select('identifie')->column();
+        
             $list = [];
             foreach ($module_path_list as $path) {
                 $modulename = pathinfo($path, PATHINFO_BASENAME);
-
+              
                 if (!in_array($modulename, $addonsAll)) {
                     // 检查文件
                     addonsService::ext_file_check($modulename);
-                    $xmlPath = trim($module_root . '/' . $modulename . '/manifest.xml');
+                    $xmlPath = trim($module_root.'/'.$modulename.'/manifest.xml');
                     // 检查配置
-                    $xml = file_get_contents($module_root . '/' . $modulename . '/manifest.xml');
+                    $xml = file_get_contents($module_root.'/'.$modulename.'/manifest.xml');
+                    
                     $addonsXml = addonsService::ext_module_manifest_parse($xml);
+                   
                     if ($addonsXml['application']['identifie'] != $modulename) {
                         continue;
                     }
@@ -327,6 +327,7 @@ class addonsService extends BaseService
                 }
             }
             $unAddons = Yii::$app->cache->set('unAddons', $list);
+
             return $list;
         }
     }
@@ -337,22 +338,21 @@ class addonsService extends BaseService
         return Url::to(['addons/logo', 'addon' => $addon]);
     }
 
-
     // 根据数组结构执行安装
     public static function install($addons)
     {
         // 写入基础信息进入模块目录
-        $logPath = Yii::getAlias("@runtime/log/install");
+        $logPath = Yii::getAlias('@runtime/log/install');
         $application = $addons['application'];
         $DdAddons = new DdAddons();
-        $transaction =  $DdAddons::getDb()->beginTransaction();
+        $transaction = $DdAddons::getDb()->beginTransaction();
 
         try {
             $parent = [];
             // 唯一标识是否重复
             $is_have = $DdAddons::findOne(['identifie' => $application['identifie']]);
             if ($is_have) {
-                throw new BadRequestHttpException('模块标识' . $application['identifie'] . '已经存在');
+                throw new BadRequestHttpException('模块标识'.$application['identifie'].'已经存在');
             }
             $DdAddons->load($application, '');
             $DdAddons->save();
@@ -373,7 +373,7 @@ class addonsService extends BaseService
                 ];
                 // FileHelper::writeLog($logPath, '父级菜单：' . Json::encode($MenuDataparent));
                 $_Menu->setAttributes($MenuData);
-                FileHelper::writeLog($logPath, 'zilei 菜单' . Json::encode($item['child']));
+                FileHelper::writeLog($logPath, 'zilei 菜单'.Json::encode($item['child']));
                 $_Menu->save();
                 $parent[$item['route']] = $_Menu->id;
                 if (!empty($item['child'])) {
@@ -400,7 +400,7 @@ class addonsService extends BaseService
             $MenuData = [
                 'name' => $application['title'],
                 'parent' => null,
-                'route' => '/' . $application['identifie'] . '/default/index',
+                'route' => '/'.$application['identifie'].'/default/index',
                 'order' => null,
                 'type' => 'plugins',
                 'icon' => '',
@@ -410,12 +410,12 @@ class addonsService extends BaseService
             // FileHelper::writeLog($logPath, '模块入口：' . Json::encode($MenuIndex));
             $Menu->setAttributes($MenuData);
             $Menu->save();
-            require_once(Yii::getAlias("@common/addons/".$application['identifie']."/install.php"));
+            require_once Yii::getAlias('@common/addons/'.$application['identifie'].'/install.php');
             // 插入数据库
-            $addonsInstallPath = "common\addons\\".$application['identifie']."\\Install";
-            $class = new $addonsInstallPath;
+            $addonsInstallPath = "common\addons\\".$application['identifie'].'\\Install';
+            $class = new $addonsInstallPath();
             $class->run($application);
-            
+
             Yii::$app->cache->delete('unAddons');
             $transaction->commit();
         } catch (\Exception $e) {
@@ -428,23 +428,19 @@ class addonsService extends BaseService
 
         return true;
         // 执行操作权限
-
     }
-
-
 
     // 根据数组结构执行安装
     public static function unInstall($identifie)
     {
         $parent = [];
         // 写入基础信息进入模块目录
-        $logPath = Yii::getAlias("@runtime/log/install");
+        $logPath = Yii::getAlias('@runtime/log/install');
         $DdAddons = new DdAddons();
         $config = $DdAddons::findOne(['identifie' => $identifie]);
 
-        $transaction =  $DdAddons::getDb()->beginTransaction();
+        $transaction = $DdAddons::getDb()->beginTransaction();
         try {
-
             // 删除模块信息
             $DdAddons->deleteAll(['identifie' => $identifie]);
             // 删除菜单信息进系统菜单
@@ -452,13 +448,13 @@ class addonsService extends BaseService
             $Menu->deleteAll(['module_name' => $identifie]);
             Yii::$app->cache->delete('unAddons');
 
-            require_once(Yii::getAlias("@common/addons/".$identifie."/uninstall.php"));
-            
+            require_once Yii::getAlias('@common/addons/'.$identifie.'/uninstall.php');
+
             // 删除数据库
-            $addonsInstallPath = "common\addons\\".$identifie."\\UnInstall";
-            $class = new $addonsInstallPath;
+            $addonsInstallPath = "common\addons\\".$identifie.'\\UnInstall';
+            $class = new $addonsInstallPath();
             $class->run($config);
-            
+
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();
@@ -476,9 +472,9 @@ class addonsService extends BaseService
     {
         $Route = new Route();
         $routes = $Route->getAppRoutes($addon);
+
         return $routes;
         // $model = new Route();
         // $model->addNew($routes);
-
     }
 }

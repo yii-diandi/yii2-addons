@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-17 18:25:24
+ * @Last Modified time: 2020-08-03 09:07:23
  */
 
 namespace diandi\addons\controllers;
@@ -70,7 +70,7 @@ class AddonsController extends BaseController
     public function actionUninstalled()
     {
         $list = addonsService::unAddons();
-
+    
         $searchModel = new DdAddonsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
