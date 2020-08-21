@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-08 15:50:22
+ * @Last Modified time: 2020-08-12 02:11:24
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -22,7 +22,7 @@ $menucate = MenuTop::find()->orderBy('sort')->asArray()->all();
 AutocompleteAsset::register($this);
 $opts = Json::htmlEncode([
     'menus' => Menu::getMenuSource(),
-    'routes' => Menu::getSavedRoutes(),
+    'routes' => $routes,
 ]);
 $this->registerJs("var _opts = $opts;");
 $this->registerJs($this->render('_script.js'));

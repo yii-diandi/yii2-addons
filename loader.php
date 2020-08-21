@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-01 09:57:28
+ * @Last Modified time: 2020-08-18 11:12:41
  */
 
 namespace diandi\addons;
@@ -34,43 +34,41 @@ class Loader implements BootstrapInterface
     {
         global $_W,$_GPC;
         $_W = Yii::$app->params;
-        $this->id = Yii::$app->id; 
-        if(Yii::$app->id=='app-console'){
+        $this->id = Yii::$app->id;
+        if (Yii::$app->id == 'app-console') {
             // 迁移不执行相关的全局方法
-            $argvStr = implode(',',$_SERVER['argv']);
-            if(strpos($argvStr,'migrate') == false){ 
-                $this->afreshLoad('','','');
+            $argvStr = implode(',', $_SERVER['argv']);
+            if (strpos($argvStr, 'migrate') == false) {
+                $this->afreshLoad('', '', '');
             }
-        }else{
-            $_GPC = array_merge(Yii::$app->request->get(),Yii::$app->request->post()); 
-            
-            if(key_exists('access-token',$_GPC)){
-                 Yii::$app->service->commonMemberService->setAccessToken($_GPC['access-token']);
+        } else {
+            $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
+
+            if (key_exists('access-token', $_GPC)) {
+                Yii::$app->service->commonMemberService->setAccessToken($_GPC['access-token']);
             }
-            
+
             // 全局获取
             $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
-    
+
             $store_id = Yii::$app->request->headers->get('store_id', 0);
+
             $addons = Yii::$app->request->headers->get('addons', '');
-            
-            
+
             if (empty($bloc_id)) {
-                $bloc_id = Yii::$app->request->get('bloc_id', 0);
+                $bloc_id = isset($_GPC['bloc_id']) ? $_GPC['bloc_id'] : 0; // Yii::$app->request->get('bloc_id', 0);
             }
             if (empty($store_id)) {
-                $store_id = Yii::$app->request->get('store_id', 0);
+                $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
+                //Yii::$app->request->get('store_id', 0);
             }
-    
+
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
             }
-            
 
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
-        
-       
     }
 
     /**
@@ -114,7 +112,6 @@ class Loader implements BootstrapInterface
                 break;
             default:
             $moduleFile = 'api';
-
         }
 
         $modules = [];
@@ -132,6 +129,7 @@ class Loader implements BootstrapInterface
                 'class' => "common\addons\\".$name.'\\'.$moduleFile,
             ];
         }
+
         return $modules;
     }
 }

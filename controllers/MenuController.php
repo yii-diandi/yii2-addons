@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-04-06 11:52:45
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-08-12 02:16:35
  */
 
 namespace diandi\addons\controllers;
@@ -13,12 +13,16 @@ use Yii;
 use diandi\admin\models\Menu;
 use diandi\admin\models\searchs\Menu as MenuSearch;
 use backend\controllers\BaseController;
+use common\helpers\ArrayHelper;
+use common\helpers\ErrorsHelper;
 use diandi\addons\modules\searchs\DdAddons;
 use diandi\addons\services\addonsService;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use diandi\admin\components\Helper;
 use yii\data\ActiveDataProvider;
+use yii\web\BadRequestHttpException;
+use yii\web\HttpException;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -92,20 +96,36 @@ class MenuController extends BaseController
         $model = new Menu;
         $addon = Yii::$app->request->get('addon');
         $rules = addonsService::addonsRules($addon);
-
-        $parentMenu = Menu::findAll(['parent' => null, 'module_name' => $addon]);
-        $data = Yii::$app->request->post();
-        $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
-        if ($model->load($data) && $model->save()) {
-
-            Helper::invalidate();
-            return $this->redirect(['view', 'id' => $model->id, 'addon' => $addon]);
-        } else {
+        
+        $defaultroute = "/{$addon}/default/index";
+        $sql = "`route` <> '{$defaultroute}' || route is NULL";
+    
+        $parentMenus = Menu::find()->where(['module_name' => $addon])->andWhere($sql)->asArray()->all();
+        $parentMenu =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus,null,"id",'parent', $child = '-'),"id",'name');
+        if(Yii::$app->request->isPost){
+            $data = Yii::$app->request->post();
+            $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
+            if ($model->load($data) && $model->save()) {
+                Helper::invalidate();
+                return $this->redirect(['view', 'id' => $model->id, 'addon' => $addon]);
+            }else{
+                $msg = ErrorsHelper::getModelError($model);
+                throw new BadRequestHttpException($msg);
+            }
+        }else {
             $addons = DdAddons::find()->asArray()->all();
+            $route = Menu::getSavedRoutes();
+            foreach ($route as $key => &$value) {
+                if($addon && strpos($value, $addon) !== false){
+                    $routes[] = $value;
+                }
+            }
+
             return $this->render('create', [
                 'model' => $model,
                 'addon' => $addon,
                 'rules' => $rules,
+                'routes' => $routes,
                 'parentMenu' => $parentMenu,
             ]);
         }
@@ -135,12 +155,28 @@ class MenuController extends BaseController
         } else {
             $addons = DdAddons::find()->asArray()->all();
             $rules = addonsService::addonsRules($addon);
-            $parentMenu = Menu::findAll(['parent' => null, 'module_name' => $addon]);
+
+                
+            $defaultroute = "/{$addon}/default/index";
+            $sql = "`route` <> '{$defaultroute}' || route is NULL";
+        
+            $parentMenus = Menu::find()->where(['module_name' => $addon])->andWhere($sql)->asArray()->all();
+            $parentMenu =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus,null,"id",'parent', $child = '-'),"id",'name');
+    
+            $addons = DdAddons::find()->asArray()->all();
+            $route = Menu::getSavedRoutes();
+            foreach ($route as $key => &$value) {
+                if($addon && strpos($value, $addon) !== false){
+                    $routes[] = $value;
+                }
+            }
+            
             return $this->render('update', [
                 'model' => $model,
                 'addons' => $addons,
                 'addon' => $addon,
                 'rules' => $rules,
+                'routes' => $routes,
                 'parentMenu' => $parentMenu,
             ]);
         }

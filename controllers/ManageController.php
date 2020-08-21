@@ -3,8 +3,8 @@
 /**
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:09:47
- * @Last Modified by:   Wang Chunsheng 2192138785@qq.com
- * @Last Modified time: 2020-03-28 22:03:57
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2020-08-22 00:01:56
  */
 
 
@@ -32,6 +32,7 @@ class ManageController  extends BaseController
         $addonsXml = addonsService::unAddon($addon);
         $res = addonsService::install($addonsXml);
         if ($res) {
+   
             return $this->redirect(['addons/index']);
         }
     }

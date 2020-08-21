@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-03 09:10:16
+ * @Last Modified time: 2020-08-22 00:32:16
  */
 
 namespace diandi\addons\services;
@@ -13,6 +13,7 @@ use common\helpers\FileHelper;
 use Yii;
 use common\services\BaseService;
 use diandi\addons\modules\searchs\DdAddons;
+use diandi\admin\models\Menu as ModelsMenu;
 use diandi\admin\models\Route;
 use diandi\admin\models\searchs\Menu;
 use yii\helpers\Json;
@@ -48,9 +49,9 @@ class addonsService extends BaseService
             }
             $manifest['versions'] = array_unique($manifest['versions']);
         }
-        $manifest['install'] = $root->getElementsByTagName('install')->item(0)->textContent;
-        $manifest['uninstall'] = $root->getElementsByTagName('uninstall')->item(0)->textContent;
-        $manifest['upgrade'] = $root->getElementsByTagName('upgrade')->item(0)->textContent;
+        // $manifest['install'] = $root->getElementsByTagName('install')->item(0)->textContent;
+        // $manifest['uninstall'] = $root->getElementsByTagName('uninstall')->item(0)->textContent;
+        // $manifest['upgrade'] = $root->getElementsByTagName('upgrade')->item(0)->textContent;
         $application = $root->getElementsByTagName('application')->item(0);
         if (empty($application)) {
             return array();
@@ -68,18 +69,18 @@ class addonsService extends BaseService
             'url' => trim($application->getElementsByTagName('url')->item(0)->textContent),
             'setting' => trim($application->getAttribute('setting')) == 'true',
         );
-        $bindings = $root->getElementsByTagName('bindings')->item(0);
-        if (!empty($bindings)) {
-            $points = self::ext_module_bindings();
-            if (!empty($points)) {
-                $ps = array_keys($points);
-                $manifest['bindings'] = array();
-                foreach ($ps as $p) {
-                    $define = $bindings->getElementsByTagName($p)->item(0);
-                    $manifest['bindings'][$p] = self::_ext_module_manifest_entries($define);
-                }
-            }
-        }
+        // $bindings = $root->getElementsByTagName('bindings')->item(0);
+        // if (!empty($bindings)) {
+        //     $points = self::ext_module_bindings();
+        //     if (!empty($points)) {
+        //         $ps = array_keys($points);
+        //         $manifest['bindings'] = array();
+        //         foreach ($ps as $p) {
+        //             $define = $bindings->getElementsByTagName($p)->item(0);
+        //             $manifest['bindings'][$p] = self::_ext_module_manifest_entries($define);
+        //         }
+        //     }
+        // }
 
         return $manifest;
     }
@@ -264,6 +265,10 @@ class addonsService extends BaseService
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'site.php文件是否存在！');
         }
 
+        if (!file_exists($module_path.'config/menu.php')) {
+            throw new NotFoundHttpException('模块菜单配置缺失文件，请检查模块文件'.$module_path.'config/menu.php文件是否存在！');
+        }
+
         return true;
     }
 
@@ -358,64 +363,76 @@ class addonsService extends BaseService
             $DdAddons->save();
             // 写入菜单信息进系统菜单
             $Menu = new Menu();
-            $baseMenus = $addons['bindings']['menus'];
-            foreach ($baseMenus as $item) {
-                $_Menu = clone  $Menu;
-                $MenuData = [
-                    'name' => $item['name'],
-                    'parent' => !empty($item['parent']) ? $item['parent'] : null,
-                    'route' => $item['route'],
-                    'order' => !empty($item['order']) ? $item['order'] : 0,
-                    'type' => 'plugins',
-                    'icon' => $item['icon'] ? $item['icon'] : '',
-                    'is_sys' => 'addons',
-                    'module_name' => $application['identifie'],
-                ];
-                // FileHelper::writeLog($logPath, '父级菜单：' . Json::encode($MenuDataparent));
-                $_Menu->setAttributes($MenuData);
-                FileHelper::writeLog($logPath, 'zilei 菜单'.Json::encode($item['child']));
-                $_Menu->save();
-                $parent[$item['route']] = $_Menu->id;
-                if (!empty($item['child'])) {
-                    foreach ($item['child'] as $child) {
-                        $_Menuchild = clone  $Menu;
-
-                        $MenuData = [
-                            'name' => $child['name'],
-                            'parent' => $parent[$child['parent']] ? $parent[$child['parent']] : null,
-                            'route' => $child['route'],
-                            'order' => $child['order'] ? $child['order'] : 0,
-                            'type' => 'plugins',
-                            'icon' => $child['icon'] ? $child['icon'] : '',
-                            'is_sys' => 'addons',
-                            'module_name' => $application['identifie'],
-                        ];
-                        // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
-                        $_Menuchild->setAttributes($MenuData);
-                        $_Menuchild->save();
+            // 首先删除模块已有菜单
+            $Menu->deleteAll(['module_name'=>$application['identifie']]);
+            $menuFile = Yii::getAlias('@common/addons/'.$application['identifie'].'/config/menu.php');
+            
+            $baseMenus = require_once($menuFile);
+            if(is_array($baseMenus) && !empty($baseMenus)){
+                foreach ($baseMenus as $item) {
+                    $_Menu = clone  $Menu;
+                    $MenuData = [
+                        'name' => $item['name'],
+                        'parent' => null,
+                        'route' => $item['route'],
+                        'order' => !empty($item['order']) ? $item['order'] : 0,
+                        'type' => 'plugins',
+                        'icon' => $item['icon'] ? $item['icon'] : '',
+                        'is_sys' => 'addons',
+                        'module_name' => $application['identifie'],
+                    ];
+                    $_Menu->setAttributes($MenuData);
+                    $_Menu->save();
+                    
+                    $parent = Yii::$app->db->getLastInsertID();
+                    
+                    if (!empty($item['child'])) {
+                        foreach ($item['child'] as $child) {
+                            $_Menuchild = clone  $Menu;
+                            $MenuData = [
+                                'name' => $child['name'],
+                                'parent' => !empty($parent) ? $parent : null,
+                                'route' => $child['route'],
+                                'order' => $child['order'] ? $child['order'] : 0,
+                                'type' => 'plugins',
+                                'icon' => $child['icon'] ? $child['icon'] : '',
+                                'is_sys' => 'addons',
+                                'module_name' => $application['identifie'],
+                            ];
+                            // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
+                            $_Menuchild->setAttributes($MenuData);
+                            $_Menuchild->save();
+                            
+                            $parent2 = Yii::$app->db->getLastInsertID();
+                            
+                            if (!empty($child['child'])) {
+                                foreach ($child['child'] as $childs) {
+                                    $_Menuchild = clone  $Menu;
+                                    $MenuData = [
+                                        'name' => $childs['name'],
+                                        'parent' => !empty($parent2) ? $parent2 : null,
+                                        'route' => $childs['route'],
+                                        'order' => $childs['order'] ? $childs['order'] : 0,
+                                        'type' => 'plugins',
+                                        'icon' => $childs['icon'] ? $childs['icon'] : '',
+                                        'is_sys' => 'addons',
+                                        'module_name' => $application['identifie'],
+                                    ];
+                                    // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
+                                    $_Menuchild->setAttributes($MenuData);
+                                    $_Menuchild->save();
+                                }
+                            }
+                        }
                     }
                 }
             }
-            // 写入主入口菜单
-            $MenuData = [
-                'name' => $application['title'],
-                'parent' => null,
-                'route' => '/'.$application['identifie'].'/default/index',
-                'order' => null,
-                'type' => 'plugins',
-                'icon' => '',
-                'is_sys' => 'addons',
-                'module_name' => $application['identifie'],
-            ];
-            // FileHelper::writeLog($logPath, '模块入口：' . Json::encode($MenuIndex));
-            $Menu->setAttributes($MenuData);
-            $Menu->save();
+            
             require_once Yii::getAlias('@common/addons/'.$application['identifie'].'/install.php');
             // 插入数据库
             $addonsInstallPath = "common\addons\\".$application['identifie'].'\\Install';
             $class = new $addonsInstallPath();
             $class->run($application);
-
             Yii::$app->cache->delete('unAddons');
             $transaction->commit();
         } catch (\Exception $e) {
@@ -446,6 +463,11 @@ class addonsService extends BaseService
             // 删除菜单信息进系统菜单
             $Menu = new Menu();
             $Menu->deleteAll(['module_name' => $identifie]);
+            // 删除路由
+            $Route = new Route();
+            $routes = $Route->getAppRoutes($identifie);
+            $Route->remove($routes);
+
             Yii::$app->cache->delete('unAddons');
 
             require_once Yii::getAlias('@common/addons/'.$identifie.'/uninstall.php');
@@ -477,4 +499,5 @@ class addonsService extends BaseService
         // $model = new Route();
         // $model->addNew($routes);
     }
+
 }
