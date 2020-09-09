@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-18 11:12:41
+ * @Last Modified time: 2020-09-09 08:38:00
  */
 
 namespace diandi\addons;
@@ -43,20 +43,23 @@ class Loader implements BootstrapInterface
             }
         } else {
             $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
-
-            if (key_exists('access-token', $_GPC)) {
-                Yii::$app->service->commonMemberService->setAccessToken($_GPC['access-token']);
-            }
-
+            
             // 全局获取
             $bloc_id = Yii::$app->request->headers->get('bloc_id', 0);
 
             $store_id = Yii::$app->request->headers->get('store_id', 0);
 
+            $access_token = Yii::$app->request->headers->get('access-token', 0);
+
             $addons = Yii::$app->request->headers->get('addons', '');
 
+            if (empty($access_token)) {
+                $access_token = isset($_GPC['access-token']) ? $_GPC['access-token'] : 0; 
+                // Yii::$app->request->get('bloc_id', 0);
+            }
             if (empty($bloc_id)) {
-                $bloc_id = isset($_GPC['bloc_id']) ? $_GPC['bloc_id'] : 0; // Yii::$app->request->get('bloc_id', 0);
+                $bloc_id = isset($_GPC['bloc_id']) ? $_GPC['bloc_id'] : 0; 
+                // Yii::$app->request->get('bloc_id', 0);
             }
             if (empty($store_id)) {
                 $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
@@ -66,6 +69,8 @@ class Loader implements BootstrapInterface
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
             }
+            
+            Yii::$app->service->commonMemberService->setAccessToken($access_token);
 
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
