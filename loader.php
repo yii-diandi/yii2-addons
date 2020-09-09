@@ -65,11 +65,9 @@ class Loader implements BootstrapInterface
                 $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
                 //Yii::$app->request->get('store_id', 0);
             }
-
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
-            }
-            
+            }            
             Yii::$app->service->commonMemberService->setAccessToken($access_token);
 
             $this->afreshLoad($bloc_id, $store_id, $addons);
