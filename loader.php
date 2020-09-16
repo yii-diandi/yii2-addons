@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-09-09 12:01:32
+ * @Last Modified time: 2020-09-16 22:59:11
  */
 
 namespace diandi\addons;
@@ -54,7 +54,7 @@ class Loader implements BootstrapInterface
             $addons = Yii::$app->request->headers->get('addons', '');
 
             if (empty($access_token)) {
-                $access_token = isset($_GPC['access_token']) ? $_GPC['access_token'] : 0; 
+                $access_token = isset($_GPC['access-token']) ? $_GPC['access-token'] : 0; 
                 // Yii::$app->request->get('bloc_id', 0);
             }
             if (empty($bloc_id)) {
