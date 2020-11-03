@@ -4,13 +4,16 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-17 23:09:19
+ * @Last Modified time: 2020-11-04 05:16:31
  */
+
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
 use yii\helpers\Html;
-use yii\grid\GridView;
+use common\widgets\MyGridView;
 use yii\helpers\Url;
+
+$this->registerJs($this->render('_script.js'));
 
 /* @var $this yii\web\View */
 /* @var $searchModel diandi\addons\modules\searchs\DdAddons */
@@ -50,9 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
     
     
 
-    <div class="dd-addons-index ">
+    <div class="dd-addons-index " id="dd-addons-index">
             <div class="box-body">
-                <?= GridView::widget([
+                <?= MyGridView::widget([
                     'dataProvider' => $dataProvider,
                     'layout' => "{items}\n{pager}",
                     'options' => ['class' => 'table-responsive'],
@@ -67,7 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $html .= Html::button('菜单管理', [
                                 'title' => '菜单管理',
                                 'class'=>'tabsOpen btn btn-default btn-sm',
-                                'onclick'=>"dialog('菜单管理', '{$url2}')",
+                                '@click'=>"dialog('菜单管理', '{$url2}')",
                             ]);
                         }
 
@@ -77,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $html .= Html::button('权限管理', [
                                 'title' => '权限管理',
                                 'class'=>'tabsOpen btn btn-default btn-sm',
-                                'onclick'=>"dialog('权限管理', '{$url5}')",
+                                '@click'=>"dialog('权限管理', '{$url5}')",
 
                             ]);
                         }
@@ -87,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $html .= Html::button('用户组管理', [
                                 'class'=>'tabsOpen btn btn-default btn-sm',
                                 'title' => '用户组管理',
-                                'onclick'=>"dialog('用户组管理', '{$url3}')",
+                                '@click'=>"dialog('用户组管理', '{$url3}')",
                             ]);
                         }
                         
@@ -96,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             $html .= Html::button('操作员管理', [
                                 'class'=>'tabsOpen btn btn-default btn-sm',
                                 'title' => '操作员管理',
-                                'onclick'=>"dialog('操作员管理', '{$url4}')",
+                                '@click'=>"dialog('操作员管理', '{$url4}')",
 
                             ]);
                         }

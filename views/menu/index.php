@@ -9,9 +9,9 @@
 
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use common\widgets\MyGridView;
 use yii\widgets\Pjax;
-use leandrogehlen\treegrid\TreeGrid;
+use common\widgets\MyTreeGrid;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -31,7 +31,7 @@ $addon = Yii::$app->request->get('addon');
     <div class="dd-category-index ">
         <div class="panel panel-default">
             <div class="box-body">
-                <?= TreeGrid::widget([
+                <?= MyTreeGrid::widget([
                     'dataProvider' => $dataProvider,
                     'keyColumnName' => 'id',
                     'parentColumnName' => 'parent',
