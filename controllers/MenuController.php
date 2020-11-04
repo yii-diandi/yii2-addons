@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-12 02:16:35
+ * @Last Modified time: 2020-11-05 00:57:27
  */
 
 namespace diandi\addons\controllers;
@@ -20,6 +20,7 @@ use diandi\addons\services\addonsService;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use diandi\admin\components\Helper;
+use yii2mod\editable\EditableAction;
 use yii\data\ActiveDataProvider;
 use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
@@ -32,7 +33,19 @@ use yii\web\HttpException;
  */
 class MenuController extends BaseController
 {
+    
+    public function actions()
+    {
+        return [
+            'update-files' => [
+                'class' => EditableAction::class,
+                'modelClass' => Menu::class,
+                'pkColumn' => 'id',
+            ]
+        ];
+    }
 
+        
     /**
      * @inheritdoc
      */
@@ -45,7 +58,7 @@ class MenuController extends BaseController
                 'actions' => [
                     'delete' => ['post'],
                 ],
-            ],
+            ]
         ];
     }
 

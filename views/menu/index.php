@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:55:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-17 23:10:51
+ * @Last Modified time: 2020-11-05 00:50:04
  */
 
 
@@ -12,6 +12,7 @@ use yii\helpers\Html;
 use common\widgets\MyGridView;
 use yii\widgets\Pjax;
 use common\widgets\MyTreeGrid;
+use yii2mod\editable\EditableColumn;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -45,7 +46,11 @@ $addon = Yii::$app->request->get('addon');
                         // 'parent',
                         'name',
                         'route',
-                        'order',
+                        [
+                            'class' => EditableColumn::class,
+                            'attribute' => 'order',
+                            'url' => ['update-files']
+                        ],
                         [
                             'class' => 'common\components\ActionColumn',
                          'urlCreator' => function ($action, $model, $key, $index) {
