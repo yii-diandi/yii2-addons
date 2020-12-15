@@ -122,7 +122,6 @@ class Loader implements BootstrapInterface
             default:
             $moduleFile = 'api';
         }
-
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
@@ -144,7 +143,6 @@ class Loader implements BootstrapInterface
                     Yii::$app->getUrlManager()->addRules($config);
                 }
             }
-
             $modules[StringHelper::toUnderScore($name)] = [
                 'class' => "common\addons\\".$name.'\\'.$moduleFile,
             ];
