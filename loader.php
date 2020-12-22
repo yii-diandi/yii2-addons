@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-22 00:55:18
+ * @Last Modified time: 2020-12-22 23:41:16
  */
 
 namespace diandi\addons;
@@ -73,6 +73,18 @@ class Loader implements BootstrapInterface
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
             }
+            
+            if (Yii::$app->id == 'app-api'){
+                $response = Yii::$app->response;
+                if (Yii::$app->request->getMethod() == 'OPTIONS') {
+                    $response->data = 'options请求 快速响应';
+                    $response->statusCode = 200;
+                    $response->send();
+                    Yii::$app->end();
+                    die;
+                }
+            }
+          
             
             Yii::$app->service->commonMemberService->setAccessToken($access_token);
 
