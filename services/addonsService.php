@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-22 00:32:16
+ * @Last Modified time: 2020-12-23 14:01:49
  */
 
 namespace diandi\addons\services;
@@ -88,7 +88,7 @@ class addonsService extends BaseService
     // 获取模块logo
     public static function getLogo($addon)
     {
-        $logog = Yii::getAlias("@common/addons/{$addon}/logo.png");
+        $logog = Yii::getAlias("@addons/{$addon}/logo.png");
 
         return self::imgToBase64($logog);
     }
