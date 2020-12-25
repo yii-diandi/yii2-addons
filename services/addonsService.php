@@ -246,7 +246,7 @@ class addonsService extends BaseService
     // 文件完整校验
     public static function ext_file_check($module_name)
     {
-        $module_root = Yii::getAlias('@common/addons/');
+        $module_root = Yii::getAlias('@addons/');
         $module_path = $module_root.$module_name.'/';
         if (!file_exists($module_path.'api.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'api.php文件是否存在！');
@@ -276,7 +276,7 @@ class addonsService extends BaseService
     public static function unAddon($addon)
     {
         // 获取模块目录下所有的模块
-        $module_root = Yii::getAlias('@common/addons');
+        $module_root = Yii::getAlias('@addons');
         $module_path_list = glob($module_root.'/*');
         // 获取所有已经安装的模块
         $DdAddons = new DdAddons();
@@ -306,7 +306,7 @@ class addonsService extends BaseService
             return $unAddons;
         } else {
             // 获取模块目录下所有的模块
-            $module_root = Yii::getAlias('@common/addons');
+            $module_root = Yii::getAlias('@addons');
             $module_path_list = glob($module_root.'/*');
             // 获取所有已经安装的模块
             $DdAddons = new DdAddons();
@@ -365,7 +365,7 @@ class addonsService extends BaseService
             $Menu = new Menu();
             // 首先删除模块已有菜单
             $Menu->deleteAll(['module_name'=>$application['identifie']]);
-            $menuFile = Yii::getAlias('@common/addons/'.$application['identifie'].'/config/menu.php');
+            $menuFile = Yii::getAlias('@addons/'.$application['identifie'].'/config/menu.php');
             
             $baseMenus = require_once($menuFile);
             if(is_array($baseMenus) && !empty($baseMenus)){
@@ -428,7 +428,7 @@ class addonsService extends BaseService
                 }
             }
             
-            require_once Yii::getAlias('@common/addons/'.$application['identifie'].'/install.php');
+            require_once Yii::getAlias('@addons/'.$application['identifie'].'/install.php');
             // 插入数据库
             $addonsInstallPath = "common\addons\\".$application['identifie'].'\\Install';
             $class = new $addonsInstallPath();
@@ -470,7 +470,7 @@ class addonsService extends BaseService
 
             Yii::$app->cache->delete('unAddons');
 
-            require_once Yii::getAlias('@common/addons/'.$identifie.'/uninstall.php');
+            require_once Yii::getAlias('@addons/'.$identifie.'/uninstall.php');
 
             // 删除数据库
             $addonsInstallPath = "common\addons\\".$identifie.'\\UnInstall';
