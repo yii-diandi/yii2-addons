@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-23 14:01:49
+ * @Last Modified time: 2020-12-26 07:54:42
  */
 
 namespace diandi\addons\services;
@@ -20,6 +20,7 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+
 
 class addonsService extends BaseService
 {
@@ -430,7 +431,7 @@ class addonsService extends BaseService
             
             require_once Yii::getAlias('@addons/'.$application['identifie'].'/install.php');
             // 插入数据库
-            $addonsInstallPath = "common\addons\\".$application['identifie'].'\\Install';
+            $addonsInstallPath = "addons\\".$application['identifie'].'\\Install';
             $class = new $addonsInstallPath();
             $class->run($application);
             Yii::$app->cache->delete('unAddons');
@@ -473,7 +474,7 @@ class addonsService extends BaseService
             require_once Yii::getAlias('@addons/'.$identifie.'/uninstall.php');
 
             // 删除数据库
-            $addonsInstallPath = "common\addons\\".$identifie.'\\UnInstall';
+            $addonsInstallPath = "addons\\".$identifie.'\\UnInstall';
             $class = new $addonsInstallPath();
             $class->run($config);
 
