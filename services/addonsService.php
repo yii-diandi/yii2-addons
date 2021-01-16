@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-26 07:54:42
+ * @Last Modified time: 2020-12-26 07:59:56
  */
 
 namespace diandi\addons\services;
@@ -12,7 +12,7 @@ namespace diandi\addons\services;
 use common\helpers\FileHelper;
 use Yii;
 use common\services\BaseService;
-use diandi\addons\modules\searchs\DdAddons;
+use diandi\addons\models\searchs\DdAddons;
 use diandi\admin\models\Menu as ModelsMenu;
 use diandi\admin\models\Route;
 use diandi\admin\models\searchs\Menu;
@@ -20,7 +20,6 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
-
 
 class addonsService extends BaseService
 {

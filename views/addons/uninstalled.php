@@ -13,7 +13,7 @@ use common\widgets\MyGridView;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $searchModel diandi\addons\modules\searchs\DdAddons */
+/* @var $searchModel diandi\addons\models\searchs\DdAddons */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Dd Addons';

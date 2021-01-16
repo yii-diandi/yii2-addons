@@ -12,6 +12,6 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model diandi\addons\modules\DdAddons */
+/* @var $model diandi\addons\models\DdAddons */
 
 echo html::img($logo);

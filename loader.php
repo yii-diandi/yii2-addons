@@ -4,14 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-23 01:12:35
+ * @Last Modified time: 2021-01-16 23:10:34
  */
 
 namespace diandi\addons;
 
 use Yii;
 use common\helpers\StringHelper;
-use diandi\addons\modules\searchs\DdAddons;
+use diandi\addons\models\searchs\DdAddons;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
 

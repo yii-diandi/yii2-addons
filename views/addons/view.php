@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model diandi\addons\modules\DdAddons */
+/* @var $model diandi\addons\models\DdAddons */
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Dd Addons', 'url' => ['index']];

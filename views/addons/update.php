@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model diandi\addons\modules\DdAddons */
+/* @var $model diandi\addons\models\DdAddons */
 
 $this->title = 'Update Dd Addons: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Dd Addons', 'url' => ['index']];

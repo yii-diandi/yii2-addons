@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use common\widgets\MyActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model diandi\addons\modules\DdAddons */
+/* @var $model diandi\addons\models\DdAddons */
 /* @var $form yii\widgets\MyActiveForm */
 ?>
 

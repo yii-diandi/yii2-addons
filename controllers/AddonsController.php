@@ -4,20 +4,20 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 11:58:28
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-03 09:07:23
+ * @Last Modified time: 2021-01-16 23:24:13
  */
 
 namespace diandi\addons\controllers;
 
 use Yii;
-use diandi\addons\modules\DdAddons;
-use diandi\addons\modules\searchs\DdAddons as DdAddonsSearch;
+use diandi\addons\models\DdAddons;
+use diandi\addons\models\searchs\DdAddons as DdAddonsSearch;
 use diandi\addons\services\addonsService;
 use yii\data\ArrayDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\controllers\BaseController;
-use diandi\admin\models\AddonsUser;
+use diandi\addons\models\AddonsUser;
 
 /**
  * AddonsController implements the CRUD actions for DdAddons model.

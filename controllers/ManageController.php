@@ -12,8 +12,8 @@ namespace diandi\addons\controllers;
 
 use backend\controllers\BaseController;
 use Yii;
-use diandi\addons\modules\DdAddons;
-use diandi\addons\modules\searchs\DdAddons as DdAddonsSearch;
+use diandi\addons\models\DdAddons;
+use diandi\addons\models\searchs\DdAddons as DdAddonsSearch;
 use diandi\addons\services\addonsService;
 use diandi\admin\models\Route;
 use yii\web\NotFoundHttpException;

@@ -15,7 +15,7 @@ use diandi\admin\models\searchs\Menu as MenuSearch;
 use backend\controllers\BaseController;
 use common\helpers\ArrayHelper;
 use common\helpers\ErrorsHelper;
-use diandi\addons\modules\searchs\DdAddons;
+use diandi\addons\models\searchs\DdAddons;
 use diandi\addons\services\addonsService;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

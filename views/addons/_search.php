@@ -13,7 +13,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model diandi\addons\modules\searchs\DdAddons */
+/* @var $model diandi\addons\models\searchs\DdAddons */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
