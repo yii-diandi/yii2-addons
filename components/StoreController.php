@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 02:50:01
+ * @Last Modified time: 2021-01-17 12:41:19
  */
 
 namespace diandi\addons\components;
@@ -68,9 +68,11 @@ class StoreController extends BaseController
     public function actionIndex()
     {
         $bloc_id = $this->bloc_id ? $this->bloc_id : Yii::$app->params['bloc_id'];
+        
         $searchModel = new BlocStoreSearch([
             'bloc_id' => $bloc_id,
         ]);
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -172,8 +174,11 @@ class StoreController extends BaseController
                 'id'
             )->asArray()->all();
             
+            $linkValue = [];
+            
             return $this->render('create', [
                 'link' => $link,
+                'linkValue'=>$linkValue,
                 'labels' => $labels,
                 'model' => $model,
                 'Helper'=>$Helper,
@@ -201,14 +206,14 @@ class StoreController extends BaseController
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);
         $link    = new StoreLabelLink();
-
+        
+        $bloc_id   = $model->bloc_id;
+        $store_id  = $model->store_id;
         
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
      
-                $bloc_id   = $model->bloc_id;
-                $store_id  = $model->store_id;
-                
+              
                 $StoreLabelLink = $_GPC['StoreLabelLink'];
                 $link->deleteAll([
                     'store_id'=>$store_id
@@ -250,8 +255,12 @@ class StoreController extends BaseController
         $labels = StoreLabel::find()->select(['id','name'])->indexBy('id')->asArray()->all();
         $store_id = $model->store_id;
         
+        $linkValue = $link->find()->where(['store_id'=>$store_id])->select('label_id')->column();
+
+        
         return $this->render('update', [
                 'link' => $link,
+                'linkValue'=>$linkValue,
                 'labels' => $labels,
                 'bloc_id' => $this->bloc_id,
                 'Helper'=>$Helper,

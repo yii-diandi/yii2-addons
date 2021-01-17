@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:15:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 02:28:17
+ * @Last Modified time: 2021-01-17 12:31:57
  */
 use common\models\DdRegion;
 use richardfan\widget\JSRegister;
@@ -92,7 +92,7 @@ use yii\widgets\ActiveForm;
             3 => '审核未通过',
         ]); ?>
         
-    <?= $form->field($link, 'label_id')->checkboxList(ArrayHelper::map($labels, 'id','name')); ?>
+    <?= $form->field($link, 'label_id')->checkboxList(ArrayHelper::map($labels, 'id','name'),['value'=>$linkValue]); ?>
 
     </div>
 

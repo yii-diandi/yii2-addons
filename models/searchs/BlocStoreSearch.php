@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:06:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:32:41
+ * @Last Modified time: 2021-01-17 12:26:26
  */
 
 namespace diandi\addons\models\searchs;
@@ -29,7 +29,7 @@ class BlocStoreSearch extends BlocStore
             $this->bloc_id = $items['bloc_id'];
         }
 
-        if (Yii::$app->controller->module->id != 'admin') {
+        if (Yii::$app->controller->module->id != 'addons') {
             $this->store_id = Yii::$app->params['store_id'];
         }
     }

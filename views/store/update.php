@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-15 22:02:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 02:22:12
+ * @Last Modified time: 2021-01-17 12:32:20
  */
 
 /* @var $this yii\web\View */
@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = 'Update';
                 'bloc_id' => $bloc_id,
                 'link' => $link,
                 'labels' => $labels,
+                'linkValue' => $linkValue,
                 'model' => $model,
                 ]); ?>
             </div>
