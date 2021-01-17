@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-17 01:39:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 02:03:04
+ * @Last Modified time: 2021-01-17 10:45:03
  */
  
 
@@ -41,7 +41,7 @@ class StoreLabel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id', 'store_id', 'is_show'], 'required'],
+            [['is_show'], 'required'],
             [['bloc_id', 'store_id', 'displayorder', 'is_show'], 'integer'],
             [['name', 'thumb'], 'string', 'max' => 255],
             [['color', 'create_time', 'update_time'], 'string', 'max' => 30]

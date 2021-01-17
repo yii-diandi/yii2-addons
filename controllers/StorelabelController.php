@@ -1,4 +1,11 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2021-01-17 10:43:36
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2021-01-17 10:44:39
+ */
+ 
 
 namespace diandi\addons\controllers;
 
@@ -9,6 +16,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\controllers\BaseController;
+use common\helpers\ErrorsHelper;
 
 /**
  * StorelabelController implements the CRUD actions for StoreLabel model.
@@ -73,6 +81,9 @@ class StorelabelController extends BaseController
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
+        }else{
+            $msg = ErrorsHelper::getModelError($model);
+        
         }
 
         return $this->render('create', [
