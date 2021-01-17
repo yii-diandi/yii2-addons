@@ -175,7 +175,6 @@ class StoreController extends BaseController
             )->asArray()->all();
             
             $linkValue = [];
-            
             return $this->render('create', [
                 'link' => $link,
                 'linkValue'=>$linkValue,
