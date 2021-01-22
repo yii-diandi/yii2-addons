@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:10:34
+ * @Last Modified time: 2021-01-22 21:43:02
  */
 
 namespace diandi\addons;
@@ -140,7 +140,7 @@ class Loader implements BootstrapInterface
         $extraPatterns = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
-            $configPath = Yii::getAlias('@addons/'.$name.'/config/api.php');
+            $configPath = Yii::getAlias('@addons/'.$name.'/config/'.$moduleFile.'.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
                 if (!empty($config)) {
@@ -161,7 +161,7 @@ class Loader implements BootstrapInterface
                 'class' => "addons\\".$name.'\\'.$moduleFile,
             ];
         }
-
+        
         return $modules;
     }
 
