@@ -3,19 +3,18 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-16 22:24:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 22:24:41
+ * @Last Modified time: 2021-01-23 11:03:47
  */
  
 
 namespace diandi\addons\controllers;
 
 use Yii;
-use diandi\admin\models\BlocConfWxapp;
-use diandi\admin\models\searchs\BlocConfWxappSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\controllers\BaseController;
+use diandi\addons\models\BlocConfWxapp as ModelsBlocConfWxapp;
+use diandi\addons\models\searchs\BlocConfWxappSearch as SearchsBlocConfWxappSearch;
 
 /**
  * WxappController implements the CRUD actions for BlocConfWxapp model.
@@ -43,7 +42,7 @@ class WxappController extends BaseController
      */
     public function actionIndex()
     {
-        $searchModel = new BlocConfWxappSearch();
+        $searchModel = new SearchsBlocConfWxappSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -72,7 +71,7 @@ class WxappController extends BaseController
      */
     public function actionCreate()
     {
-        $model = new BlocConfWxapp();
+        $model = new ModelsBlocConfWxapp();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -126,7 +125,7 @@ class WxappController extends BaseController
      */
     protected function findModel($id)
     {
-        if (($model = BlocConfWxapp::findOne($id)) !== null) {
+        if (($model = ModelsBlocConfWxapp::findOne($id)) !== null) {
             return $model;
         }
 

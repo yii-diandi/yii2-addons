@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:43:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:57:26
+ * @Last Modified time: 2021-01-23 11:04:52
  */
 
 namespace diandi\addons\controllers;
@@ -20,6 +20,7 @@ use common\helpers\ResultHelper;
 use diandi\addons\components\BlocUser;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\User;
+use diandi\admin\models\User as ModelsUser;
 
 /**
  * UserBlocController implements the CRUD actions for UserBloc model.
@@ -169,7 +170,7 @@ class UserBlocController extends BaseController
         }
 
         // 查询普通的管理员
-        $userlist =  User::find()->where([])->select(['username','avatar','id'])->asArray()->all();
+        $userlist =  ModelsUser::find()->where([])->select(['username','avatar','id'])->asArray()->all();
         foreach ($userlist as $key => &$value) {
             $value['avatar'] = ImageHelper::tomedia($value['avatar']);
         }   

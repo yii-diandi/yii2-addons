@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 23:14:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:30:24
+ * @Last Modified time: 2021-01-23 00:20:16
  */
 
 namespace diandi\addons\models;
@@ -37,9 +37,9 @@ class BlocConfBaidu extends \yii\db\ActiveRecord
     {
         return [
             [['bloc_id', 'APP_ID', 'name'], 'required'],
-            [['bloc_id', 'API_KEY', 'create_time', 'update_time'], 'integer'],
+            [['bloc_id', 'create_time', 'update_time'], 'integer'],
             [['APP_ID'], 'string', 'max' => 50],
-            [['SECRET_KEY'], 'string', 'max' => 255],
+            [['SECRET_KEY', 'API_KEY'], 'string', 'max' => 255],
             [['name'], 'string', 'max' => 15],
             [['bloc_id'], 'unique'],
         ];
