@@ -2,7 +2,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-06-27 10:01:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-07 15:48:33
+ * @Last Modified time: 2021-02-28 01:36:57
  */
 
 new Vue({
@@ -32,7 +32,7 @@ new Vue({
         init(){
             let that = this
 
-            that.$http.post('getstore', {bloc_id:that.bloc_id},{
+            that.$http.post('getuser', {bloc_id:that.bloc_id},{
                 headers:{
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
                     'X-CSRF-Token':window.sysinfo.csrfToken // _csrf验证
@@ -41,8 +41,30 @@ new Vue({
                 console.log(response.data)
                  //响应成功回调
                 if (response.data.code == 200) {
-                    that.storelist = response.data.data.store
-                    that.userlist = response.data.data.user
+                    that.userlist = response.data.data
+                }
+            }, (response) => {
+                //响应错误回调
+                console.log(response)
+            });
+        },
+        getStore(){
+            let that = this
+
+            that.$http.post('getstore', {bloc_id:that.bloc_id,user_id:that.user_id},{
+                headers:{
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    'X-CSRF-Token':window.sysinfo.csrfToken // _csrf验证
+                }
+            }).then((response) => {
+                console.log(response.data)
+                 //响应成功回调
+                if (response.data.code == 200) {
+                    console.log(response.data.data)
+                    that.storelist = response.data.data
+                    that.dialogStore= true
+                }else{
+                    that.$message.error(response.data.message);
                 }
             }, (response) => {
                 //响应错误回调
@@ -50,7 +72,7 @@ new Vue({
             });
         },
         StoreDialog(){
-            this.dialogStore= true
+            this.getStore()
         },
         UserDialog(){
             this.dialogUser= true
@@ -70,7 +92,10 @@ new Vue({
                     that.$message({
                         message:response.data.message,
                         type: 'success'
-                      });
+                    });
+
+                    window.location.href = response.data.data.url
+
                 }
             }, (response) => {
                 //响应错误回调

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-11-05 00:57:27
+ * @Last Modified time: 2021-02-23 17:56:07
  */
 
 namespace diandi\addons\controllers;
@@ -72,7 +72,7 @@ class MenuController extends BaseController
         // $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
         $addon = Yii::$app->request->get('addon');
         $rules = addonsService::addonsRules($addon);
-        $parentMenu = Menu::findAll(['parent' => null]);
+        $parentMenu = Menu::findAll(['parent' => 0]);
 
         $query = Menu::find()->where(['is_sys' => 'addons', 'module_name' => $addon]);
         $dataProvider = new ActiveDataProvider([

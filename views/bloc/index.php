@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng
  * @Date:   2020-04-29 16:06:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 00:14:10
+ * @Last Modified time: 2021-02-27 19:13:53
  */
 use common\widgets\MyTreeGrid;
 use yii2mod\editable\EditableColumn;
@@ -84,18 +84,17 @@ $this->registerJs($this->render('_script.js'));
                                 ];
                             },
                         ],    
-                        ['class' => 'common\components\ActionColumn'],
                         [
-                            'class' => 'yii\grid\ActionColumn',
+                            'class' => 'common\components\ActionColumn',
                             'header' => '操作',
-                            'template' => '{user}{management}{stores}',
+                            'template' => '{view}{update}{user}{management}{stores}{delete}',
                             'buttons' => [
                                 'stores' => function ($url, $model, $key) {
                                     $url = Url::to(['/addons/store/index', 'bloc_id' => $model['bloc_id']]);
 
                                     return  Html::button('商户管理',[
                                         'title' => '商户管理',
-                                        'class' => 'btn btn-default',
+                                        'class' => 'btn btn-primary',
                                         '@click'=>"dialog('商户管理','{$url}')",
                                     ]);
                                 },
@@ -104,7 +103,7 @@ $this->registerJs($this->render('_script.js'));
 
                                     return  Html::button('管理员',[
                                         'title' => '管理员',
-                                        'class' => 'btn btn-default',
+                                        'class' => 'btn btn-primary',
                                         '@click'=>"dialog('管理员', '{$url}')",
                                     ]);
                                 },
@@ -113,7 +112,7 @@ $this->registerJs($this->render('_script.js'));
 
                                     return  Html::button('参数配置',[
                                         'title' => '进入模块',
-                                        'class' => 'btn btn-default',
+                                        'class' => 'btn btn-primary',
                                         '@click'=>"dialog('参数配置', '{$url}')",
                                     ]);
                                     

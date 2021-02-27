@@ -3,9 +3,9 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:46:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-06-27 09:58:24
+ * @Last Modified time: 2021-02-27 19:19:13
  */
-use diandi\admin\AutocompleteAsset;
+
 use diandi\admin\models\Menu;
 use yii\helpers\Json;
 
@@ -16,7 +16,6 @@ $this->title = '添加管理员';
 $this->params['breadcrumbs'][] = ['label' => 'User Blocs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-AutocompleteAsset::register($this);
 $opts = Json::htmlEncode([
     'menus' => Menu::getMenuSource(),
     'routes' => Menu::getSavedRoutes(),

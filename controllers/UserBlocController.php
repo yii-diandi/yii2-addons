@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:43:39
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-23 11:04:52
+ * @Last Modified time: 2021-02-28 01:39:16
  */
 
 namespace diandi\addons\controllers;
@@ -21,6 +21,7 @@ use diandi\addons\components\BlocUser;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\User;
 use diandi\admin\models\User as ModelsUser;
+use yii\helpers\Url;
 
 /**
  * UserBlocController implements the CRUD actions for UserBloc model.
@@ -105,7 +106,7 @@ class UserBlocController extends BaseController
             $user_id  = $data['user_id'];
             $store_id = $data['store_id'];
             $status = $data['status'];
-            
+            $bloc_id = 0;
             $list = BlocStore::find()->where(['store_id'=>$store_id])->select(['bloc_id','store_id'])->asArray()->all();
             foreach ($list as $key => $value) {
                 $_model = clone $model;
@@ -118,14 +119,19 @@ class UserBlocController extends BaseController
                 ]);
                 if(!$_model->save()){
                     $msg = ErrorsHelper::getModelError($_model);
-                    return ResultHelper::json(200,$msg,[]);
+                    return ResultHelper::json(400,$msg,[]);
                     
                 }
+                
+                $bloc_id = $value['bloc_id'];
+
             }
             
             
            
-            return ResultHelper::json(200,'添加成功',[]);
+            return ResultHelper::json(200,'添加成功',[
+                'url'=> Url::to(['index', 'bloc_id' => $bloc_id])
+                ]);
         }
 
       
@@ -151,7 +157,7 @@ class UserBlocController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id,'bloc_id' => $model->bloc_id]);
         }
 
         return $this->render('update', [
@@ -163,18 +169,46 @@ class UserBlocController extends BaseController
     public function actionGetstore()
     {
         global $_GPC;
+        
         $bloc_id = $_GPC['bloc_id'];
-        $list = BlocStore::find()->where(['bloc_id'=>$bloc_id])->asArray()->all();
-        foreach ($list as $key => &$value) {
-            $value['logo'] = ImageHelper::tomedia($value['logo']);
+        
+        $user_id = $_GPC['user_id'];
+        
+        if(!$user_id){
+            return ResultHelper::json(400,'请先选择管理员',[]);
         }
+        
+        $userStore = UserBloc::find()->where([
+                'user_id'=>$user_id
+            ])->select('store_id')->asArray()->column();
+            
+        $list = BlocStore::find()->where(['bloc_id'=>$bloc_id])->asArray()->all();
+        
+        $lists = [];
+        
+        foreach ($list as $key => &$value) {
+            if(!in_array($value['store_id'],$userStore)){
+                $value['logo'] = ImageHelper::tomedia($value['logo']);
+                $lists[] =  $value;
+            }
+            
+        }
+        
+        
+        return  ResultHelper::json(200,'请求成功',$lists);
+        
+    }
 
+    public function actionGetuser()
+    {
+        global $_GPC;
+        $bloc_id = $_GPC['bloc_id'];
         // 查询普通的管理员
         $userlist =  ModelsUser::find()->where([])->select(['username','avatar','id'])->asArray()->all();
         foreach ($userlist as $key => &$value) {
             $value['avatar'] = ImageHelper::tomedia($value['avatar']);
         }   
-        return  ResultHelper::json(200,'请求成功',['store'=>$list,'user'=>$userlist]);
+        return  ResultHelper::json(200,'请求成功',$userlist);
     }
 
     /**
@@ -191,7 +225,7 @@ class UserBlocController extends BaseController
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index','bloc_id' =>$this->findModel($id)->bloc_id]);
     }
 
     /**

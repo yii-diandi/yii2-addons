@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:46:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-07-07 16:08:30
+ * @Last Modified time: 2021-02-27 19:25:08
  */
 use common\widgets\MyGridView;
 
@@ -36,10 +36,15 @@ $this->params['breadcrumbs'][] = $this->title;
                         'user.username',
                         'bloc.business_name',
                         'store.name',
-                        'create_time',
+                        'create_time:datetime',
                         //'update_time',
 
-                    ['class' => 'common\components\ActionColumn'],
+                        [
+                            'class' => 'common\components\ActionColumn',
+                            'urls'=>[
+                                'bloc_id'=>'bloc_id'
+                            ]
+                        ],
                     ],
                     ]); ?>
                 

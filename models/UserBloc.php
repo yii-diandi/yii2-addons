@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 19:12:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:36:56
+ * @Last Modified time: 2021-02-27 19:39:01
  */
 
 namespace diandi\addons\models;
@@ -38,7 +38,13 @@ class UserBloc extends \yii\db\ActiveRecord
         return [
             [['user_id', 'bloc_id', 'store_id', 'status'], 'integer'],
             [['create_time', 'update_time'], 'integer'],
-            ['user_id', 'check','on'=>['create']]
+            ['user_id', 'check','on'=>['create']],
+            [
+                ['user_id', 'store_id'], 
+                'unique', 
+                'targetAttribute' => ['user_id', 'store_id'], 
+                'message' => '重复给用户进行店铺权限，请检查'
+            ],
         ];
     }
 
@@ -84,8 +90,8 @@ class UserBloc extends \yii\db\ActiveRecord
             'user_id' => '管理员',
             'bloc_id' => '集团',
             'store_id' => '子公司',
-            'create_time' => 'Create Time',
-            'update_time' => 'Update Time',
+            'create_time' => '分配时间',
+            'update_time' => '最后修改时间',
         ];
     }
 }
