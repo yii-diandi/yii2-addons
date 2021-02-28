@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'store.name',
                         'create_time:datetime',
                         //'update_time',
-
                         [
                             'class' => 'common\components\ActionColumn',
                             'urls'=>[
