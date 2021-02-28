@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 11:46:24
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-02-27 19:25:08
+ * @Last Modified time: 2021-02-28 09:19:01
  */
 use common\widgets\MyGridView;
 
@@ -43,7 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'common\components\ActionColumn',
                             'urls'=>[
                                 'bloc_id'=>'bloc_id'
-                            ]
+                            ],
+                            'template' => '{delete}'
                         ],
                     ],
                     ]); ?>
