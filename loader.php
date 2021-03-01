@@ -6,7 +6,6 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2021-02-27 17:31:00
  */
-
 namespace diandi\addons;
 
 use Yii;
