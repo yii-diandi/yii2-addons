@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 15:41:35
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-08-12 02:11:24
+ * @Last Modified time: 2021-03-01 12:07:58
  */
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -38,7 +38,7 @@ $this->registerJs($this->render('_script.js'));
                 ->dropDownList(ArrayHelper::map($parentMenu, 'id', 'name'), [
                     'prompt' => [
                         'text' => '顶级导航',
-                        'options' => ['value' => null],
+                        'options' => ['value' => 0],
                     ],
                 ])
                 ->label('父级菜单'); ?>

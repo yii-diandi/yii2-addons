@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-08 13:30:54
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-02-23 17:56:07
+ * @Last Modified time: 2021-03-01 12:01:57
  */
 
 namespace diandi\addons\controllers;
@@ -114,10 +114,9 @@ class MenuController extends BaseController
         $sql = "`route` <> '{$defaultroute}' || route is NULL";
     
         $parentMenus = Menu::find()->where(['module_name' => $addon])->andWhere($sql)->asArray()->all();
-        $parentMenu =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus,null,"id",'parent', $child = '-'),"id",'name');
+        $parentMenu =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parentMenus,0,"id",'parent', $child = '-'),"id",'name');
         if(Yii::$app->request->isPost){
             $data = Yii::$app->request->post();
-            $data['Menu']['parent'] = $data['Menu']['parent'] != '顶级导航' ? $data['Menu']['parent'] : null;
             if ($model->load($data) && $model->save()) {
                 Helper::invalidate();
                 return $this->redirect(['view', 'id' => $model->id, 'addon' => $addon]);

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-26 07:59:56
+ * @Last Modified time: 2021-02-28 22:22:33
  */
 
 namespace diandi\addons\services;
@@ -487,6 +487,38 @@ class addonsService extends BaseService
         }
 
         return true;
+    }
+
+    public static function upgrade($identifie)
+    {
+        $DdAddons = new DdAddons();
+        $config = $DdAddons::findOne(['identifie' => $identifie]);
+
+        if(empty($config)){
+            throw new \Exception('应用模块不存在');
+        }
+
+        $transaction = $DdAddons::getDb()->beginTransaction();
+        try {
+            
+            require_once Yii::getAlias('@addons/'.$identifie.'/uninstall.php');
+
+            // 删除数据库
+            $addonsInstallPath = "addons\\".$identifie.'\\UnInstall';
+            $class = new $addonsInstallPath();
+            $class->run($config);
+
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+
+        return true;
+        
     }
 
     // 获取所有的路由
