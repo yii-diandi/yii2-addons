@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-02 23:27:20
+ * @Last Modified time: 2021-03-02 23:34:37
  */
 
 namespace diandi\addons\services;
@@ -410,9 +410,9 @@ class addonsService extends BaseService
                                     $_Menuchild = clone  $Menu;
                                     $MenuData = [
                                         'name' => $childs['name'],
-                                        'parent' => !empty($parent2) ? $parent2 : null,
+                                        'parent' => intval($parent),
+                                        'order' => intval($child['order']),
                                         'route' => $childs['route'],
-                                        'order' => $childs['order'] ? $childs['order'] : 0,
                                         'type' => 'plugins',
                                         'icon' => $childs['icon'] ? $childs['icon'] : '',
                                         'is_sys' => 'addons',
