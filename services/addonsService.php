@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-02 23:34:37
+ * @Last Modified time: 2021-03-03 00:32:22
  */
 
 namespace diandi\addons\services;
@@ -391,7 +391,7 @@ class addonsService extends BaseService
                             $_Menuchild = clone  $Menu;
                             $MenuData = [
                                 'name' => $child['name'],
-                                'parent' => intval($parent),
+                                'parent' => $parent,
                                 'route' => $child['route'],
                                 'order' => intval($child['order']),
                                 'type' => 'plugins',
@@ -403,14 +403,14 @@ class addonsService extends BaseService
                             $_Menuchild->setAttributes($MenuData);
                             $_Menuchild->save();
                             
-                            $parent2 = Yii::$app->db->getLastInsertID();
+                            $parentChild = Yii::$app->db->getLastInsertID();
                             
                             if (!empty($child['child'])) {
                                 foreach ($child['child'] as $childs) {
                                     $_Menuchild = clone  $Menu;
                                     $MenuData = [
                                         'name' => $childs['name'],
-                                        'parent' => intval($parent),
+                                        'parent' => $parentChild,
                                         'order' => intval($child['order']),
                                         'route' => $childs['route'],
                                         'type' => 'plugins',
