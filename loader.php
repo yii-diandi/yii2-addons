@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-02-27 17:31:00
+ * @Last Modified time: 2021-03-17 20:28:58
  */
 namespace diandi\addons;
 
@@ -13,6 +13,7 @@ use common\helpers\StringHelper;
 use diandi\addons\models\searchs\DdAddons;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
+
 
 class Loader implements BootstrapInterface
 {
@@ -130,6 +131,9 @@ class Loader implements BootstrapInterface
             case 'app-frontend':
                 $moduleFile = 'frontend';
                 break;
+            case 'app-console':
+                $moduleFile = 'console';
+                break;
             default:
             $moduleFile = 'api';
         }
@@ -152,10 +156,17 @@ class Loader implements BootstrapInterface
                             $value['extraPatterns'] = $extraPatterns;
                         }
                     }
+                    
                     Yii::$app->getUrlManager()->addRules($config);
+
+                    if(is_array($config['controllerMap']) && !empty($config['controllerMap'])){
+                        foreach ($config['controllerMap'] as $key => $val) {
+                            Yii::$app->controllerMap[$key] = $val;
+                        }
+                    }
                 }
             }
-
+            
             $modules[StringHelper::toUnderScore($name)] = [
                 'class' => "addons\\".$name.'\\'.$moduleFile,
             ];
