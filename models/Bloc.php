@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:33:21
+ * @Last Modified time: 2021-03-25 16:48:17
  */
 
 namespace diandi\addons\models;
@@ -42,6 +42,18 @@ namespace diandi\addons\models;
  */
 class Bloc extends \yii\db\ActiveRecord
 {
+    public function __construct($item = null)
+    {
+        if ($item['extras']) {
+            $extra = [];
+            foreach ($item['extras'] as $key => $value) {
+                $extra[$value] = '';
+                $pas[] = 'extra['.$value.']';
+            }
+            $this->extra = $extra;
+        }
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -49,6 +61,7 @@ class Bloc extends \yii\db\ActiveRecord
     {
         return '{{%diandi_bloc}}';
     }
+
 
     /**
      * {@inheritdoc}
@@ -65,6 +78,7 @@ class Bloc extends \yii\db\ActiveRecord
             [['province', 'city', 'district', 'longitude', 'latitude'], 'string', 'max' => 15],
             [['telephone'], 'string', 'max' => 20],
             [['license_no'], 'string', 'max' => 30],
+            [['extra'], 'safe'],
             [['license_name'], 'string', 'max' => 100],
         ];
     }
@@ -72,6 +86,8 @@ class Bloc extends \yii\db\ActiveRecord
     public function beforeValidate()
     {
         if (parent::beforeValidate()) {
+            $this->extra = serialize($this->extra);
+
             if (!is_numeric($this->status) && isset($this->status)) {
                 //字段
                 $list = ['非集团'=>0,'集团'=>1];
@@ -89,6 +105,12 @@ class Bloc extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+    public function extraFields()
+    {
+        return $this->extra;
+    }
+
 
     public function getStore()
     {
