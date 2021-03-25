@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-03 00:32:22
+ * @Last Modified time: 2021-03-24 21:11:56
  */
 
 namespace diandi\addons\services;
@@ -428,11 +428,18 @@ class addonsService extends BaseService
                 }
             }
             
-            require_once Yii::getAlias('@addons/'.$application['identifie'].'/install.php');
-            // 插入数据库
-            $addonsInstallPath = "addons\\".$application['identifie'].'\\Install';
-            $class = new $addonsInstallPath();
-            $class->run($application);
+            $dirSql = Yii::getAlias("@addons/{$application['identifie']}/migrations");
+          
+            $dirFile=array_diff(scandir($dirSql),array('..','.'));
+            
+            if(!empty($dirFile)){
+                require_once Yii::getAlias('@addons/'.$application['identifie'].'/install.php');
+                // 插入数据库
+                $addonsInstallPath = "addons\\".$application['identifie'].'\\Install';
+                $class = new $addonsInstallPath();
+                $class->run($application);
+            }
+            
             Yii::$app->cache->delete('unAddons');
             $transaction->commit();
         } catch (\Exception $e) {
