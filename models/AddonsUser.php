@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 10:51:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 22:59:55
+ * @Last Modified time: 2021-03-26 12:30:52
  */
 
 namespace diandi\addons\models;
@@ -87,30 +87,42 @@ class AddonsUser extends \yii\db\ActiveRecord
         $user_id = $this->user_id;
         $available = [];
         $assigned = [];
+        // 查询所有模块
+        $addons = DdAddons::find()->indexBy('identifie')->asArray()->all();
+        $addonsAll = [];
+        // if ($addons) {
+        //     foreach ($addons as $key => $value) {
+        //         // 初始化所有的为未授权
+        //         $available['modules'][] = $value;
+        //         $addonsAll[] = $value['identifie'];
+        //     }
+        // }
+        // 查询用户已有权限的 
+        $usersAddons = $this->find()->where(['user_id' => $user_id])->filterWhere(['module_name'=>$addonsAll])->with(['addons'])->asArray()->all();
+        // p([
+        //     $addons,
+        //     $usersAddons,
+        //     $available
+        // ]);
 
-        $addons = DdAddons::find()->asArray()->all();
-
-        if ($addons) {
-            foreach ($addons as $key => $value) {
-                $available['modules'][] = $value;
-            }
-        }
-        $usersAddons = $this->find()->where(['user_id' => $user_id])->asArray()->all();
+        
         if ($usersAddons) {
             foreach ($usersAddons as $key => &$value) {
-                if (key_exists('modules', $available)) {
-                    foreach ($available['modules'] as $ke => $val) {
-                        if ($val['identifie'] == $value['module_name']) {
-                            $value['identifie'] = $value['module_name'];
-                            $value['title'] = $val['title'];
-                            unset($available['modules'][$ke]);
-                        }
-                    }
+                
+                if(!empty($value['addons'])){
+                    $value['title'] = $value['addons']['title'];
+                    $value['identifie'] = $value['module_name'];
+                    unset($addons[$value['module_name']]);
+
+                }else{
+                    unset($usersAddons[ $key]);
+                    
                 }
-                $assigned['modules'][] = $value;
             }
         }
 
+        $available['modules'] = $addons;
+        $assigned['modules'] = $usersAddons;
         return [
             'available' => $available,
             'assigned' => $assigned,

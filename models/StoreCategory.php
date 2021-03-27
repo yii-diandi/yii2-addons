@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-16 23:02:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:02:14
+ * @Last Modified time: 2021-03-27 11:11:38
  */
  
 
@@ -38,8 +38,9 @@ class StoreCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['parent_id', 'sort', 'create_time', 'update_time'], 'integer'],
+            [['parent_id',  'create_time', 'update_time'], 'integer'],
             [['thumb'], 'required'],
+            ['sort', 'default', 'value' => 0],
             [['name'], 'string', 'max' => 50],
             [['thumb'], 'string', 'max' => 250],
         ];

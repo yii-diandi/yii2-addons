@@ -26,6 +26,5 @@ use yii\web\NotFoundHttpException;
  */
 class BlocController extends ComponentsBlocController
 {
-	
     
 }
