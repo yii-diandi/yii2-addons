@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:44:06
+ * @Last Modified time: 2021-04-01 17:41:31
  */
 
 namespace diandi\addons\controllers;
@@ -13,6 +13,7 @@ use diandi\addons\models\Bloc;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
 use diandi\addons\models\form\Map;
+use diandi\addons\models\form\Microapp;
 use diandi\addons\models\form\Sms;
 use diandi\addons\models\form\Wechat;
 use diandi\addons\models\form\Wechatpay;
@@ -177,6 +178,31 @@ class SettingController extends BaseController
             'model' => $model,
         ]);
     }
+
+    public function actionMicroapp()
+    {
+        $model = new Microapp();
+        $bloc_id = Yii::$app->request->get('bloc_id');
+         
+         
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $Res = $model->saveConf($bloc_id);
+            if ($Res['code']==200) {
+                Yii::$app->session->setFlash('success',$Res['message']);
+            } else {
+                Yii::$app->session->setFlash('error',$Res['message']);
+            }
+            
+        } else {
+            $model->getConf($bloc_id);
+        }
+
+        return $this->render('microapp', [
+            'model' => $model,
+        ]);
+    }
+    
 
     public function actionMap()
     {
