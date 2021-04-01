@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:47:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:00:41
+ * @Last Modified time: 2021-04-01 11:05:11
  */
 
 namespace diandi\addons\models;
@@ -50,9 +50,9 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
     {
         return [
             [['bloc_id', 'mch_id'], 'required'],
-            [['bloc_id', 'create_time', 'update_time'], 'integer'],
+            [['bloc_id', 'create_time', 'update_time','is_server'], 'integer'],
             [['notify_url', 'app_id', 'mch_id'], 'string', 'max' => 100],
-            [['key','notify_url'], 'string', 'max' => 255],
+            [['key','notify_url',  'server_mchid','server_signkey'], 'string', 'max' => 255],
         ];
     }
 
@@ -66,6 +66,9 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
             'bloc_id' => '公司ID',
             'mch_id' => '商户ID',
             'app_id' => 'APPID',
+            'is_server'=> '是否开启服务商',
+            'server_mchid'=>'服务商商户号',
+            'server_signkey'=>'服务商秘钥',
             'key' => '支付密钥',
             'notify_url' => '回调地址',
             'create_time' => 'Create Time',

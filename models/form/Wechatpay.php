@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:04:31
+ * @Last Modified time: 2021-04-01 11:10:02
  */
 
 namespace diandi\addons\models\form;
@@ -18,7 +18,7 @@ class Wechatpay extends Model
     /**
      * @var string application name
      */
-    public $appId;
+    
     public $id;
 
     public $bloc_id;
@@ -26,8 +26,11 @@ class Wechatpay extends Model
      * @var string admin email
      */
     public $mch_id;
-    public $app_id;
+    
     public $key;
+    public $server_signkey;
+    public $is_server;
+    public $server_mchid;
 
     /**
      * {@inheritdoc}
@@ -37,10 +40,11 @@ class Wechatpay extends Model
         return [
             [[
                 'mch_id',
-                'app_id',
                 'key',
+                'server_mchid',
+                'server_signkey'
             ], 'string'],
-            [['id', 'bloc_id'], 'integer'],
+            [['id', 'bloc_id','is_server'], 'integer'],
         ];
     }
 
@@ -48,12 +52,15 @@ class Wechatpay extends Model
     {
         $conf = new BlocConfWechatpay();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-
+      
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         $this->mch_id = $bloc['mch_id'];
-        $this->app_id = $bloc['app_id'];
+        $this->server_mchid = $bloc['server_mchid'];
+        $this->server_signkey = $bloc['server_signkey'];
         $this->key = $bloc['key'];
+        $this->is_server = $bloc['is_server'];
+        
     }
 
     public function saveConf($bloc_id)
@@ -69,7 +76,10 @@ class Wechatpay extends Model
 
         $conf->bloc_id = $bloc_id;
         $conf->mch_id = $this->mch_id;
-        $conf->app_id = $this->app_id;
+        $conf->server_mchid = $this->server_mchid;
+        $conf->server_signkey = $this->server_signkey;
+        $conf->is_server = $this->is_server;
+        
         $conf->key = $this->key;
 
        
@@ -96,8 +106,10 @@ class Wechatpay extends Model
     {
         return [
             'mch_id' => '支付商户号',
-            'app_id' => 'AppId',
             'key' => '秘钥',
+            'is_server'=> '是否开启服务商',
+            'server_mchid'=>'服务商商户号',
+            'server_signkey'=>'服务商秘钥',
         ];
     }
 }
