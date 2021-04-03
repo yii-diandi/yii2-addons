@@ -3,13 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 16:23:11
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-01 17:41:31
+ * @Last Modified time: 2021-04-03 23:19:31
  */
 
 namespace diandi\addons\controllers;
 
 use backend\controllers\BaseController;
 use diandi\addons\models\Bloc;
+use diandi\addons\models\BlocConfApp;
+use diandi\addons\models\form\App;
 use diandi\addons\models\form\Baidu;
 use diandi\addons\models\form\Email;
 use diandi\addons\models\form\Map;
@@ -203,6 +205,31 @@ class SettingController extends BaseController
         ]);
     }
     
+
+    
+    public function actionApp()
+    {
+        $model = new App();
+        $bloc_id = Yii::$app->request->get('bloc_id');
+         
+         
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $Res = $model->saveConf($bloc_id);
+            if ($Res['code']==200) {
+                Yii::$app->session->setFlash('success',$Res['message']);
+            } else {
+                Yii::$app->session->setFlash('error',$Res['message']);
+            }
+            
+        } else {
+            $model->getConf($bloc_id);
+        }
+
+        return $this->render('app', [
+            'model' => $model,
+        ]);
+    }
 
     public function actionMap()
     {
