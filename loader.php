@@ -21,7 +21,6 @@ class Loader implements BootstrapInterface
     /**
      * 应用ID.
      *
-     * @var
      */
     protected $id;
 
