@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-22 06:11:34
+ * @Last Modified time: 2021-04-19 16:32:51
  */
 namespace diandi\addons;
 
@@ -67,8 +67,14 @@ class Loader implements BootstrapInterface
                 //Yii::$app->request->get('store_id', 0);
             }
 
-            $_GPC['bloc_id']  = $bloc_id;
-            $_GPC['store_id'] = $store_id;
+            // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
+            if(empty($_GPC['bloc_id'])){
+                $_GPC['bloc_id']  = $bloc_id;
+            }
+
+            if(empty($_GPC['store_id'])){
+                $_GPC['store_id'] = $store_id;
+            }
             
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
