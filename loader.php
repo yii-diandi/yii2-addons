@@ -67,6 +67,7 @@ class Loader implements BootstrapInterface
                 //Yii::$app->request->get('store_id', 0);
             }
 
+
             // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
             if(empty($_GPC['bloc_id'])){
                 $_GPC['bloc_id']  = $bloc_id;
