@@ -4,10 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 20:08:58
+ * @Last Modified time: 2021-04-20 23:09:16
  */
 
 namespace diandi\addons\models;
+
+use common\helpers\ArrayHelper;
+use common\models\DdRegion;
+use diandi\region\Region;
 
 /**
  * This is the model class for table "diandi_bloc".
@@ -42,18 +46,19 @@ namespace diandi\addons\models;
  */
 class Bloc extends \yii\db\ActiveRecord
 {
+
     public function __construct($item = null)
     {
         if ($item['extras']) {
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';
-                $pas[] = 'extra['.$value.']';
+                $pas[] = 'extra[' . $value . ']';
             }
             $this->extra = $extra;
         }
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -71,7 +76,7 @@ class Bloc extends \yii\db\ActiveRecord
         return [
             [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'avg_price', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
             ['status', 'default', 'value' => 2],
-            [['pid', 'avg_price', 'status','store_id','register_level','group_bloc_id','is_group'], 'integer'],
+            [['pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group'], 'integer'],
             [['other_files'], 'string'],
             [['business_name', 'address', 'open_time', 'sosomap_poi_uid'], 'string', 'max' => 50],
             [['category', 'recommend', 'special', 'introduction'], 'string', 'max' => 255],
@@ -91,8 +96,17 @@ class Bloc extends \yii\db\ActiveRecord
 
             if (!is_numeric($this->is_group) && isset($this->is_group)) {
                 //字段
-                $list = ['非集团'=>0,'集团'=>1];
+                $list = ['非集团' => 0, '集团' => 1];
                 $this->is_group = $list[$this->is_group];
+
+                if ($this->is_group == 1) {
+                    $this->group_bloc_id = $this->bloc_id;
+                    // 更新所有的子集
+                    $this->getChildList($this->bloc_id);
+                } else {
+                    // 获取上级的集团
+                    $this->group_bloc_id = $this->find()->where(['pid' => $this->bloc_id])->select('group_bloc_id')->scalar();
+                }
             }
 
             return true;
@@ -100,13 +114,53 @@ class Bloc extends \yii\db\ActiveRecord
             return false;
         }
     }
-    
 
-    function checkGroup($attribute,$params){
-        $pid=$this->pid;
-        if(!empty($pid)){
+
+    public function getChildList($pid)
+    {
+        $parents = $this->find()->asArray()->all();
+
+        $parentBloc =  ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', 'child');
+        foreach ($parentBloc as $key => $value) {
+            if ($value['bloc_id'] == $pid) {
+                $childList[] = $value;
+            }
+        }
+
+        $bloc_ids = self::getChilds($childList,'bloc_id');
+
+        return $this->updateAll([
+            'group_bloc_id'=>$this->group_bloc_id
+        ],[
+            'bloc_id'=>$bloc_ids
+        ]);
+        
+    }
+
+    public static function getChilds(array $items, $field)
+    {
+        $arr = [];
+        foreach ($items as $v) {
+            $arr[] = $v[$field];
+            if ($v['child']) {
+                $arr = array_merge(self::getChilds($v['child'],$field),$arr);
+            }
+        }
+
+        return $arr;
+    }
+
+    function checkGroup($attribute, $params)
+    {
+        $pid = $this->pid;
+        if (!empty($pid) && $this->is_group == 1) {
             $this->addError($attribute, "只能将一级公司设置为集团");
         }
+    }
+
+    public function getArea()
+    {
+        return $this->hasOne(DdRegion::className(),['id'=>'district']);        
     }
 
     public function extraFields()
@@ -149,8 +203,8 @@ class Bloc extends \yii\db\ActiveRecord
             'introduction' => '详细介绍',
             'open_time' => '开业时间',
             'status' => '是否是集团化管理',
-            'register_level'=>'注册级别',
-            'is_group'=>'是否是集团',
+            'register_level' => '注册级别',
+            'is_group' => '是否是集团',
             'sosomap_poi_uid' => '腾讯地图标注id',
             'license_no' => '营业执照注册号',
             'license_name' => '营业执照名称',

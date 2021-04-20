@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 21:43:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-25 16:47:43
+ * @Last Modified time: 2021-04-20 22:37:06
  */
 
 namespace diandi\addons\components;
@@ -12,6 +12,7 @@ namespace diandi\addons\components;
 
 use Yii;
 use backend\controllers\BaseController;
+use common\helpers\ArrayHelper;
 use diandi\addons\models\Bloc;
 use diandi\addons\models\searchs\BlocSearch;
 use common\helpers\ErrorsHelper;
@@ -99,8 +100,11 @@ class BlocController extends BaseController
         $model = new Bloc([
             'extras' => $this->extras,
             ]);
-        $parents = $model->findAll(['pid' => 0]);
+        $parents = $model->find()->asArray()->all();
+            
+        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents,0,"bloc_id",'pid','-'),"bloc_id",'business_name');
 
+        
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->bloc_id]);
@@ -114,7 +118,7 @@ class BlocController extends BaseController
         return $this->render('create', [
             'model' => $model,
             'stores' => $stores,
-            'parents' => $parents,
+            'parents' => $parentBloc,
         ]);
     }
 
@@ -133,8 +137,11 @@ class BlocController extends BaseController
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);
       
-        $parents = $model->findAll(['pid' => 0]);
+        $parents = $model->find()->asArray()->all();
+            
+        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents,0,"bloc_id",'pid','-'),"bloc_id",'business_name');
 
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->bloc_id]);
         }
@@ -142,7 +149,7 @@ class BlocController extends BaseController
         return $this->render('update', [
             'model' => $model,
             'stores' => $stores,
-            'parents' => $parents,
+            'parents' => $parentBloc,
         ]);
     }
 

@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng
  * @Date:   2020-04-29 16:06:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 19:55:35
+ * @Last Modified time: 2021-04-20 23:09:49
  */
 use common\widgets\MyTreeGrid;
 use yii2mod\editable\EditableColumn;
@@ -42,11 +42,7 @@ $this->registerJs($this->render('_script.js'));
                         ['class' => 'yii\grid\SerialColumn'],
                         'bloc_id',
                         'business_name',
-                        'pid',
-                        'category',
-                        'province',
-                        //'city',
-                        //'district',
+                        'area.merger_name',
                         //'address',
                         //'longitude',
                         //'latitude',
@@ -72,8 +68,8 @@ $this->registerJs($this->render('_script.js'));
                             'attribute' => 'is_group',
                             'value' => function ($model) {
                                 $list = ['非集团','集团'];
-
-                                return $list[$model->status];
+                                // p($model);
+                                return $list[$model->is_group];
                             },
                             'url' => ['change-username'],
                             'type' => 'select',
