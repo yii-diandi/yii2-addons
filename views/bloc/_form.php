@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 21:44:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-09 18:02:55
+ * @Last Modified time: 2021-04-20 19:49:12
  */
 use common\helpers\LevelTplHelper;
 use common\models\DdRegion;
 use yii\helpers\Html;
 use common\widgets\MyActiveForm;
+use diandi\addons\models\enums\RegisterLevelStatus;
 use richardfan\widget\JSRegister;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -60,6 +61,10 @@ $Helper = new LevelTplHelper([
 
             'id' => 'classsearch-course2_id',
         ])->label('区县'); ?>
+
+        
+        <?= $form->field($model, 'register_level')->radioList(RegisterLevelStatus::listData()); ?>
+
 
         <?= $form->field($model, 'avg_price')->textInput(); ?>
 

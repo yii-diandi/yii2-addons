@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 19:34:49
+ * @Last Modified time: 2021-04-20 20:08:58
  */
 
 namespace diandi\addons\models;
@@ -71,7 +71,7 @@ class Bloc extends \yii\db\ActiveRecord
         return [
             [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'avg_price', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
             ['status', 'default', 'value' => 2],
-            [['pid', 'avg_price', 'status','store_id','register_level'], 'integer'],
+            [['pid', 'avg_price', 'status','store_id','register_level','group_bloc_id','is_group'], 'integer'],
             [['other_files'], 'string'],
             [['business_name', 'address', 'open_time', 'sosomap_poi_uid'], 'string', 'max' => 50],
             [['category', 'recommend', 'special', 'introduction'], 'string', 'max' => 255],
@@ -79,6 +79,7 @@ class Bloc extends \yii\db\ActiveRecord
             [['telephone'], 'string', 'max' => 20],
             [['license_no'], 'string', 'max' => 30],
             [['extra'], 'safe'],
+            [['is_group'], 'checkGroup'],
             [['license_name'], 'string', 'max' => 100],
         ];
     }
@@ -88,21 +89,23 @@ class Bloc extends \yii\db\ActiveRecord
         if (parent::beforeValidate()) {
             $this->extra = serialize($this->extra);
 
-            if (!is_numeric($this->status) && isset($this->status)) {
+            if (!is_numeric($this->is_group) && isset($this->is_group)) {
                 //字段
                 $list = ['非集团'=>0,'集团'=>1];
-                $this->updateAll(['status'=>0]);
-                $this->status = $list[$this->status];
+                $this->is_group = $list[$this->is_group];
             }
-
-            // if(is_array($this->images)){
-            //     $this->images = serialize($this->images);
-
-            // }
 
             return true;
         } else {
             return false;
+        }
+    }
+    
+
+    function checkGroup($attribute,$params){
+        $pid=$this->pid;
+        if(!empty($pid)){
+            $this->addError($attribute, "只能将一级公司设置为集团");
         }
     }
 
@@ -130,6 +133,7 @@ class Bloc extends \yii\db\ActiveRecord
         return [
             'bloc_id' => '公司ID',
             'business_name' => '公司名称',
+            'group_bloc_id' => '所属集团',
             'pid' => '上级公司',
             'category' => '分类',
             'province' => '省份',
@@ -146,6 +150,7 @@ class Bloc extends \yii\db\ActiveRecord
             'open_time' => '开业时间',
             'status' => '是否是集团化管理',
             'register_level'=>'注册级别',
+            'is_group'=>'是否是集团',
             'sosomap_poi_uid' => '腾讯地图标注id',
             'license_no' => '营业执照注册号',
             'license_name' => '营业执照名称',

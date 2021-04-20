@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng
  * @Date:   2020-04-29 16:06:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-02-27 19:13:53
+ * @Last Modified time: 2021-04-20 19:55:35
  */
 use common\widgets\MyTreeGrid;
 use yii2mod\editable\EditableColumn;
@@ -69,7 +69,7 @@ $this->registerJs($this->render('_script.js'));
                         //'on_show',
                         [
                             'class' => EditableColumn::class,
-                            'attribute' => 'status',
+                            'attribute' => 'is_group',
                             'value' => function ($model) {
                                 $list = ['非集团','集团'];
 
