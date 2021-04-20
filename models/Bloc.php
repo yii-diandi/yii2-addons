@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-25 16:48:17
+ * @Last Modified time: 2021-04-20 19:34:49
  */
 
 namespace diandi\addons\models;
@@ -71,7 +71,7 @@ class Bloc extends \yii\db\ActiveRecord
         return [
             [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'avg_price', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
             ['status', 'default', 'value' => 2],
-            [['pid', 'avg_price', 'status','store_id'], 'integer'],
+            [['pid', 'avg_price', 'status','store_id','register_level'], 'integer'],
             [['other_files'], 'string'],
             [['business_name', 'address', 'open_time', 'sosomap_poi_uid'], 'string', 'max' => 50],
             [['category', 'recommend', 'special', 'introduction'], 'string', 'max' => 255],
@@ -145,6 +145,7 @@ class Bloc extends \yii\db\ActiveRecord
             'introduction' => '详细介绍',
             'open_time' => '开业时间',
             'status' => '是否是集团化管理',
+            'register_level'=>'注册级别',
             'sosomap_poi_uid' => '腾讯地图标注id',
             'license_no' => '营业执照注册号',
             'license_name' => '营业执照名称',
