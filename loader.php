@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-19 16:32:51
+ * @Last Modified time: 2021-05-26 15:29:44
  */
 namespace diandi\addons;
 
@@ -126,12 +126,18 @@ class Loader implements BootstrapInterface
         $DdAddons = new DdAddons();
         $addons = $DdAddons->find()->asArray()->all();
         $app_id = $this->id;
+        $moduleFile = '';
+        
         switch ($app_id) {
             case 'app-backend':
                 $moduleFile = 'site';
                 break;
             case 'app-api':
                 $moduleFile = 'api';
+                break;
+            case 'app-admin':
+                $moduleFile = 'admin';
+                break;
             case 'app-swoole':
                 $moduleFile = 'api';
                 break;
@@ -145,6 +151,7 @@ class Loader implements BootstrapInterface
             $moduleFile = 'api';
         }
 
+        
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
