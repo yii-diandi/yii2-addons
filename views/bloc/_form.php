@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 21:44:22
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-12-09 18:02:55
+ * @Last Modified time: 2021-04-20 22:49:46
  */
 use common\helpers\LevelTplHelper;
 use common\models\DdRegion;
 use yii\helpers\Html;
 use common\widgets\MyActiveForm;
+use diandi\addons\models\enums\RegisterLevelStatus;
 use richardfan\widget\JSRegister;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -42,24 +43,28 @@ $Helper = new LevelTplHelper([
 
             
         <?= $form->field($model, 'province')->dropDownList($Helper->courseCateMap(), [
-            'prompt' => ['text' => '一级分类', 'options' => ['value' => 0]],
-            'label' => '一级分类',
+            'prompt' => ['text' => '省份', 'options' => ['value' => 0]],
+            'label' => '省份',
             'id' => 'classsearch-cocate_id',
         ])->label('省份'); ?>
 
         <?= $form->field($model, 'city')->dropDownList($Helper->courseMap($model->city), [
             // 'options' => ['5' => ['selected' => true]],
-            'prompt' => ['text' => '二级分类', 'options' => ['value' => 0]],
+            'prompt' => ['text' => '城市', 'options' => ['value' => 0]],
 
             'id' => 'classsearch-course_id',
         ])->label('城市 '); ?>
 
         <?= $form->field($model, 'district')->dropDownList($Helper->courseMap($model->district), [
             // 'options' => ['5' => ['selected' => true]],
-            'prompt' => ['text' => '三级分类', 'options' => ['value' => 0]],
+            'prompt' => ['text' => '区县', 'options' => ['value' => 0]],
 
             'id' => 'classsearch-course2_id',
         ])->label('区县'); ?>
+
+        
+        <?= $form->field($model, 'register_level')->radioList(RegisterLevelStatus::listData()); ?>
+
 
         <?= $form->field($model, 'avg_price')->textInput(); ?>
 

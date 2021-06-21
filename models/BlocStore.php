@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 12:18:37
+ * @Last Modified time: 2021-06-15 17:42:18
  */
 
 namespace diandi\addons\models;
@@ -32,11 +33,13 @@ class BlocStore extends \yii\db\ActiveRecord
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';
-                $pas[] = 'extra['.$value.']';
+                $pas[] = 'extra[' . $value . ']';
             }
             $this->extra = $extra;
         }
     }
+
+
 
     /**
      * {@inheritdoc}
@@ -44,6 +47,42 @@ class BlocStore extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return '{{%diandi_store}}';
+    }
+
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['bloc_id', 'status', 'category_id', 'category_pid'], 'integer'],
+            ['bloc_id', 'compare', 'compareValue' => 0, 'operator' => '!='],
+            [['name', 'logo', 'address', 'longitude', 'latitude'], 'string', 'max' => 255],
+            [['province', 'city', 'county'], 'string', 'max' => 10],
+            [['mobile'], 'string', 'max' => 11],
+            [['lng_lat'], 'string'],
+            [['extra'], 'safe'],
+            [['create_time', 'update_time'], 'string', 'max' => 30],
+        ];
+    }
+
+
+    /**
+     * 行为.
+     */
+    public function behaviors()
+    {
+        /*自动添加创建和修改时间*/
+        return [
+            [
+                'class' => \common\behaviors\SaveBehavior::className(),
+                'updatedAttribute' => 'update_time',
+                'createdAttribute' => 'create_time',
+                'noAttributes'     => ['store_id']
+            ],
+        ];
     }
 
     public function beforeValidate()
@@ -55,7 +94,6 @@ class BlocStore extends \yii\db\ActiveRecord
                 $this->latitude = $this->lng_lat['lat'];
                 $this->longitude = $this->lng_lat['lng'];
                 $this->lng_lat = json_encode($this->lng_lat);
-               
             }
 
             return true;
@@ -77,23 +115,6 @@ class BlocStore extends \yii\db\ActiveRecord
     public function getLabel()
     {
         return $this->hasMany(StoreLabelLink::className(), ['store_id' => 'store_id']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['bloc_id', 'status','category_id','category_pid'], 'integer'],
-            ['bloc_id', 'compare', 'compareValue' => 0, 'operator' => '!='],
-            [['name', 'logo', 'address','longitude', 'latitude'], 'string', 'max' => 255],
-            [['province', 'city', 'county'], 'string', 'max' => 10],
-            [['mobile'], 'string', 'max' => 11],
-            [['lng_lat'], 'string'],
-            [['extra'], 'safe'],
-            [['create_time', 'update_time'], 'string', 'max' => 30],
-        ];
     }
 
     /**

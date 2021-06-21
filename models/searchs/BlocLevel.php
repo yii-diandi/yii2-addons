@@ -1,50 +1,26 @@
 <?php
 
-/**
- * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2020-05-11 15:06:25
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-15 15:04:22
- */
-
 namespace diandi\addons\models\searchs;
 
-use common\components\DataProvider\ArrayDataProvider;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use diandi\addons\models\BlocStore;
-use Yii;
+use common\components\DataProvider\ArrayDataProvider;
+use diandi\addons\models\BlocLevel as BlocLevelModel;
 use yii\data\Pagination;
 
+
 /**
- * BlocStoreSearch represents the model behind the search form of `diandi\admin\models\BlocStore`.
+ * BlocLevel represents the model behind the search form of `diandi\addons\models\BlocLevel`.
  */
-class BlocStoreSearch extends BlocStore
+class BlocLevel extends BlocLevelModel
 {
-    public $bloc_id;
-    public $store_id;
-
-    public $extra;
-
-    public function __construct($items = null)
-    {
-        if ($items['bloc_id']) {
-            $this->bloc_id = $items['bloc_id'];
-        }
-
-        if (Yii::$app->controller->module->id != 'addons') {
-            $this->store_id = Yii::$app->params['store_id'];
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['store_id', 'bloc_id', 'status'], 'integer'],
-            [['name', 'logo', 'province', 'city', 'address', 'county', 'mobile', 'create_time', 'update_time', 'lng_lat'], 'safe'],
+            [['id', 'bloc_id', 'level_num'], 'integer'],
+            [['name', 'thumb', 'extra', 'create_time', 'update_time'], 'safe'],
         ];
     }
 
@@ -58,54 +34,44 @@ class BlocStoreSearch extends BlocStore
     }
 
     /**
-     * Creates data provider instance with search query applied.
+     * Creates data provider instance with search query applied
      *
      * @param array $params
      *
      * @return ActiveDataProvider
+
      */
     public function search($params)
     {
         global $_GPC;
+        $query = BlocLevelModel::find();
 
-        $query = BlocStore::find()->with(['bloc']);
-
-        // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        
 
         $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
-            return $dataProvider;
+            return false;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            // 'store_id' => $this->store_id,
+            'id' => $this->id,
             'bloc_id' => $this->bloc_id,
-            'status' => $this->status,
+            'level_num' => $this->level_num,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'logo', $this->logo])
-            ->andFilterWhere(['like', 'province', $this->province])
-            ->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'county', $this->county])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
+            ->andFilterWhere(['like', 'thumb', $this->thumb])
+            ->andFilterWhere(['like', 'extra', $this->extra])
             ->andFilterWhere(['like', 'create_time', $this->create_time])
-            ->andFilterWhere(['like', 'update_time', $this->update_time])
-            ->andFilterWhere(['like', 'lng_lat', $this->lng_lat]);
-
+            ->andFilterWhere(['like', 'update_time', $this->update_time]);
+        
         $count = $query->count();
         $pageSize   = $_GPC['pageSize'];
         $page       = $_GPC['page'];
-
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
@@ -114,23 +80,21 @@ class BlocStoreSearch extends BlocStore
             // 'pageParam'=>'page'
         ]);
 
-
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->asArray()
             ->all();
-
+        
         //foreach ($list as $key => &$value) {
         //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
         //} 
-
+            
 
         $provider = new ArrayDataProvider([
-            'key' => 'store_id',
+            'key'=>'id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'total'=> isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -143,7 +107,8 @@ class BlocStoreSearch extends BlocStore
                 'pageSize' => $pageSize,
             ]
         ]);
-
+        
         return $provider;
+        
     }
 }

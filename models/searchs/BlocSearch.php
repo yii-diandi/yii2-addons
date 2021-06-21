@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-31 06:42:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:32:19
+ * @Last Modified time: 2021-04-20 23:07:07
  */
 
 namespace diandi\addons\models\searchs;
@@ -47,7 +47,7 @@ class BlocSearch extends Bloc
      */
     public function search($params)
     {
-        $query = Bloc::find();
+        $query = Bloc::find()->with(['area']);
 
         // add conditions that should always apply here
 
@@ -87,7 +87,7 @@ class BlocSearch extends Bloc
             ->andFilterWhere(['like', 'sosomap_poi_uid', $this->sosomap_poi_uid])
             ->andFilterWhere(['like', 'license_no', $this->license_no])
             ->andFilterWhere(['like', 'license_name', $this->license_name]);
-
+        
         return $dataProvider;
     }
 }

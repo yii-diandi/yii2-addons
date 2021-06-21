@@ -4,8 +4,9 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-19 16:32:51
+ * @Last Modified time: 2021-06-04 11:16:51
  */
+ 
 namespace diandi\addons;
 
 use Yii;
@@ -14,14 +15,11 @@ use diandi\addons\models\searchs\DdAddons;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
 
-
-
 class Loader implements BootstrapInterface
 {
     /**
      * 应用ID.
      *
-     * @var
      */
     protected $id;
 
@@ -96,6 +94,7 @@ class Loader implements BootstrapInterface
             
             Yii::$app->service->commonMemberService->setAccessToken($access_token);
 
+
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
     }
@@ -129,12 +128,18 @@ class Loader implements BootstrapInterface
         $DdAddons = new DdAddons();
         $addons = $DdAddons->find()->asArray()->all();
         $app_id = $this->id;
+        $moduleFile = '';
+        
         switch ($app_id) {
             case 'app-backend':
                 $moduleFile = 'site';
                 break;
             case 'app-api':
                 $moduleFile = 'api';
+                break;
+            case 'app-admin':
+                $moduleFile = 'admin';
+                break;
             case 'app-swoole':
                 $moduleFile = 'api';
                 break;
@@ -148,6 +153,7 @@ class Loader implements BootstrapInterface
             $moduleFile = 'api';
         }
 
+        
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
