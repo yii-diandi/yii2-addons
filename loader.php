@@ -6,7 +6,6 @@
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
  * @Last Modified time: 2021-06-04 11:16:51
  */
-
  
 namespace diandi\addons;
 
@@ -15,7 +14,6 @@ use common\helpers\StringHelper;
 use diandi\addons\models\searchs\DdAddons;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
-
 
 class Loader implements BootstrapInterface
 {

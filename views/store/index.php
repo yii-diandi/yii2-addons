@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:43:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2020-05-29 23:18:16
+ * @Last Modified time: 2021-07-01 12:02:11
  */
+
 use common\helpers\ImageHelper;
 use yii\helpers\Html;
 use common\widgets\MyGridView;
@@ -19,17 +21,17 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?= $this->render('_tab'); ?>
-                
+
 <div class="firetech-main">
 
     <div class="bloc-store-index ">
-                                <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
-                <div class="panel panel-default">
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">列表</h3>
             </div>
             <div class="box-body table-responsive">
-                                    <?= MyGridView::widget([
+                <?= MyGridView::widget([
                     'dataProvider' => $dataProvider,
                     'layout' => "{items}\n{pager}",
                     // 'filterModel' => $searchModel,
@@ -61,36 +63,39 @@ $this->params['breadcrumbs'][] = $this->title;
                             'class' => 'common\components\ActionColumn',
                             'urlCreator' => function ($action, $model, $key, $index) {
                                 switch ($action) {
-                                        case'update':
+                                    case 'update':
 
-                                            return Url::to(['update',
-                                                'id' => $model->store_id,
-                                                'bloc_id' => $model->bloc_id,
-                                            ]);
-
-                                        break;
-                                        case'view':
-
-                                            return Url::to(['view',
-                                                'id' => $model->store_id,
-                                                'bloc_id' => $model->bloc_id,
-                                            ]);
+                                        return Url::to([
+                                            'update',
+                                            'id' => $model['store_id'],
+                                            'bloc_id' => $model['bloc_id'],
+                                        ]);
 
                                         break;
-                                        case'delete':
-                                            return Url::to(['delete',
-                                                'id' => $model->store_id,
-                                                'bloc_id' => $model->bloc_id,
-                                            ]);
+                                    case 'view':
+
+                                        return Url::to([
+                                            'view',
+                                            'id' => $model['store_id'],
+                                            'bloc_id' => $model['bloc_id'],
+                                        ]);
+
+                                        break;
+                                    case 'delete':
+                                        return Url::to([
+                                            'delete',
+                                            'id' => $model['store_id'],
+                                            'bloc_id' => $model['bloc_id'],
+                                        ]);
 
                                         break;
                                 }
                             },
                         ],
                     ],
-                    ]); ?>
-                
-                
+                ]); ?>
+
+
             </div>
         </div>
     </div>
