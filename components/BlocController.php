@@ -4,11 +4,11 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 21:43:33
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 22:37:06
+ * @Last Modified time: 2021-07-01 15:52:32
  */
 
 namespace diandi\addons\components;
- 
+
 
 use Yii;
 use backend\controllers\BaseController;
@@ -45,7 +45,7 @@ class BlocController extends BaseController
         ];
     }
 
-    
+
     public function actions()
     {
         return [
@@ -99,12 +99,12 @@ class BlocController extends BaseController
     {
         $model = new Bloc([
             'extras' => $this->extras,
-            ]);
+        ]);
         $parents = $model->find()->asArray()->all();
-            
-        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents,0,"bloc_id",'pid','-'),"bloc_id",'business_name');
 
-        
+        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', '-'), "bloc_id", 'business_name');
+
+
         if (Yii::$app->request->isPost) {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->bloc_id]);
@@ -135,17 +135,19 @@ class BlocController extends BaseController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $model['extra'] = unserialize($model['extra']);
-      
-        $parents = $model->find()->asArray()->all();
-            
-        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents,0,"bloc_id",'pid','-'),"bloc_id",'business_name');
 
-        
+
+        $model['extra'] = !empty($model['extra']) ? unserialize($model['extra']) : [];
+
+        $parents = $model->find()->asArray()->all();
+
+        $parentBloc =  ArrayHelper::itemsMergeDropDown(ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', '-'), "bloc_id", 'business_name');
+
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->bloc_id]);
         }
-        $stores = BlocStore::find()->where(['bloc_id'=>$id])->asArray()->all();
+        $stores = BlocStore::find()->where(['bloc_id' => $id])->asArray()->all();
         return $this->render('update', [
             'model' => $model,
             'stores' => $stores,
