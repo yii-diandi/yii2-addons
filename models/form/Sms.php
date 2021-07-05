@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  &#60;2192138785@qq.com&#62;
  * @Date:   2020-04-29 17:21:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:04:05
+ * @Last Modified time: 2021-07-05 15:04:57
  */
 
 namespace diandi\addons\models\form;
@@ -31,6 +32,7 @@ class Sms extends Model
     public $sign_name;
 
     public $template_code;
+    public $is_login;
 
     /**
      * {@inheritdoc}
@@ -40,7 +42,7 @@ class Sms extends Model
         return [
             [['access_key_id', 'access_key_secret', 'sign_name'], 'string'],
             ['template_code', 'string'],
-            [['id', 'bloc_id'], 'integer'],
+            [['id', 'bloc_id', 'is_login'], 'integer'],
         ];
     }
 
@@ -54,6 +56,7 @@ class Sms extends Model
         $this->access_key_secret = $bloc['access_key_secret'];
         $this->sign_name = $bloc['sign_name'];
         $this->template_code = $bloc['template_code'];
+        $this->is_login = $bloc['is_login'];
     }
 
     public function saveConf($bloc_id)
@@ -71,20 +74,20 @@ class Sms extends Model
         $conf->access_key_secret = $this->access_key_secret;
         $conf->sign_name = $this->sign_name;
         $conf->template_code = $this->template_code;
-       
-        if($conf->save()){
+        $conf->is_login = $this->is_login;
+
+        if ($conf->save()) {
             return [
-                'code'=>200,
-                'message'=>'保存成功'
+                'code' => 200,
+                'message' => '保存成功'
             ];
-       }else{
-           $msg = ErrorsHelper::getModelError($conf);
-           return [
-               'code'=>400,
-               'message'=>$msg
-           ];
-           
-       }
+        } else {
+            $msg = ErrorsHelper::getModelError($conf);
+            return [
+                'code' => 400,
+                'message' => $msg
+            ];
+        }
     }
 
     /**
@@ -97,6 +100,7 @@ class Sms extends Model
             'access_key_secret' => 'Access Key Secret',
             'sign_name' => '签名',
             'template_code' => '模板code',
+            'is_login' => '是否必须绑定手机号登录'
         ];
     }
 }
