@@ -1,44 +1,26 @@
 <?php
 
-/**
- * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2020-05-09 19:30:05
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-10 15:03:52
- */
-
-
 namespace diandi\addons\models\searchs;
 
-use common\components\DataProvider\ArrayDataProvider;
-use common\helpers\ImageHelper;
 use yii\base\Model;
-use yii\data\ActiveDataProvider;
-use diandi\addons\models\DdAddons as DdAddonsModel;
+use common\components\DataProvider\ArrayDataProvider;
+use diandi\addons\models\addonsStore as addonsStoreModel;
 use yii\data\Pagination;
 
+
 /**
- * DdAddons represents the model behind the search form of `diandi\addons\models\DdAddons`.
+ * addonsStore represents the model behind the search form of `diandi\addons\models\addonsStore`.
  */
-class DdAddons extends DdAddonsModel
+class addonsStore extends addonsStoreModel
 {
-
-    public $module_names;
-
-    public function __construct($item = null)
-    {
-        if ($item['module_names']) {
-            $this->module_names = $item['module_names'];
-        }
-    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['mid', 'settings'], 'integer'],
-            [['identifie', 'type', 'title', 'version', 'ability', 'description', 'author', 'url', 'logo'], 'safe'],
+            [['id', 'type', 'store_id', 'bloc_id', 'status', 'create_time', 'update_time'], 'integer'],
+            [['module_name'], 'safe'],
         ];
     }
 
@@ -57,14 +39,14 @@ class DdAddons extends DdAddonsModel
      * @param array $params
      *
      * @return ActiveDataProvider
+
      */
     public function search($params)
     {
         global $_GPC;
+        $query = addonsStoreModel::find();
 
-        $query = DdAddonsModel::find();
-
-
+        
 
         $this->load($params);
 
@@ -76,21 +58,17 @@ class DdAddons extends DdAddonsModel
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'mid' => $this->mid,
-            'settings' => $this->settings,
-            'identifie' => $this->module_names
+            'id' => $this->id,
+            'type' => $this->type,
+            'store_id' => $this->store_id,
+            'bloc_id' => $this->bloc_id,
+            'status' => $this->status,
+            'create_time' => $this->create_time,
+            'update_time' => $this->update_time,
         ]);
 
-        $query->andFilterWhere(['like', 'identifie', $this->identifie])
-            ->andFilterWhere(['like', 'type', $this->type])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'version', $this->version])
-            ->andFilterWhere(['like', 'ability', $this->ability])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'author', $this->author])
-            ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'logo', $this->logo]);
-
+        $query->andFilterWhere(['like', 'module_name', $this->module_name]);
+        
         $count = $query->count();
         $pageSize   = $_GPC['pageSize'];
         $page       = $_GPC['page'];
@@ -104,19 +82,19 @@ class DdAddons extends DdAddonsModel
 
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->asArray()
             ->all();
-
-        foreach ($list as $key => &$value) {
-            $value['logo'] = ImageHelper::tomedia($value['logo']);
-        }
-
+        
+        //foreach ($list as $key => &$value) {
+        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
+        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
+        //} 
+            
 
         $provider = new ArrayDataProvider([
-            'key' => 'mid',
+            'key'=>'id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
-            'total' => isset($count) ? $count : 0,
+            'total'=> isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -129,7 +107,8 @@ class DdAddons extends DdAddonsModel
                 'pageSize' => $pageSize,
             ]
         ]);
-
+        
         return $provider;
+        
     }
 }

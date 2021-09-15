@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 20:18:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:00:25
+ * @Last Modified time: 2021-07-05 15:43:30
  */
 
 namespace diandi\addons\models;
@@ -48,7 +49,7 @@ class BlocConfSms extends \yii\db\ActiveRecord
     {
         return [
             [['access_key_id', 'template_code', 'access_key_secret'], 'required'],
-            [['bloc_id', 'id'], 'integer'],
+            [['bloc_id', 'id', 'is_login'], 'integer'],
             [['access_key_id'], 'string', 'max' => 100],
             [['sign_name'], 'string', 'max' => 255],
             [['template_code'], 'string', 'max' => 15],
@@ -67,6 +68,7 @@ class BlocConfSms extends \yii\db\ActiveRecord
             'access_key_secret' => 'Access Key Secret',
             'sign_name' => 'Sign Name',
             'template_code' => 'Template Code',
+            'is_login' => '是否必须绑定手机号登录'
         ];
     }
 }
