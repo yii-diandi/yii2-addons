@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:41:16
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-01 17:38:12
+ * @Last Modified time: 2021-09-16 10:05:26
  */
 
 namespace diandi\addons\models;
@@ -29,7 +30,7 @@ class BlocConfMicroapp extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_conf_microapp}}';
+        return '{{%bloc_conf_microapp}}';
     }
 
     /**
@@ -54,7 +55,7 @@ class BlocConfMicroapp extends \yii\db\ActiveRecord
             [['bloc_id', 'name', 'AppId', 'headimg', 'AppSecret'], 'required'],
             [['bloc_id', 'create_time', 'update_time'], 'integer'],
             [['name'], 'string', 'max' => 50],
-            [['original', 'headimg', 'description','codeUrl'], 'string', 'max' => 255],
+            [['original', 'headimg', 'description', 'codeUrl'], 'string', 'max' => 255],
             [['AppId',  'AppSecret'], 'string', 'max' => 100],
         ];
     }
@@ -68,7 +69,7 @@ class BlocConfMicroapp extends \yii\db\ActiveRecord
             'id' => 'ID',
             'bloc_id' => 'Bloc ID',
             'name' => '公司名称',
-            'codeUrl'=>'普通二维码链接',
+            'codeUrl' => '普通二维码链接',
             'description' => '小程序简介',
             'original' => 'Original',
             'AppId' => 'AppId',

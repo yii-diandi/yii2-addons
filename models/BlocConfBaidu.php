@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 23:14:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-23 00:20:16
+ * @Last Modified time: 2021-09-16 10:05:15
  */
 
 namespace diandi\addons\models;
@@ -27,7 +28,7 @@ class BlocConfBaidu extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_conf_baidu}}';
+        return '{{%bloc_conf_baidu}}';
     }
 
     /**

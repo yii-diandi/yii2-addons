@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-17 01:39:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 10:45:03
+ * @Last Modified time: 2021-09-16 10:06:05
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -32,7 +33,7 @@ class StoreLabel extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_store_label}}';
+        return '{{%store_label}}';
     }
 
     /**
@@ -63,18 +64,18 @@ class StoreLabel extends \yii\db\ActiveRecord
         ];
     }
 
-    
+
     public function getStore()
     {
-        return $this->hasOne(BlocStore::className(),['store_id'=>'store_id']);
+        return $this->hasOne(BlocStore::className(), ['store_id' => 'store_id']);
     }
 
     public function getBloc()
     {
-        return $this->hasOne(Bloc::className(),['bloc_id'=>'bloc_id']);
+        return $this->hasOne(Bloc::className(), ['bloc_id' => 'bloc_id']);
     }
 
-    
+
     /**
      * {@inheritdoc}
      */

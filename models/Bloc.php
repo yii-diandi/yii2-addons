@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-10 18:03:27
+ * @Last Modified time: 2021-10-15 17:00:14
  */
 
 namespace diandi\addons\models;
@@ -65,7 +65,7 @@ class Bloc extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc}}';
+        return '{{%bloc}}';
     }
 
 
@@ -94,22 +94,25 @@ class Bloc extends \yii\db\ActiveRecord
     {
         if (parent::beforeValidate()) {
             $this->extra = serialize($this->extra);
-
-            if (!is_numeric($this->is_group) && isset($this->is_group)) {
-                //字段
+            //字段
+            if (!is_numeric($this->is_group)) {
                 $list = ['非集团' => 0, '集团' => 1];
                 $this->is_group = $list[$this->is_group];
-
-                if ($this->is_group == 1) {
-                    $this->group_bloc_id = $this->bloc_id;
-                    // 更新所有的子集
-                    $this->getChildList($this->bloc_id);
-                } else {
-                    // 获取上级的集团
-                    $this->group_bloc_id = $this->find()->where(['pid' => $this->bloc_id])->select('group_bloc_id')->scalar();
-                }
             }
 
+            if ($this->is_group == 1) {
+                $this->group_bloc_id = $this->bloc_id;
+                // 更新所有的子集
+                $this->getChildList($this->bloc_id);
+            } else {
+                // 获取上级的集团
+                $group_bloc_id = $this->find()->where(['pid' => $this->bloc_id])->select('group_bloc_id')->scalar();
+                $this->group_bloc_id = $group_bloc_id ? $group_bloc_id : 0;
+            }
+
+            if (empty($this->group_bloc_id)) {
+                $this->group_bloc_id = 0;
+            }
             return true;
         } else {
             return false;

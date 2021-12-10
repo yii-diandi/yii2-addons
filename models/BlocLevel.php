@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-03 17:28:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-04 13:48:59
+ * @Last Modified time: 2021-09-16 10:05:48
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -30,7 +31,7 @@ class BlocLevel extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_level}}';
+        return '{{%bloc_level}}';
     }
 
     /**
@@ -39,7 +40,7 @@ class BlocLevel extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['global_bloc_id','level_num'],'checkLevel','on'=>'create'],
+            [['global_bloc_id', 'level_num'], 'checkLevel', 'on' => 'create'],
             // [['global_bloc_id','level_num'], 'unique'],
             [['level_num'], 'integer'],
             [['name', 'thumb', 'extra'], 'string', 'max' => 255],
@@ -64,10 +65,9 @@ class BlocLevel extends \yii\db\ActiveRecord
 
     public function checkLevel($attribute, $params)
     {
-        if (!empty($this->level_num)) 
-        {
-            $isHave = $this->find()->where(['global_bloc_id'=>Yii::$app->params['global_bloc_id'],'level_num'=>$this->level_num])->asArray()->one();
-            if (!empty($isHave)){
+        if (!empty($this->level_num)) {
+            $isHave = $this->find()->where(['global_bloc_id' => Yii::$app->params['global_bloc_id'], 'level_num' => $this->level_num])->asArray()->one();
+            if (!empty($isHave)) {
                 $this->addError($attribute, "等级添加重复");
             }
         }

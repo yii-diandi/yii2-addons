@@ -4,7 +4,11 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 20:18:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+<<<<<<< HEAD
+ * @Last Modified time: 2021-09-16 10:05:30
+=======
  * @Last Modified time: 2021-07-05 15:43:30
+>>>>>>> 953f7ca903d51e4024283e5e827be5b36e786c1d
  */
 
 namespace diandi\addons\models;
@@ -26,7 +30,7 @@ class BlocConfSms extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_conf_sms}}';
+        return '{{%bloc_conf_sms}}';
     }
 
     /**

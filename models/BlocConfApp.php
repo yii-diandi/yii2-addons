@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-03 23:18:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-03 23:18:49
+ * @Last Modified time: 2021-09-16 10:05:10
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -35,7 +36,7 @@ class BlocConfApp extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_conf_app}}';
+        return '{{%bloc_conf_app}}';
     }
 
     /**

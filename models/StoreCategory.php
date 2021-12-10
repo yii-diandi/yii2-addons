@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-16 23:02:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-27 11:11:38
+ * @Last Modified time: 2021-09-16 10:06:00
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -29,7 +30,7 @@ class StoreCategory extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_store_category}}';
+        return '{{%store_category}}';
     }
 
     /**

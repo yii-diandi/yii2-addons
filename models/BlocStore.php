@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-15 17:42:18
+ * @Last Modified time: 2021-09-16 10:05:53
  */
 
 namespace diandi\addons\models;
@@ -46,7 +46,7 @@ class BlocStore extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_store}}';
+        return '{{%store}}';
     }
 
 

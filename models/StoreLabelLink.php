@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-17 02:28:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 02:28:59
+ * @Last Modified time: 2021-09-16 10:06:10
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -28,7 +29,7 @@ class StoreLabelLink extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_store_label_link}}';
+        return '{{%store_label_link}}';
     }
 
     /**

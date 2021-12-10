@@ -4,24 +4,21 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-03 14:03:34
+ * @Last Modified time: 2021-12-07 21:54:45
  */
-
 
 namespace diandi\addons;
 
-use Yii;
 use common\helpers\StringHelper;
 use diandi\addons\models\searchs\DdAddons;
+use Yii;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
-
 
 class Loader implements BootstrapInterface
 {
     /**
      * 应用ID.
-     *
      */
     protected $id;
 
@@ -68,10 +65,9 @@ class Loader implements BootstrapInterface
                 //Yii::$app->request->get('store_id', 0);
             }
 
-
             // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
             if (empty($_GPC['bloc_id'])) {
-                $_GPC['bloc_id']  = $bloc_id;
+                $_GPC['bloc_id'] = $bloc_id;
             }
 
             if (empty($_GPC['store_id'])) {
@@ -95,15 +91,13 @@ class Loader implements BootstrapInterface
 
             // 后台数据
             if (Yii::$app->id == 'app-backend') {
-                $key = Yii::$app->user->identity->id . 'globalBloc';
+                $key = Yii::$app->user->identity->id.'globalBloc';
                 $backendCache = Yii::$app->cache->get($key);
                 $bloc_id = $backendCache['bloc_id'];
                 $store_id = $backendCache['store_id'];
             }
 
-
             Yii::$app->service->commonMemberService->setAccessToken($access_token);
-
 
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
@@ -111,8 +105,6 @@ class Loader implements BootstrapInterface
 
     /**
      * 重载配置.
-     *
-     * @param $merchant_id
      *
      * @throws UnauthorizedHttpException
      */
@@ -163,20 +155,19 @@ class Loader implements BootstrapInterface
                 $moduleFile = 'api';
         }
 
-
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
-            $configPath = Yii::getAlias('@addons/' . $name . '/config/' . $moduleFile . '.php');
+            $configPath = Yii::getAlias('@addons/'.$name.'/config/'.$moduleFile.'.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
                 if (!empty($config)) {
                     foreach ($config as $key => &$value) {
                         if (is_array($value['extraPatterns']) && !empty($value['extraPatterns'])) {
                             foreach ($value['extraPatterns'] as $k => $val) {
-                                $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod . $k;
+                                $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod.$k;
                                 $extraPatterns[$newK] = $val;
                             }
                             $value['extraPatterns'] = $extraPatterns;
@@ -194,9 +185,10 @@ class Loader implements BootstrapInterface
             }
 
             $modules[StringHelper::toUnderScore($name)] = [
-                'class' => "addons\\" . $name . '\\' . $moduleFile,
+                'class' => 'addons\\'.$name.'\\'.$moduleFile,
             ];
         }
+
         return $modules;
     }
 

@@ -19,7 +19,7 @@ class BlocLevel extends BlocLevelModel
     public function rules()
     {
         return [
-            [['id', 'bloc_id', 'level_num'], 'integer'],
+            [['id', 'bloc_id', 'global_bloc_id', 'level_num'], 'integer'],
             [['name', 'thumb', 'extra', 'create_time', 'update_time'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class BlocLevel extends BlocLevelModel
         $query->andFilterWhere([
             'id' => $this->id,
             'bloc_id' => $this->bloc_id,
+            'global_bloc_id' => $this->global_bloc_id,
             'level_num' => $this->level_num,
         ]);
 

@@ -1,11 +1,12 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-09-09 16:08:37
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:00:33
+ * @Last Modified time: 2021-09-16 10:05:34
  */
- 
+
 
 namespace diandi\addons\models;
 
@@ -31,7 +32,7 @@ class BlocConfWechat extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_bloc_conf_wechat}}';
+        return '{{%bloc_conf_wechat}}';
     }
 
     /**
@@ -43,7 +44,7 @@ class BlocConfWechat extends \yii\db\ActiveRecord
             [['bloc_id', 'update_time', 'create_time'], 'integer'],
             [['app_id'], 'string', 'max' => 50],
             [['secret'], 'string', 'max' => 200],
-            [['token', 'headimg','aes_key'], 'string', 'max' => 255],
+            [['token', 'headimg', 'aes_key'], 'string', 'max' => 255],
             [['bloc_id'], 'unique'],
         ];
     }

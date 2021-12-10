@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 19:12:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-02-27 19:39:01
+ * @Last Modified time: 2021-09-16 10:06:18
  */
 
 namespace diandi\addons\models;
@@ -27,7 +28,7 @@ class UserBloc extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%diandi_user_bloc}}';
+        return '{{%user_bloc}}';
     }
 
     /**
@@ -38,45 +39,46 @@ class UserBloc extends \yii\db\ActiveRecord
         return [
             [['user_id', 'bloc_id', 'store_id', 'status'], 'integer'],
             [['create_time', 'update_time'], 'integer'],
-            ['user_id', 'check','on'=>['create']],
+            ['user_id', 'check', 'on' => ['create']],
             [
-                ['user_id', 'store_id'], 
-                'unique', 
-                'targetAttribute' => ['user_id', 'store_id'], 
+                ['user_id', 'store_id'],
+                'unique',
+                'targetAttribute' => ['user_id', 'store_id'],
                 'message' => '重复给用户进行店铺权限，请检查'
             ],
         ];
     }
 
-    public function check($attribute,$params){
+    public function check($attribute, $params)
+    {
         if (empty($this->user_id)) {
-            return $this->addError($attribute,'请选择管理员');
+            return $this->addError($attribute, '请选择管理员');
         }
-        $dish=$this->find()->where([
-                'user_id'=>$this->user_id,
-                'bloc_id'=>$this->bloc_id,
-                'store_id'=>$this->store_id
-            ])->one();
-        if($dish){
+        $dish = $this->find()->where([
+            'user_id' => $this->user_id,
+            'bloc_id' => $this->bloc_id,
+            'store_id' => $this->store_id
+        ])->one();
+        if ($dish) {
             $this->addError($attribute, '管理员已经绑定了该商户!');
-        }else{
+        } else {
             $this->clearErrors($attribute);
         }
     }
-    
+
     public function getUser()
     {
-        return $this->hasOne(User::className(),['id'=>'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
-    
+
     public function getBloc()
     {
-        return $this->hasOne(Bloc::className(),['bloc_id'=>'bloc_id']);
+        return $this->hasOne(Bloc::className(), ['bloc_id' => 'bloc_id']);
     }
 
     public function getStore()
     {
-        return $this->hasOne(BlocStore::className(),['store_id'=>'store_id']);
+        return $this->hasOne(BlocStore::className(), ['store_id' => 'store_id']);
     }
 
     /**

@@ -4,13 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:12:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-09 16:28:26
+ * @Last Modified time: 2021-12-10 09:58:50
  */
 
+use common\widgets\MyGridView;
 use diandi\addons\services\addonsService;
 use diandi\admin\components\Helper;
 use yii\helpers\Html;
-use common\widgets\MyGridView;
 use yii\helpers\Url;
 
 $this->registerJs($this->render('_script.js'));
@@ -66,7 +66,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     $html = "<tr class='afterRow-addons'><td colspan='2'>";
                     $html .= '<div class="btn-group">';
 
-
                     if (Helper::checkRoute('menu/index')) {
                         $url2 = Url::to(['menu/index', 'addon' => $model['identifie']]);
                         $html .= Html::button('菜单管理', [
@@ -76,14 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     }
 
-
                     if (Helper::checkRoute('/admin/permission/index')) {
                         $url5 = Url::to(['/admin/permission/index', 'module_name' => $model['identifie']]);
                         $html .= Html::button('权限管理', [
                             'title' => '权限管理',
                             'class' => 'tabsOpen btn btn-default btn-sm',
                             '@click' => "dialog('权限管理', '{$url5}')",
-
                         ]);
                     }
 
@@ -118,9 +115,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]);
                     }
 
-
-                    $html .= "</div>";
-
+                    $html .= '</div>';
 
                     $html .= '</td></tr>';
 

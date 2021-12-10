@@ -1,11 +1,4 @@
 <?php
-/**
- * @Author: Wang chunsheng  email:2192138785@qq.com
- * @Date:   2021-06-03 17:35:43
- * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-03 17:44:33
- */
- 
 
 namespace diandi\addons\controllers;
 
@@ -22,7 +15,8 @@ use backend\controllers\BaseController;
  */
 class BloclevelController extends BaseController
 {
-    public $modelSearchName = "BlocLevelSearch";
+    public $modelSearchName = "BlocLevelSearch
+";
     
     /**
      * {@inheritdoc}

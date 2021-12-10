@@ -3,11 +3,10 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 10:51:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-03-26 12:30:52
+ * @Last Modified time: 2021-11-19 11:21:38
  */
 
 namespace diandi\addons\models;
-
 use diandi\addons\models\DdAddons;
 
 /**
@@ -37,7 +36,8 @@ class AddonsUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'user_id', 'status', 'create_time', 'update_time'], 'integer'],
+            [['type', 'user_id', 'status', 'create_time', 'update_time','store_id','is_default'], 'integer'],
+            [['is_default'],'default','value'=>0],
             [['module_name'], 'string', 'max' => 50],
         ];
     }
@@ -99,12 +99,6 @@ class AddonsUser extends \yii\db\ActiveRecord
         // }
         // 查询用户已有权限的 
         $usersAddons = $this->find()->where(['user_id' => $user_id])->filterWhere(['module_name'=>$addonsAll])->with(['addons'])->asArray()->all();
-        // p([
-        //     $addons,
-        //     $usersAddons,
-        //     $available
-        // ]);
-
         
         if ($usersAddons) {
             foreach ($usersAddons as $key => &$value) {
