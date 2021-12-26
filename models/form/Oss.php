@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-25 21:32:51
+ * @Last Modified time: 2021-12-26 19:46:57
  */
 
 namespace diandi\addons\models\form;
@@ -34,7 +34,8 @@ class Oss extends Model
     public $Qiniuoss_Secretkey;
     public $Qiniuoss_Bucket;
     public $Qiniuoss_url;
-
+    public $remote_type;
+    
     /**
      * {@inheritdoc}
      */
@@ -54,6 +55,7 @@ class Oss extends Model
             'Qiniuoss_Accesskey',
             'Qiniuoss_Secretkey',
             'Qiniuoss_Bucket',
+            'remote_type',
             'Qiniuoss_url'], 'string'],
             [['id', 'bloc_id'], 'integer'],
         ];
@@ -68,6 +70,7 @@ class Oss extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         
+        $this->Aliyunoss_accessKeyId=$bloc['remote_type'];
         $this->Aliyunoss_accessKeyId=$bloc['Aliyunoss_accessKeyId'];
         $this->Aliyunoss_resource=$bloc['Aliyunoss_resource'];
         $this->Aliyunoss_accessKeySecret=$bloc['Aliyunoss_accessKeySecret'];
@@ -90,12 +93,15 @@ class Oss extends Model
         if (!$this->validate()) {
             return null;
         }
+        
         $conf = BlocConfOss::findOne(['bloc_id' => $bloc_id]);
+        
         if (!$conf) {
             $conf = new BlocConfOss();
         }
+        
         $conf->bloc_id = $bloc_id;
-
+        $conf->remote_type = $this->remote_type;
         $conf->Aliyunoss_accessKeyId= $this->Aliyunoss_accessKeyId;
         $conf->Aliyunoss_resource= $this->Aliyunoss_resource;
         $conf->Aliyunoss_accessKeySecret= $this->Aliyunoss_accessKeySecret;

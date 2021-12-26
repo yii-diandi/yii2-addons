@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-21 10:51:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-25 21:35:26
+ * @Last Modified time: 2021-12-26 19:45:37
  */
 
 namespace diandi\addons\models;
@@ -48,7 +48,7 @@ class BlocConfOss extends \yii\db\ActiveRecord
         return [
             [['bloc_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['Aliyunoss_accessKeyId', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 100],
+            [['Aliyunoss_accessKeyId','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 100],
         ];
     }
 
