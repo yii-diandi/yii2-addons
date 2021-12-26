@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-01 11:10:02
+ * @Last Modified time: 2021-12-21 17:30:36
  */
 
 namespace diandi\addons\models\form;
@@ -14,19 +14,12 @@ use diandi\addons\models\BlocConfWechatpay;
 use yii\base\Model;
 
 class Wechatpay extends Model
-{
-    /**
-     * @var string application name
-     */
-    
+{  
     public $id;
-
-    public $bloc_id;
-    /**
-     * @var string admin email
-     */
+	public $bloc_id;
     public $mch_id;
-    
+    public $app_id;
+    public $notify_url;
     public $key;
     public $server_signkey;
     public $is_server;
@@ -40,7 +33,9 @@ class Wechatpay extends Model
         return [
             [[
                 'mch_id',
+                'app_id',
                 'key',
+                'notify_url',
                 'server_mchid',
                 'server_signkey'
             ], 'string'],
@@ -56,10 +51,12 @@ class Wechatpay extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         $this->mch_id = $bloc['mch_id'];
+        $this->app_id = $bloc['app_id'];
         $this->server_mchid = $bloc['server_mchid'];
         $this->server_signkey = $bloc['server_signkey'];
         $this->key = $bloc['key'];
         $this->is_server = $bloc['is_server'];
+        $this->notify_url = $bloc['notify_url'];
         
     }
 
@@ -79,9 +76,10 @@ class Wechatpay extends Model
         $conf->server_mchid = $this->server_mchid;
         $conf->server_signkey = $this->server_signkey;
         $conf->is_server = $this->is_server;
-        
+        $conf->notify_url = $this->notify_url;
         $conf->key = $this->key;
-
+        $conf->app_id = $this->app_id;
+        
        
         if($conf->save()){
             return [

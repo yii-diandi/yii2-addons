@@ -3,12 +3,12 @@
  * @Author: Wang chunsheng
  * @Date:   2020-04-29 16:06:59
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-20 23:09:49
+ * @Last Modified time: 2021-12-13 10:19:40
  */
 use common\widgets\MyTreeGrid;
-use yii2mod\editable\EditableColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii2mod\editable\EditableColumn;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\modules\bloc\models\searchs\BlocSearch */
@@ -67,7 +67,7 @@ $this->registerJs($this->render('_script.js'));
                             'class' => EditableColumn::class,
                             'attribute' => 'is_group',
                             'value' => function ($model) {
-                                $list = ['非集团','集团'];
+                                $list = ['非集团', '集团'];
                                 // p($model);
                                 return $list[$model->is_group];
                             },
@@ -75,11 +75,11 @@ $this->registerJs($this->render('_script.js'));
                             'type' => 'select',
                             'editableOptions' => function ($model) {
                                 return [
-                                    'source' => ['非集团','集团'],
-                                    'value' => ['非集团'=>0,'集团'=>1] 
+                                    'source' => ['非集团', '集团'],
+                                    'value' => ['非集团' => 0, '集团' => 1],
                                 ];
                             },
-                        ],    
+                        ],
                         [
                             'class' => 'common\components\ActionColumn',
                             'header' => '操作',
@@ -88,30 +88,29 @@ $this->registerJs($this->render('_script.js'));
                                 'stores' => function ($url, $model, $key) {
                                     $url = Url::to(['/addons/store/index', 'bloc_id' => $model['bloc_id']]);
 
-                                    return  Html::button('商户管理',[
+                                    return  Html::button('商户管理', [
                                         'title' => '商户管理',
                                         'class' => 'btn btn-primary',
-                                        '@click'=>"dialog('商户管理','{$url}')",
+                                        '@click' => "dialog('商户管理','{$url}')",
                                     ]);
                                 },
                                 'user' => function ($url, $model, $key) {
                                     $url = Url::to(['user-bloc/index', 'bloc_id' => $model['bloc_id']]);
 
-                                    return  Html::button('管理员',[
+                                    return  Html::button('管理员', [
                                         'title' => '管理员',
                                         'class' => 'btn btn-primary',
-                                        '@click'=>"dialog('管理员', '{$url}')",
+                                        '@click' => "dialog('管理员', '{$url}')",
                                     ]);
                                 },
                                 'management' => function ($url, $model, $key) {
                                     $url = Url::to(['setting/baidu', 'bloc_id' => $model['bloc_id']]);
 
-                                    return  Html::button('参数配置',[
+                                    return  Html::button('参数配置', [
                                         'title' => '进入模块',
                                         'class' => 'btn btn-primary',
-                                        '@click'=>"dialog('参数配置', '{$url}')",
+                                        '@click' => "dialog('参数配置', '{$url}')",
                                     ]);
-                                    
                                 },
                             ],
                             'contentOptions' => ['class' => 'btn-group'],
