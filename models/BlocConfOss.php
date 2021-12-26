@@ -46,9 +46,9 @@ class BlocConfOss extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id'], 'integer'],
+            [['bloc_id','Aliyunoss_resource'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['Aliyunoss_accessKeyId','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 100],
+            [['Aliyunoss_accessKeyId','remote_type','Aliyunoss_bucket', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 100],
         ];
     }
 

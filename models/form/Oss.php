@@ -35,6 +35,7 @@ class Oss extends Model
     public $Qiniuoss_Bucket;
     public $Qiniuoss_url;
     public $remote_type;
+    public $Aliyunoss_bucket;
     
     /**
      * {@inheritdoc}
@@ -43,7 +44,7 @@ class Oss extends Model
     {
         return [
             [['Aliyunoss_accessKeyId',
-            'Aliyunoss_resource',
+            'Aliyunoss_bucket',
             'Aliyunoss_accessKeySecret',
             'Aliyunoss_url',
             'Tengxunoss_APPID',
@@ -57,7 +58,7 @@ class Oss extends Model
             'Qiniuoss_Bucket',
             'remote_type',
             'Qiniuoss_url'], 'string'],
-            [['id', 'bloc_id'], 'integer'],
+            [['id', 'bloc_id','Aliyunoss_resource'], 'integer'],
         ];
     }
 
@@ -70,6 +71,7 @@ class Oss extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         
+        $this->Aliyunoss_bucket=$bloc['Aliyunoss_bucket'];
         $this->Aliyunoss_accessKeyId=$bloc['remote_type'];
         $this->Aliyunoss_accessKeyId=$bloc['Aliyunoss_accessKeyId'];
         $this->Aliyunoss_resource=$bloc['Aliyunoss_resource'];
@@ -101,6 +103,8 @@ class Oss extends Model
         }
         
         $conf->bloc_id = $bloc_id;
+        
+        $conf->Aliyunoss_bucket = $this->Aliyunoss_bucket;
         $conf->remote_type = $this->remote_type;
         $conf->Aliyunoss_accessKeyId= $this->Aliyunoss_accessKeyId;
         $conf->Aliyunoss_resource= $this->Aliyunoss_resource;
