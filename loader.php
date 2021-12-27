@@ -18,10 +18,12 @@ use yii\web\UnauthorizedHttpException;
 
 class Loader implements BootstrapInterface
 {
+	
     /**
      * 应用标识.
      */
     protected $id;
+	
 	
     /**
      * @param \yii\base\Application $application
