@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-27 08:24:25
+ * @Last Modified time: 2021-12-27 19:26:47
  */
 
 namespace diandi\addons\models\form;
@@ -23,6 +23,7 @@ class Oss extends Model
     public $Aliyunoss_accessKeyId;
     public $Aliyunoss_resource;
     public $Aliyunoss_accessKeySecret;
+    public $Aliyunoss_bucket;
     public $Aliyunoss_url;
     public $Tengxunoss_APPID;
     public $Tengxunoss_SecretID;
@@ -44,6 +45,7 @@ class Oss extends Model
         return [
             [['Aliyunoss_accessKeyId',
             'Aliyunoss_resource',
+            'Aliyunoss_bucket',
             'Aliyunoss_accessKeySecret',
             'Aliyunoss_url',
             'Tengxunoss_APPID',
@@ -70,6 +72,7 @@ class Oss extends Model
         $this->bloc_id = $bloc['bloc_id'];
 
         $this->remote_type = $bloc['remote_type'];
+        $this->Aliyunoss_bucket = $bloc['Aliyunoss_bucket'];
         $this->Aliyunoss_accessKeyId = $bloc['Aliyunoss_accessKeyId'];
         $this->Aliyunoss_resource = $bloc['Aliyunoss_resource'];
         $this->Aliyunoss_accessKeySecret = $bloc['Aliyunoss_accessKeySecret'];
@@ -100,6 +103,8 @@ class Oss extends Model
 
         $conf->bloc_id = $bloc_id;
         $conf->remote_type = $this->remote_type;
+        $conf->Aliyunoss_bucket = $this->Aliyunoss_bucket;
+
         $conf->Aliyunoss_accessKeyId = $this->Aliyunoss_accessKeyId;
         $conf->Aliyunoss_resource = $this->Aliyunoss_resource;
         $conf->Aliyunoss_accessKeySecret = $this->Aliyunoss_accessKeySecret;
