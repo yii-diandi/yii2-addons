@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-21 10:51:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 13:31:14
+ * @Last Modified time: 2021-12-28 15:57:02
  */
 
 namespace diandi\addons\models;
@@ -74,14 +74,26 @@ class BlocConfOss extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $list = array_keys($this->attributes);
-            foreach ($list as $key => $value) {
-                //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                $secretKey = Yii::$app->params['encryptKey'];
-                if(!in_array($value,['id','bloc_id','create_time','update_time','remote_type'])){
-                    $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));                     
+                // 新增
+                $list = array_keys($this->attributes);
+                foreach ($list as $key => $value) {
+                    //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
+                    $secretKey = Yii::$app->params['encryptKey'];
+                    if(!in_array($value,['id','bloc_id','create_time','update_time','remote_type','Aliyunoss_resource'])){
+                        if(!$this->isNewRecord){ 
+                            // 更新的时候必须无星号才处理
+                            if(strpos($this->attributes[$value],'*') === false){
+                                $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
+                            }else{
+                                // 原来的加密数据过滤不做更新
+                                unset($this->$value);
+                            }
+                        }else{
+                            $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));                     
+                        }
+                           
+                    }
                 }
-            }
             return true;
         } else {
             return false;

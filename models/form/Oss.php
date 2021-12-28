@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 13:31:43
+ * @Last Modified time: 2021-12-28 13:59:07
  */
 
 namespace diandi\addons\models\form;
@@ -76,7 +76,7 @@ class Oss extends Model
         $this->remote_type = $bloc['remote_type'];
         $this->Aliyunoss_bucket = $this->decodeConf($bloc['Aliyunoss_bucket']);
         $this->Aliyunoss_accessKeyId = $this->decodeConf($bloc['Aliyunoss_accessKeyId']);
-        $this->Aliyunoss_resource = $this->decodeConf($bloc['Aliyunoss_resource']);
+        $this->Aliyunoss_resource = $bloc['Aliyunoss_resource'];
         $this->Aliyunoss_accessKeySecret = $this->decodeConf($bloc['Aliyunoss_accessKeySecret']);
         $this->Aliyunoss_url = $this->decodeConf($bloc['Aliyunoss_url']);
         $this->Tengxunoss_APPID = $this->decodeConf($bloc['Tengxunoss_APPID']);
@@ -95,7 +95,7 @@ class Oss extends Model
         $decodeKey = Yii::$app->params['encryptKey'];
         if(!empty($data)){
             $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return addonsService::hideStr($val);    
+            return addonsService::hideStr($val,2,5,2);    
         }else{
             return '';
         }

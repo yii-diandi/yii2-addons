@@ -23,7 +23,6 @@ class Loader implements BootstrapInterface
      */
     protected $id;
 	
-	
     /**
      * @param \yii\base\Application $application
      *
