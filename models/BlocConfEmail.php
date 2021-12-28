@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 23:12:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 09:44:52
+ * @Last Modified time: 2021-12-28 13:24:54
  */
 
 namespace diandi\addons\models;
@@ -60,9 +60,7 @@ class BlocConfEmail extends \yii\db\ActiveRecord
             [['bloc_id'], 'unique']
         ];
     }
-
     
-     
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -71,7 +69,7 @@ class BlocConfEmail extends \yii\db\ActiveRecord
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                 $secretKey = Yii::$app->params['encryptKey'];
                 if(!in_array($value,['id','bloc_id','create_time','update_time'])){
-                    $this->$value = Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey);                     
+                    $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));                     
                 }
             }
             return true;
