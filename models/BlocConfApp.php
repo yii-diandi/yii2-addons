@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-04-03 23:18:43
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:57:05
+ * @Last Modified time: 2021-12-28 08:41:03
  */
 
 
@@ -47,7 +47,6 @@ class BlocConfApp extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'create_time', 'update_time'], 'integer'],
             [['android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret'], 'string', 'max' => 255],
-            [['bloc_id'], 'unique']
         ];
     }
 
@@ -73,7 +72,7 @@ class BlocConfApp extends \yii\db\ActiveRecord
             $list = array_keys($this->attributes);
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                $secretKey = Yii::$app->params['encryptKey'];
+                $secretKey = strtotime($this->attributes['create_time']);
                 if(!in_array($key,['id','bloc_id','create_time','update_time'])){
                     $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
                 }

@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 23:12:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:57:55
+ * @Last Modified time: 2021-12-28 08:42:19
  */
 
 namespace diandi\addons\models;
@@ -56,8 +56,9 @@ class BlocConfEmail extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'host', 'password', 'title', 'encryption'], 'required'],
             [['bloc_id', 'port', 'create_time', 'update_time'], 'integer'],
-            [['host','username','password', 'title', 'encryption'], 'string', 'max' => 255],
-            [['bloc_id'], 'unique']
+            [['host'], 'string', 'max' => 50],
+            [['username'], 'string', 'max' => 255],
+            [['password', 'title', 'encryption'], 'string', 'max' => 100],
         ];
     }
 
@@ -68,7 +69,7 @@ class BlocConfEmail extends \yii\db\ActiveRecord
             $list = array_keys($this->attributes);
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                $secretKey = Yii::$app->params['encryptKey'];
+                $secretKey = strtotime($this->attributes['create_time']);
                 if(!in_array($key,['id','bloc_id','create_time','update_time'])){
                     $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
                 }

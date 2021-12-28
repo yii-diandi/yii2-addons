@@ -72,7 +72,7 @@ class Microapp extends Model
     }
 
     public function decodeConf($data,$decodeKey){
-        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }
 
