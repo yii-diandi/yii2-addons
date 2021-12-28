@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:01:21
+ * @Last Modified time: 2021-12-28 13:31:43
  */
 
 namespace diandi\addons\models\form;
@@ -73,7 +73,7 @@ class Oss extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         
-        $this->remote_type = $this->decodeConf($bloc['remote_type']);
+        $this->remote_type = $bloc['remote_type'];
         $this->Aliyunoss_bucket = $this->decodeConf($bloc['Aliyunoss_bucket']);
         $this->Aliyunoss_accessKeyId = $this->decodeConf($bloc['Aliyunoss_accessKeyId']);
         $this->Aliyunoss_resource = $this->decodeConf($bloc['Aliyunoss_resource']);
