@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  &#60;2192138785@qq.com&#62;
  * @Date:   2020-04-29 17:21:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 09:33:48
+ * @Last Modified time: 2021-12-28 10:01:24
  */
 
 namespace diandi\addons\models\form;
@@ -63,9 +63,12 @@ class Sms extends Model
 
     public function decodeConf($data){
         $decodeKey = Yii::$app->params['encryptKey'];
-
-        $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-        return addonsService::hideStr($val);
+        if(!empty($data)){
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
+            return addonsService::hideStr($val);    
+        }else{
+            return '';
+        }
     }
 
     public function saveConf($bloc_id)

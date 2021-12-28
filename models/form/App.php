@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 09:33:15
+ * @Last Modified time: 2021-12-28 10:00:54
  */
 
 namespace diandi\addons\models\form;
@@ -77,8 +77,12 @@ class App extends Model
 
     public function decodeConf($data){
         $decodeKey = Yii::$app->params['encryptKey'];
-        $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-        return addonsService::hideStr($val);
+        if(!empty($data)){
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
+            return addonsService::hideStr($val);    
+        }else{
+            return '';
+        }
    }
 
     public function saveConf($bloc_id)
