@@ -3,10 +3,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-21 10:51:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-26 19:45:37
+ * @Last Modified time: 2021-12-28 08:21:18
  */
 
 namespace diandi\addons\models;
+
+use Yii;
 
 /**
  * This is the model class for table "dd_bloc_conf_oss".
@@ -37,7 +39,7 @@ class BlocConfOss extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'dd_bloc_conf_oss';
+        return '{{%bloc_conf_oss}}';
     }
 
     /**
@@ -48,7 +50,7 @@ class BlocConfOss extends \yii\db\ActiveRecord
         return [
             [['bloc_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['Aliyunoss_accessKeyId','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 100],
+            [['Aliyunoss_accessKeyId','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 255],
         ];
     }
 
@@ -66,6 +68,23 @@ class BlocConfOss extends \yii\db\ActiveRecord
                 'time_type' => 'datetime',
             ],
         ];
+    }
+	
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $list = array_keys($this->attributes);
+            foreach ($list as $key => $value) {
+                //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
+                $secretKey = strtotime($this->attributes['create_time']);
+                if(!in_array($key,['id','bloc_id','create_time','update_time'])){
+                    $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

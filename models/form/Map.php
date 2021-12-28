@@ -3,13 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:03:40
+ * @Last Modified time: 2021-12-28 08:34:48
  */
 
 namespace diandi\addons\models\form;
 
 use common\helpers\ErrorsHelper;
 use diandi\addons\models\BlocConfMap;
+use diandi\addons\services\addonsService;
+use Yii;
 use yii\base\Model;
 
 class Map extends Model
@@ -48,9 +50,15 @@ class Map extends Model
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
-        $this->baiduApk = $bloc['baiduApk'];
-        $this->amapApk = $bloc['amapApk'];
-        $this->tencentApk = $bloc['tencentApk'];
+        $this->baiduApk = $this->decodeConf($bloc['baiduApk'],$bloc['create_time']);
+        $this->amapApk = $this->decodeConf($bloc['amapApk'],$bloc['create_time']);
+        $this->tencentApk = $this->decodeConf($bloc['tencentApk'],$bloc['create_time']);
+    }
+    
+    
+    public function decodeConf($data,$decodeKey){
+        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+        return addonsService::hideStr($val);
     }
 
     public function saveConf($bloc_id)

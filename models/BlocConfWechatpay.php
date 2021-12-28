@@ -4,10 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:47:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-16 10:05:38
+ * @Last Modified time: 2021-12-28 08:42:02
  */
 
 namespace diandi\addons\models;
+
+use Yii;
+
 
 /**
  * This is the model class for table "diandi_bloc_conf_wechatpay".
@@ -55,6 +58,23 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
             [['notify_url', 'app_id', 'mch_id'], 'string', 'max' => 100],
             [['key', 'notify_url',  'server_mchid', 'server_signkey'], 'string', 'max' => 255],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $list = array_keys($this->attributes);
+            foreach ($list as $key => $value) {
+                //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
+                $secretKey = strtotime($this->attributes['create_time']);
+                if(!in_array($key,['id','bloc_id','create_time','update_time'])){
+                    $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

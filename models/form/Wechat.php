@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:04:17
+ * @Last Modified time: 2021-12-28 08:38:24
  */
 
 namespace diandi\addons\models\form;
@@ -11,6 +11,8 @@ namespace diandi\addons\models\form;
 use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use diandi\addons\models\BlocConfWechat;
+use diandi\addons\services\addonsService;
+use Yii;
 use yii\base\Model;
 
 class Wechat extends Model
@@ -51,11 +53,16 @@ class Wechat extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         $this->app_id = $bloc['app_id'];
-        $this->token = $bloc['token'];
-        $this->aes_key = $bloc['aes_key'];
-        $this->secret = $bloc['secret'];
-        $this->headimg = $bloc['headimg'];
+        $this->token = $this->decodeConf($bloc['token'],$bloc['create_time']);
+        $this->aes_key = $this->decodeConf($bloc['aes_key'],$bloc['create_time']);
+        $this->secret = $this->decodeConf($bloc['secret'],$bloc['create_time']);
+        $this->headimg = $this->decodeConf($bloc['headimg'],$bloc['create_time']);
         
+    }
+
+    public function decodeConf($data,$decodeKey){
+        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+        return addonsService::hideStr($val);
     }
 
     public function saveConf($bloc_id)

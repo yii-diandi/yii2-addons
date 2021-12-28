@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:39:36
+ * @Last Modified time: 2021-12-28 08:33:48
  */
 
 /***
@@ -22,6 +22,7 @@ use diandi\addons\models\BlocConfBaidu;
 use Yii;
 use yii\base\Model;
 use common\helpers\ErrorsHelper;
+use diandi\addons\services\addonsService;
 
 class Baidu extends Model
 {
@@ -62,11 +63,16 @@ class Baidu extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
 
-        $this->APP_ID = $bloc['APP_ID'];
-        $this->API_KEY = $bloc['API_KEY'];
-        $this->SECRET_KEY = $bloc['SECRET_KEY'];
-        $this->name = $bloc['name'];
+        $this->APP_ID = $this->decodeConf($bloc['APP_ID'],$bloc['create_time']);
+        $this->API_KEY = $this->decodeConf($bloc['API_KEY'],$bloc['create_time']);
+        $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY'],$bloc['create_time']);
+        $this->name = $this->decodeConf($bloc['name'],$bloc['create_time']);
     }
+
+    public function decodeConf($data,$decodeKey){
+        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+        return addonsService::hideStr($val);
+   }
 
     public function saveConf($bloc_id)
     {

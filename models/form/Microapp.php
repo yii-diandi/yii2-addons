@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-04-01 17:39:39
+ * @Last Modified time: 2021-12-28 08:36:29
  */
 
 namespace diandi\addons\models\form;
@@ -12,6 +12,8 @@ use common\helpers\ErrorsHelper;
 use common\helpers\ResultHelper;
 use diandi\addons\models\BlocConfMicroapp;
 use diandi\addons\models\BlocConfWxapp;
+use diandi\addons\services\addonsService;
+use Yii;
 use yii\base\Model;
 
 class Microapp extends Model
@@ -60,13 +62,18 @@ class Microapp extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
 
-        $this->name = $bloc['name'];
-        $this->description = $bloc['description'];
-        $this->original = $bloc['original'];
-        $this->AppId = $bloc['AppId'];
-        $this->AppSecret = $bloc['AppSecret'];
-        $this->headimg = $bloc['headimg'];
-        $this->codeUrl = $bloc['codeUrl'];
+        $this->name = $this->decodeConf($bloc['name'],$bloc['create_time']);
+        $this->description = $this->decodeConf($bloc['description'],$bloc['create_time']);
+        $this->original = $this->decodeConf($bloc['original'],$bloc['create_time']);
+        $this->AppId = $this->decodeConf($bloc['AppId'],$bloc['create_time']);
+        $this->AppSecret = $this->decodeConf($bloc['AppSecret'],$bloc['create_time']);
+        $this->headimg = $this->decodeConf($bloc['headimg'],$bloc['create_time']);
+        $this->codeUrl = $this->decodeConf($bloc['codeUrl'],$bloc['create_time']);
+    }
+
+    public function decodeConf($data,$decodeKey){
+        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+        return addonsService::hideStr($val);
     }
 
     public function saveConf($bloc_id)

@@ -4,14 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 20:18:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
-<<<<<<< HEAD
- * @Last Modified time: 2021-09-16 10:05:30
-=======
- * @Last Modified time: 2021-07-05 15:43:30
->>>>>>> 953f7ca903d51e4024283e5e827be5b36e786c1d
+ * @Last Modified time: 2021-12-28 08:42:29
  */
 
 namespace diandi\addons\models;
+
+use Yii;
 
 /**
  * This is the model class for table "diandi_bloc_conf_sms".
@@ -44,6 +42,23 @@ class BlocConfSms extends \yii\db\ActiveRecord
                 'class' => \common\behaviors\SaveBehavior::className(),
             ],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $list = array_keys($this->attributes);
+            foreach ($list as $key => $value) {
+                //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
+                $secretKey = strtotime($this->attributes['create_time']);
+                if(!in_array($key,['id','bloc_id','create_time','update_time'])){
+                    $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

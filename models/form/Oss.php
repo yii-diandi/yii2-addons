@@ -3,13 +3,15 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-27 19:26:47
+ * @Last Modified time: 2021-12-28 08:27:47
  */
 
 namespace diandi\addons\models\form;
 
 use common\helpers\ErrorsHelper;
 use diandi\addons\models\BlocConfOss;
+use diandi\addons\services\addonsService;
+use Yii;
 use yii\base\Model;
 
 class Oss extends Model
@@ -70,23 +72,28 @@ class Oss extends Model
 
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
+        
+        $this->remote_type = $this->decodeConf($bloc['remote_type'],$bloc['create_time']);
+        $this->Aliyunoss_bucket = $this->decodeConf($bloc['Aliyunoss_bucket'],$bloc['create_time']);
+        $this->Aliyunoss_accessKeyId = $this->decodeConf($bloc['Aliyunoss_accessKeyId'],$bloc['create_time']);
+        $this->Aliyunoss_resource = $this->decodeConf($bloc['Aliyunoss_resource'],$bloc['create_time']);
+        $this->Aliyunoss_accessKeySecret = $this->decodeConf($bloc['Aliyunoss_accessKeySecret'],$bloc['create_time']);
+        $this->Aliyunoss_url = $this->decodeConf($bloc['Aliyunoss_url'],$bloc['create_time']);
+        $this->Tengxunoss_APPID = $this->decodeConf($bloc['Tengxunoss_APPID'],$bloc['create_time']);
+        $this->Tengxunoss_SecretID = $this->decodeConf($bloc['Tengxunoss_SecretID'],$bloc['create_time']);
+        $this->Tengxunoss_SecretKEY = $this->decodeConf($bloc['Tengxunoss_SecretKEY'],$bloc['create_time']);
+        $this->Tengxunoss_Bucket = $this->decodeConf($bloc['Tengxunoss_Bucket'],$bloc['create_time']);
+        $this->Tengxunoss_area = $this->decodeConf($bloc['Tengxunoss_area'],$bloc['create_time']);
+        $this->Tengxunoss_url = $this->decodeConf($bloc['Tengxunoss_url'],$bloc['create_time']);
+        $this->Qiniuoss_Accesskey = $this->decodeConf($bloc['Qiniuoss_Accesskey'],$bloc['create_time']);
+        $this->Qiniuoss_Secretkey = $this->decodeConf($bloc['Qiniuoss_Secretkey'],$bloc['create_time']);
+        $this->Qiniuoss_Bucket = $this->decodeConf($bloc['Qiniuoss_Bucket'],$bloc['create_time']);
+        $this->Qiniuoss_url = $this->decodeConf($bloc['Qiniuoss_url'],$bloc['create_time']);
+    }
 
-        $this->remote_type = $bloc['remote_type'];
-        $this->Aliyunoss_bucket = $bloc['Aliyunoss_bucket'];
-        $this->Aliyunoss_accessKeyId = $bloc['Aliyunoss_accessKeyId'];
-        $this->Aliyunoss_resource = $bloc['Aliyunoss_resource'];
-        $this->Aliyunoss_accessKeySecret = $bloc['Aliyunoss_accessKeySecret'];
-        $this->Aliyunoss_url = $bloc['Aliyunoss_url'];
-        $this->Tengxunoss_APPID = $bloc['Tengxunoss_APPID'];
-        $this->Tengxunoss_SecretID = $bloc['Tengxunoss_SecretID'];
-        $this->Tengxunoss_SecretKEY = $bloc['Tengxunoss_SecretKEY'];
-        $this->Tengxunoss_Bucket = $bloc['Tengxunoss_Bucket'];
-        $this->Tengxunoss_area = $bloc['Tengxunoss_area'];
-        $this->Tengxunoss_url = $bloc['Tengxunoss_url'];
-        $this->Qiniuoss_Accesskey = $bloc['Qiniuoss_Accesskey'];
-        $this->Qiniuoss_Secretkey = $bloc['Qiniuoss_Secretkey'];
-        $this->Qiniuoss_Bucket = $bloc['Qiniuoss_Bucket'];
-        $this->Qiniuoss_url = $bloc['Qiniuoss_url'];
+    public function decodeConf($data,$decodeKey){
+         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),strtotime($decodeKey));
+         return addonsService::hideStr($val);
     }
 
     public function saveConf($bloc_id)
