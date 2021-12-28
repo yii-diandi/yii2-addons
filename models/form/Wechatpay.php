@@ -65,7 +65,7 @@ class Wechatpay extends Model
     public function decodeConf($data){
         $decodeKey = Yii::$app->params['encryptKey'];
 
-        $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
+        $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }
     
