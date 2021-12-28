@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-17 08:48:18
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:58:14
+ * @Last Modified time: 2021-12-28 09:44:57
  */
  
 
@@ -55,6 +55,7 @@ class BlocConfMap extends \yii\db\ActiveRecord
         ];
     }
 
+     
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -62,8 +63,8 @@ class BlocConfMap extends \yii\db\ActiveRecord
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                 $secretKey = Yii::$app->params['encryptKey'];
-                if(!in_array($key,['id','bloc_id','create_time','update_time'])){
-                    $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
+                if(!in_array($value,['id','bloc_id','create_time','update_time'])){
+                    $this->$value = Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey);                     
                 }
             }
             return true;
@@ -71,6 +72,7 @@ class BlocConfMap extends \yii\db\ActiveRecord
             return false;
         }
     }
+
 
     /**
      * {@inheritdoc}
