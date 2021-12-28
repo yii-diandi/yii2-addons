@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 09:52:01
+ * @Last Modified time: 2021-12-28 09:54:30
  */
 
 /***
@@ -71,7 +71,7 @@ class Baidu extends Model
 
     public function decodeConf($data){
         $decodeKey = Yii::$app->params['encryptKey'];
-        $val = Yii::$app->getSecurity()->decryptByKeyy(base64_decode($data),$decodeKey);
+        $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
    }
 
