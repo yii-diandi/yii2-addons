@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:34:48
+ * @Last Modified time: 2021-12-28 09:33:34
  */
 
 namespace diandi\addons\models\form;
@@ -50,13 +50,15 @@ class Map extends Model
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
-        $this->baiduApk = $this->decodeConf($bloc['baiduApk'],$bloc['create_time']);
-        $this->amapApk = $this->decodeConf($bloc['amapApk'],$bloc['create_time']);
-        $this->tencentApk = $this->decodeConf($bloc['tencentApk'],$bloc['create_time']);
+        $this->baiduApk = $this->decodeConf($bloc['baiduApk']);
+        $this->amapApk = $this->decodeConf($bloc['amapApk']);
+        $this->tencentApk = $this->decodeConf($bloc['tencentApk']);
     }
     
     
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }

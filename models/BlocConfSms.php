@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 20:18:34
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:42:29
+ * @Last Modified time: 2021-12-28 09:15:51
  */
 
 namespace diandi\addons\models;
@@ -50,8 +50,8 @@ class BlocConfSms extends \yii\db\ActiveRecord
             $list = array_keys($this->attributes);
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                $secretKey = strtotime($this->attributes['create_time']);
-                if(!in_array($key,['id','bloc_id','create_time','update_time'])){
+                $secretKey = Yii::$app->params['encryptKey'];
+                if(!in_array($key,['id','bloc_id','create_time','update_time','is_login'])){
                     $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
                 }
             }
@@ -69,9 +69,8 @@ class BlocConfSms extends \yii\db\ActiveRecord
         return [
             [['access_key_id', 'template_code', 'access_key_secret'], 'required'],
             [['bloc_id', 'id', 'is_login'], 'integer'],
-            [['access_key_id'], 'string', 'max' => 100],
-            [['sign_name'], 'string', 'max' => 255],
-            [['template_code'], 'string', 'max' => 15],
+            [['template_code','access_key_id','sign_name'], 'string', 'max' => 255],
+            [['bloc_id'], 'unique']
         ];
     }
 

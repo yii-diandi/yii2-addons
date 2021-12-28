@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  &#60;2192138785@qq.com&#62;
  * @Date:   2020-04-29 17:21:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:37:29
+ * @Last Modified time: 2021-12-28 09:33:48
  */
 
 namespace diandi\addons\models\form;
@@ -54,14 +54,16 @@ class Sms extends Model
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
-        $this->access_key_id = $this->decodeConf($bloc['access_key_id'],$bloc['create_time']);
-        $this->access_key_secret = $this->decodeConf($bloc['access_key_secret'],$bloc['create_time']);
-        $this->sign_name = $this->decodeConf($bloc['sign_name'],$bloc['create_time']);
-        $this->template_code = $this->decodeConf($bloc['template_code'],$bloc['create_time']);
-        $this->is_login = $this->decodeConf($bloc['is_login'],$bloc['create_time']);
+        $this->access_key_id = $this->decodeConf($bloc['access_key_id']);
+        $this->access_key_secret = $this->decodeConf($bloc['access_key_secret']);
+        $this->sign_name = $this->decodeConf($bloc['sign_name']);
+        $this->template_code = $this->decodeConf($bloc['template_code']);
+        $this->is_login = $this->decodeConf($bloc['is_login']);
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }

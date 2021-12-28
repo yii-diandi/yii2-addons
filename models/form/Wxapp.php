@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:40:22
+ * @Last Modified time: 2021-12-28 09:34:03
  */
 
 namespace diandi\addons\models\form;
@@ -61,16 +61,18 @@ class Wxapp extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
 
-        $this->name = $this->decodeConf($bloc['name'],$bloc['create_time']);
-        $this->description = $this->decodeConf($bloc['description'],$bloc['create_time']);
-        $this->original = $this->decodeConf($bloc['original'],$bloc['create_time']);
-        $this->AppId = $this->decodeConf($bloc['AppId'],$bloc['create_time']);
-        $this->AppSecret = $this->decodeConf($bloc['AppSecret'],$bloc['create_time']);
-        $this->headimg = $this->decodeConf($bloc['headimg'],$bloc['create_time']);
-        $this->codeUrl = $this->decodeConf($bloc['codeUrl'],$bloc['create_time']);
+        $this->name = $this->decodeConf($bloc['name']);
+        $this->description = $this->decodeConf($bloc['description']);
+        $this->original = $this->decodeConf($bloc['original']);
+        $this->AppId = $this->decodeConf($bloc['AppId']);
+        $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
+        $this->headimg = $this->decodeConf($bloc['headimg']);
+        $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }

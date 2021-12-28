@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:33:48
+ * @Last Modified time: 2021-12-28 09:33:24
  */
 
 /***
@@ -63,13 +63,14 @@ class Baidu extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
 
-        $this->APP_ID = $this->decodeConf($bloc['APP_ID'],$bloc['create_time']);
-        $this->API_KEY = $this->decodeConf($bloc['API_KEY'],$bloc['create_time']);
-        $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY'],$bloc['create_time']);
-        $this->name = $this->decodeConf($bloc['name'],$bloc['create_time']);
+        $this->APP_ID = $this->decodeConf($bloc['APP_ID']);
+        $this->API_KEY = $this->decodeConf($bloc['API_KEY']);
+        $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY']);
+        $this->name = $this->decodeConf($bloc['name']);
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
    }

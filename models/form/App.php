@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:30:14
+ * @Last Modified time: 2021-12-28 09:33:15
  */
 
 namespace diandi\addons\models\form;
@@ -65,17 +65,18 @@ class App extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
 
-        $this->android_ver = $this->decodeConf($bloc['android_ver'],$bloc['create_time']);
-        $this->android_url = $this->decodeConf($bloc['android_url'],$bloc['create_time']);
-        $this->ios_ver = $this->decodeConf($bloc['ios_ver'],$bloc['create_time']);
-        $this->ios_url = $this->decodeConf($bloc['ios_url'],$bloc['create_time']);
-        $this->partner = $this->decodeConf($bloc['partner'],$bloc['create_time']);
-        $this->partner_key = $this->decodeConf($bloc['partner_key'],$bloc['create_time']);
-        $this->app_id = $this->decodeConf($bloc['app_id'],$bloc['create_time']);
-        $this->app_secret = $this->decodeConf($bloc['app_secret'],$bloc['create_time']);
+        $this->android_ver = $this->decodeConf($bloc['android_ver']);
+        $this->android_url = $this->decodeConf($bloc['android_url']);
+        $this->ios_ver = $this->decodeConf($bloc['ios_ver']);
+        $this->ios_url = $this->decodeConf($bloc['ios_url']);
+        $this->partner = $this->decodeConf($bloc['partner']);
+        $this->partner_key = $this->decodeConf($bloc['partner_key']);
+        $this->app_id = $this->decodeConf($bloc['app_id']);
+        $this->app_secret = $this->decodeConf($bloc['app_secret']);
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
    }

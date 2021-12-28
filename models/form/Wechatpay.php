@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:39:29
+ * @Last Modified time: 2021-12-28 09:33:58
  */
 
 namespace diandi\addons\models\form;
@@ -52,17 +52,19 @@ class Wechatpay extends Model
       
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
-        $this->mch_id = $this->decodeConf($bloc['mch_id'],$bloc['create_time']);
-        $this->app_id = $this->decodeConf($bloc['app_id'],$bloc['create_time']);
-        $this->server_mchid = $this->decodeConf($bloc['server_mchid'],$bloc['create_time']);
-        $this->server_signkey = $this->decodeConf($bloc['server_signkey'],$bloc['create_time']);
-        $this->key = $this->decodeConf($bloc['key'],$bloc['create_time']);
-        $this->is_server = $this->decodeConf($bloc['is_server'],$bloc['create_time']);
-        $this->notify_url = $this->decodeConf($bloc['notify_url'],$bloc['create_time']);
+        $this->mch_id = $this->decodeConf($bloc['mch_id']);
+        $this->app_id = $this->decodeConf($bloc['app_id']);
+        $this->server_mchid = $this->decodeConf($bloc['server_mchid']);
+        $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
+        $this->key = $this->decodeConf($bloc['key']);
+        $this->is_server = $this->decodeConf($bloc['is_server']);
+        $this->notify_url = $this->decodeConf($bloc['notify_url']);
         
     }
     
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }

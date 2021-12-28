@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:33:02
+ * @Last Modified time: 2021-12-28 09:33:30
  */
 
 namespace diandi\addons\models\form;
@@ -47,15 +47,17 @@ class Email extends Model
 
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
-        $this->host = $this->decodeConf($bloc['host'],$bloc['create_time']);
-        $this->port = $this->decodeConf($bloc['port'],$bloc['create_time']);
-        $this->username = $this->decodeConf($bloc['username'],$bloc['create_time']);
-        $this->password = $this->decodeConf($bloc['password'],$bloc['create_time']);
-        $this->title = $this->decodeConf($bloc['title'],$bloc['create_time']);
-        $this->encryption = $this->decodeConf($bloc['encryption'],$bloc['create_time']);
+        $this->host = $this->decodeConf($bloc['host']);
+        $this->port = $this->decodeConf($bloc['port']);
+        $this->username = $this->decodeConf($bloc['username']);
+        $this->password = $this->decodeConf($bloc['password']);
+        $this->title = $this->decodeConf($bloc['title']);
+        $this->encryption = $this->decodeConf($bloc['encryption']);
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
    }

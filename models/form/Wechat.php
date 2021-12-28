@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:38:24
+ * @Last Modified time: 2021-12-28 09:33:53
  */
 
 namespace diandi\addons\models\form;
@@ -53,14 +53,16 @@ class Wechat extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         $this->app_id = $bloc['app_id'];
-        $this->token = $this->decodeConf($bloc['token'],$bloc['create_time']);
-        $this->aes_key = $this->decodeConf($bloc['aes_key'],$bloc['create_time']);
-        $this->secret = $this->decodeConf($bloc['secret'],$bloc['create_time']);
-        $this->headimg = $this->decodeConf($bloc['headimg'],$bloc['create_time']);
+        $this->token = $this->decodeConf($bloc['token']);
+        $this->aes_key = $this->decodeConf($bloc['aes_key']);
+        $this->secret = $this->decodeConf($bloc['secret']);
+        $this->headimg = $this->decodeConf($bloc['headimg']);
         
     }
 
-    public function decodeConf($data,$decodeKey){
+    public function decodeConf($data){
+        $decodeKey = Yii::$app->params['encryptKey'];
+
         $val = Yii::$app->getSecurity()->decryptByKe(base64_decode($data),$decodeKey);
         return addonsService::hideStr($val);
     }
