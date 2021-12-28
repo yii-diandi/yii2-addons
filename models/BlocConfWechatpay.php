@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:47:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:42:02
+ * @Last Modified time: 2021-12-28 09:01:04
  */
 
 namespace diandi\addons\models;
@@ -55,8 +55,8 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'mch_id'], 'required'],
             [['bloc_id', 'create_time', 'update_time', 'is_server'], 'integer'],
-            [['notify_url', 'app_id', 'mch_id'], 'string', 'max' => 100],
-            [['key', 'notify_url',  'server_mchid', 'server_signkey'], 'string', 'max' => 255],
+            [['notify_url', 'app_id', 'mch_id','key', 'notify_url',  'server_mchid', 'server_signkey'], 'string', 'max' => 255],
+            [['bloc_id'], 'unique']
         ];
     }
 
@@ -66,7 +66,7 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
             $list = array_keys($this->attributes);
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                $secretKey = strtotime($this->attributes['create_time']);
+                $secretKey = Yii::$app->params['encryptKey'];
                 if(!in_array($key,['id','bloc_id','create_time','update_time'])){
                     $this->$key = Yii::$app->getSecurity()->encryptByKey($this->attributes[$key], $secretKey);                     
                 }
