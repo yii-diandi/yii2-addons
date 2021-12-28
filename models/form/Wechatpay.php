@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:01:34
+ * @Last Modified time: 2021-12-28 16:12:14
  */
 
 namespace diandi\addons\models\form;
@@ -57,7 +57,7 @@ class Wechatpay extends Model
         $this->server_mchid = $this->decodeConf($bloc['server_mchid']);
         $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
         $this->key = $this->decodeConf($bloc['key']);
-        $this->is_server = $this->decodeConf($bloc['is_server']);
+        $this->is_server = $bloc['is_server'];
         $this->notify_url = $this->decodeConf($bloc['notify_url']);
         
     }

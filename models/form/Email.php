@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:01:08
+ * @Last Modified time: 2021-12-28 16:10:18
  */
 
 namespace diandi\addons\models\form;
@@ -48,7 +48,7 @@ class Email extends Model
         $this->id = $bloc['id'];
         $this->bloc_id = $bloc['bloc_id'];
         $this->host = $this->decodeConf($bloc['host']);
-        $this->port = $this->decodeConf($bloc['port']);
+        $this->port = $bloc['port'];
         $this->username = $this->decodeConf($bloc['username']);
         $this->password = $this->decodeConf($bloc['password']);
         $this->title = $this->decodeConf($bloc['title']);
