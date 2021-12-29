@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:00:54
+ * @Last Modified time: 2021-12-29 23:57:59
  */
 
 namespace diandi\addons\models\form;
@@ -19,6 +19,7 @@ use yii\base\Model;
 
 class App extends Model
 {
+    public $is_showall = false;
     public $id;
 
     public $bloc_id;
@@ -79,7 +80,8 @@ class App extends Model
         $decodeKey = Yii::$app->params['encryptKey'];
         if(!empty($data)){
             $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return addonsService::hideStr($val);    
+            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
+  
         }else{
             return '';
         }

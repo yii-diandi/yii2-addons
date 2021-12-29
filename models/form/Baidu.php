@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:01:03
+ * @Last Modified time: 2021-12-29 23:59:14
  */
 
 /***
@@ -26,6 +26,8 @@ use diandi\addons\services\addonsService;
 
 class Baidu extends Model
 {
+    public $is_showall = false;
+
     public $id;
 
     public $bloc_id;
@@ -73,7 +75,9 @@ class Baidu extends Model
         $decodeKey = Yii::$app->params['encryptKey'];
         if(!empty($data)){
             $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return addonsService::hideStr($val);    
+            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
+ 
+ 
         }else{
             return '';
         }
