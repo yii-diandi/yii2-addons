@@ -38,7 +38,8 @@ class UserBloc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'bloc_id', 'store_id', 'status'], 'integer'],
+            [['user_id', 'bloc_id', 'store_id', 'status','is_default'], 'integer'],
+			['is_default', 'default', 'value' => 0],
             ['status', 'default', 'value' => 1],
             [['create_time', 'update_time'], 'integer'],
             ['user_id', 'check', 'on' => ['create']],
