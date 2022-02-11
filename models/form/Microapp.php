@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 10:01:16
+ * @Last Modified time: 2021-12-29 23:59:53
  */
 
 namespace diandi\addons\models\form;
@@ -18,6 +18,8 @@ use yii\base\Model;
 
 class Microapp extends Model
 {
+    public $is_showall = false;
+
     /**
      * @var string application name
      */
@@ -75,7 +77,8 @@ class Microapp extends Model
         $decodeKey = Yii::$app->params['encryptKey'];
         if(!empty($data)){
             $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return addonsService::hideStr($val);    
+            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
+      
         }else{
             return '';
         }
