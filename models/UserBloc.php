@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 19:12:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-11 09:07:02
+ * @Last Modified time: 2022-02-11 09:54:59
  */
 
 namespace diandi\addons\models;
@@ -39,6 +39,7 @@ class UserBloc extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'bloc_id', 'store_id', 'status'], 'integer'],
+            ['status', 'default', 'value' => 1],
             [['create_time', 'update_time'], 'integer'],
             ['user_id', 'check', 'on' => ['create']],
             [
