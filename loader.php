@@ -17,6 +17,7 @@ use yii\web\UnauthorizedHttpException;
 
 class Loader implements BootstrapInterface
 {
+	
     /**
      * 应用标识.
      */
