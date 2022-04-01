@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-12-21 10:51:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 15:57:02
+ * @Last Modified time: 2022-01-05 17:44:23
  */
 
 namespace diandi\addons\models;
@@ -50,7 +50,7 @@ class BlocConfOss extends \yii\db\ActiveRecord
         return [
             [['bloc_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
-            [['Aliyunoss_accessKeyId','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 255],
+            [['Aliyunoss_accessKeyId','Aliyunoss_endPoint','remote_type', 'Aliyunoss_resource', 'Aliyunoss_accessKeySecret', 'Aliyunoss_url', 'Tengxunoss_APPID', 'Tengxunoss_SecretID', 'Tengxunoss_SecretKEY', 'Tengxunoss_Bucket', 'Tengxunoss_area', 'Tengxunoss_url', 'Qiniuoss_Accesskey', 'Qiniuoss_Secretkey', 'Qiniuoss_Bucket', 'Qiniuoss_url'], 'string', 'max' => 255],
             [['bloc_id'], 'unique']
         ];
     }
@@ -79,7 +79,7 @@ class BlocConfOss extends \yii\db\ActiveRecord
                 foreach ($list as $key => $value) {
                     //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                     $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['id','bloc_id','create_time','update_time','remote_type','Aliyunoss_resource'])){
+                    if(!in_array($value,['id','bloc_id','create_time','update_time','remote_type','Aliyunoss_resource','Aliyunoss_endPoint'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
                             if(strpos($this->attributes[$value],'*') === false){

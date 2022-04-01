@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-01 19:12:40
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-16 10:06:18
+ * @Last Modified time: 2022-02-11 09:54:59
  */
 
 namespace diandi\addons\models;
 
 use common\models\User;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "diandi_user_bloc".
@@ -37,14 +38,31 @@ class UserBloc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'bloc_id', 'store_id', 'status'], 'integer'],
+            [['user_id', 'bloc_id', 'store_id', 'status','is_default'], 'integer'],
+			['is_default', 'default', 'value' => 0],
+            ['status', 'default', 'value' => 1],
             [['create_time', 'update_time'], 'integer'],
             ['user_id', 'check', 'on' => ['create']],
             [
                 ['user_id', 'store_id'],
                 'unique',
                 'targetAttribute' => ['user_id', 'store_id'],
-                'message' => '重复给用户进行店铺权限，请检查'
+                'message' => '重复给用户进行店铺权限，请检查',
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'create_time', // 自己根据数据库字段修改
+                'updatedAtAttribute' => 'update_time', // 自己根据数据库字段修改, // 自己根据数据库字段修改
+                'value' => function () {return time(); },
             ],
         ];
     }
@@ -57,7 +75,7 @@ class UserBloc extends \yii\db\ActiveRecord
         $dish = $this->find()->where([
             'user_id' => $this->user_id,
             'bloc_id' => $this->bloc_id,
-            'store_id' => $this->store_id
+            'store_id' => $this->store_id,
         ])->one();
         if ($dish) {
             $this->addError($attribute, '管理员已经绑定了该商户!');

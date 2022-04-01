@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 13:59:07
+ * @Last Modified time: 2022-01-05 17:43:51
  */
 
 namespace diandi\addons\models\form;
@@ -16,6 +16,8 @@ use yii\base\Model;
 
 class Oss extends Model
 {
+    public $is_showall = false;
+
     /**
      * @var string application name
      */
@@ -27,6 +29,7 @@ class Oss extends Model
     public $Aliyunoss_accessKeySecret;
     public $Aliyunoss_bucket;
     public $Aliyunoss_url;
+    public $Aliyunoss_endPoint;
     public $Tengxunoss_APPID;
     public $Tengxunoss_SecretID;
     public $Tengxunoss_SecretKEY;
@@ -50,6 +53,7 @@ class Oss extends Model
             'Aliyunoss_bucket',
             'Aliyunoss_accessKeySecret',
             'Aliyunoss_url',
+            'Aliyunoss_endPoint',
             'Tengxunoss_APPID',
             'Tengxunoss_SecretID',
             'Tengxunoss_SecretKEY',
@@ -74,6 +78,8 @@ class Oss extends Model
         $this->bloc_id = $bloc['bloc_id'];
         
         $this->remote_type = $bloc['remote_type'];
+        $this->Aliyunoss_endPoint = $bloc['Aliyunoss_endPoint'];
+        
         $this->Aliyunoss_bucket = $this->decodeConf($bloc['Aliyunoss_bucket']);
         $this->Aliyunoss_accessKeyId = $this->decodeConf($bloc['Aliyunoss_accessKeyId']);
         $this->Aliyunoss_resource = $bloc['Aliyunoss_resource'];
@@ -95,7 +101,7 @@ class Oss extends Model
         $decodeKey = Yii::$app->params['encryptKey'];
         if(!empty($data)){
             $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return addonsService::hideStr($val,2,5,2);    
+            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
         }else{
             return '';
         }
@@ -116,7 +122,7 @@ class Oss extends Model
         $conf->bloc_id = $bloc_id;
         $conf->remote_type = $this->remote_type;
         $conf->Aliyunoss_bucket = $this->Aliyunoss_bucket;
-
+        $conf->Aliyunoss_endPoint = $this->Aliyunoss_endPoint;
         $conf->Aliyunoss_accessKeyId = $this->Aliyunoss_accessKeyId;
         $conf->Aliyunoss_resource = $this->Aliyunoss_resource;
         $conf->Aliyunoss_accessKeySecret = $this->Aliyunoss_accessKeySecret;

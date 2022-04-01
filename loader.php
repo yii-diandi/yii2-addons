@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-07 21:54:45
+ * @Last Modified time: 2022-04-01 10:27:33
  */
 
 namespace diandi\addons;
@@ -15,14 +15,13 @@ use Yii;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
 
-
 class Loader implements BootstrapInterface
-{	
+{
     /**
      * 应用标识.
      */
     protected $id;
-	
+
     /**
      * @param \yii\base\Application $application
      *
@@ -39,7 +38,7 @@ class Loader implements BootstrapInterface
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
             if (strpos($argvStr, 'migrate') == false) {
-                $this->afreshLoad($argvs['-bloc_id'], $argvs['-store_id'], $argvs['-addons']);
+                $this->afreshLoad($argvs['--bloc_id'], $argvs['--store_id'], $argvs['--addons']);
             }
         } else {
             $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
@@ -198,7 +197,7 @@ class Loader implements BootstrapInterface
         $list = [];
         foreach ($argv as $key => $value) {
             list($k, $v) = explode('=', $value);
-            if (!empty($v) && strpos($k, '-') !== false) {
+            if (!empty($v) && strpos($k, '--') !== false) {
                 $list[$k] = $v;
             }
         }
