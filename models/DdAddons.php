@@ -9,6 +9,7 @@
 
 namespace diandi\addons\models;
 
+
 /**
  * This is the model class for table "dd_addons".
  *
