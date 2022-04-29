@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:01:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-29 10:37:49
+ * @Last Modified time: 2022-04-29 10:45:14
  */
 
 namespace diandi\addons\models;
@@ -43,6 +43,7 @@ class DdAddons extends \yii\db\ActiveRecord
             [['identifie', 'title', 'version', 'ability', 'description', 'author', 'url', 'settings', 'logo'], 'required'],
             [['type'], 'string'],
             [['settings', 'is_install', 'is_nav', 'parent_mid'], 'integer'],
+            ['parent_mid', 'default', 'value' => 0],
             [['identifie', 'title'], 'string', 'max' => 100],
             [['version', 'versions'], 'string', 'max' => 15],
             [['ability'], 'string', 'max' => 500],
