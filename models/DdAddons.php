@@ -4,28 +4,25 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:01:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-25 11:08:18
+ * @Last Modified time: 2022-04-29 10:37:49
  */
 
-
 namespace diandi\addons\models;
-
-use Yii;
 
 /**
  * This is the model class for table "dd_addons".
  *
- * @property int $mid 模块id
- * @property string $name 英文标识
- * @property string $type 模块类型
- * @property string $title 名称
- * @property string $version 版本
- * @property string $ability 简介
+ * @property int    $mid         模块id
+ * @property string $name        英文标识
+ * @property string $type        模块类型
+ * @property string $title       名称
+ * @property string $version     版本
+ * @property string $ability     简介
  * @property string $description 描述
- * @property string $author 作者
- * @property string $url 社区地址
- * @property int $settings 配置
- * @property string $logo logo
+ * @property string $author      作者
+ * @property string $url         社区地址
+ * @property int    $settings    配置
+ * @property string $logo        logo
  */
 class DdAddons extends \yii\db\ActiveRecord
 {
@@ -45,7 +42,7 @@ class DdAddons extends \yii\db\ActiveRecord
         return [
             [['identifie', 'title', 'version', 'ability', 'description', 'author', 'url', 'settings', 'logo'], 'required'],
             [['type'], 'string'],
-            [['settings', 'is_install', 'is_nav'], 'integer'],
+            [['settings', 'is_install', 'is_nav', 'parent_mid'], 'integer'],
             [['identifie', 'title'], 'string', 'max' => 100],
             [['version', 'versions'], 'string', 'max' => 15],
             [['ability'], 'string', 'max' => 500],
@@ -73,7 +70,8 @@ class DdAddons extends \yii\db\ActiveRecord
             'url' => '社区地址',
             'settings' => '配置',
             'logo' => 'logo',
-            'is_nav' => '顶部导航'
+            'parent_mid' => '主模块',
+            'is_nav' => '顶部导航',
         ];
     }
 }
