@@ -24,7 +24,7 @@ class DdAddons extends DdAddonsModel
     public $module_names;
 
     /**
-     * var string.
+     * 父级ID
      */
     public $parent_mids;
 
