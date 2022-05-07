@@ -98,7 +98,7 @@ class DdAddons extends DdAddonsModel
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'logo', $this->logo]);
 
-        if ($parent_mids) {
+	    if (isset($parent_mids)) {
             $query->andWhere("FIND_IN_SET($parent_mids,parent_mids)");
         }
 
