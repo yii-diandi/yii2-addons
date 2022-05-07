@@ -23,6 +23,7 @@ class DdAddons extends DdAddonsModel
 {
     public $module_names;
 
+
     /* 父级模块ID */
     public $parent_mid;
 
