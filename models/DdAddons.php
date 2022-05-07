@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:01:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 10:34:31
+ * @Last Modified time: 2022-05-07 14:27:12
  */
 
 namespace diandi\addons\models;
@@ -42,15 +42,13 @@ class DdAddons extends \yii\db\ActiveRecord
         return [
             [['identifie', 'title', 'version', 'ability', 'description', 'author', 'url', 'settings', 'logo'], 'required'],
             [['type'], 'string'],
-            [['settings', 'is_install', 'is_nav', 'parent_mid'], 'integer'],
-            ['parent_mid', 'default', 'value' => 0],
+            [['settings', 'is_install', 'is_nav'], 'integer'],
             [['identifie', 'title'], 'string', 'max' => 100],
             [['version', 'versions'], 'string', 'max' => 15],
             [['ability'], 'string', 'max' => 500],
             [['description'], 'string', 'max' => 1000],
             [['author'], 'string', 'max' => 50],
-            [['url'], 'string', 'max' => 255],
-            [['logo'], 'string', 'max' => 250],
+            [['logo', 'url', 'parent_mids'], 'string', 'max' => 255],
         ];
     }
 
@@ -71,7 +69,7 @@ class DdAddons extends \yii\db\ActiveRecord
             'url' => '社区地址',
             'settings' => '配置',
             'logo' => 'logo',
-            'parent_mid' => '主模块',
+            'parent_mids' => '主模块',
             'is_nav' => '顶部导航',
         ];
     }

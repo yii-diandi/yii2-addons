@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 11:38:42
+ * @Last Modified time: 2022-05-07 14:28:07
  */
 
 namespace diandi\addons\models\searchs;
@@ -23,9 +23,8 @@ class DdAddons extends DdAddonsModel
 {
     public $module_names;
 
-
     /* 父级模块ID */
-    public $parent_mid;
+    public $parent_mids;
 
     public function __construct($item = null)
     {
@@ -33,8 +32,8 @@ class DdAddons extends DdAddonsModel
             $this->module_names = $item['module_names'];
         }
 
-        if (isset($item['parent_mid'])) {
-            $this->parent_mid = $item['parent_mid'];
+        if (isset($item['parent_mids'])) {
+            $this->parent_mids = $item['parent_mids'];
         }
     }
 
@@ -44,7 +43,7 @@ class DdAddons extends DdAddonsModel
     public function rules()
     {
         return [
-            [['mid', 'settings', 'parent_mid'], 'integer'],
+            [['mid', 'settings', 'parent_mids'], 'integer'],
             [['identifie', 'type', 'title', 'version', 'ability', 'description', 'author', 'url', 'logo'], 'safe'],
         ];
     }
@@ -95,7 +94,7 @@ class DdAddons extends DdAddonsModel
             ->andFilterWhere(['like', 'author', $this->author])
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'logo', $this->logo])
-            ->andFilterWhere(['=', 'parent_mid', $this->parent_mid]);
+            ->andFilterWhere(['IN', 'parent_mids', $this->parent_mids]);
 
         $count = $query->count();
         $pageSize = $_GPC['pageSize'];
