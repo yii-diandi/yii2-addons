@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 11:18:54
+ * @Last Modified time: 2022-05-07 11:38:42
  */
 
 namespace diandi\addons\models\searchs;
@@ -22,14 +22,18 @@ use yii\data\Pagination;
 class DdAddons extends DdAddonsModel
 {
     public $module_names;
-	
-	/* 父级模块ID */
+
+    /* 父级模块ID */
     public $parent_mid;
 
     public function __construct($item = null)
     {
         if ($item['module_names']) {
             $this->module_names = $item['module_names'];
+        }
+
+        if ($item['parent_mid']) {
+            $this->parent_mid = $item['parent_mid'];
         }
     }
 
