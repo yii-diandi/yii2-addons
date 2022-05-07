@@ -4,11 +4,10 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-27 12:01:53
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-29 10:45:14
+ * @Last Modified time: 2022-05-07 10:34:31
  */
 
 namespace diandi\addons\models;
-
 
 /**
  * This is the model class for table "dd_addons".

@@ -4,17 +4,16 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-10 15:03:52
+ * @Last Modified time: 2022-05-07 11:18:54
  */
-
 
 namespace diandi\addons\models\searchs;
 
 use common\components\DataProvider\ArrayDataProvider;
 use common\helpers\ImageHelper;
+use diandi\addons\models\DdAddons as DdAddonsModel;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use diandi\addons\models\DdAddons as DdAddonsModel;
 use yii\data\Pagination;
 
 /**
@@ -22,8 +21,9 @@ use yii\data\Pagination;
  */
 class DdAddons extends DdAddonsModel
 {
-
     public $module_names;
+
+    public $parent_mid;
 
     public function __construct($item = null)
     {
@@ -31,13 +31,14 @@ class DdAddons extends DdAddonsModel
             $this->module_names = $item['module_names'];
         }
     }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['mid', 'settings'], 'integer'],
+            [['mid', 'settings', 'parent_mid'], 'integer'],
             [['identifie', 'type', 'title', 'version', 'ability', 'description', 'author', 'url', 'logo'], 'safe'],
         ];
     }
@@ -52,7 +53,7 @@ class DdAddons extends DdAddonsModel
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
@@ -63,8 +64,6 @@ class DdAddons extends DdAddonsModel
         global $_GPC;
 
         $query = DdAddonsModel::find();
-
-
 
         $this->load($params);
 
@@ -78,7 +77,7 @@ class DdAddons extends DdAddonsModel
         $query->andFilterWhere([
             'mid' => $this->mid,
             'settings' => $this->settings,
-            'identifie' => $this->module_names
+            'identifie' => $this->module_names,
         ]);
 
         $query->andFilterWhere(['like', 'identifie', $this->identifie])
@@ -89,11 +88,12 @@ class DdAddons extends DdAddonsModel
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'author', $this->author])
             ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'logo', $this->logo]);
+            ->andFilterWhere(['like', 'logo', $this->logo])
+            ->andFilterWhere(['=', 'parent_mid', $this->parent_mid]);
 
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize'];
-        $page       = $_GPC['page'];
+        $pageSize = $_GPC['pageSize'];
+        $page = $_GPC['page'];
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
@@ -111,7 +111,6 @@ class DdAddons extends DdAddonsModel
             $value['logo'] = ImageHelper::tomedia($value['logo']);
         }
 
-
         $provider = new ArrayDataProvider([
             'key' => 'mid',
             'allModels' => $list,
@@ -127,7 +126,7 @@ class DdAddons extends DdAddonsModel
             ],
             'pagination' => [
                 'pageSize' => $pageSize,
-            ]
+            ],
         ]);
 
         return $provider;
