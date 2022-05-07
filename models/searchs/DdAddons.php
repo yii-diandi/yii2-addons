@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 14:28:07
+ * @Last Modified time: 2022-05-07 15:04:12
  */
 
 namespace diandi\addons\models\searchs;
@@ -23,7 +23,9 @@ class DdAddons extends DdAddonsModel
 {
     public $module_names;
 
-    /* 父级模块ID */
+    /**
+     * var string.
+     */
     public $parent_mids;
 
     public function __construct($item = null)
@@ -85,6 +87,7 @@ class DdAddons extends DdAddonsModel
             'identifie' => $this->module_names,
         ]);
 
+        $parent_mids = $this->parent_mids;
         $query->andFilterWhere(['like', 'identifie', $this->identifie])
             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'title', $this->title])
@@ -93,8 +96,11 @@ class DdAddons extends DdAddonsModel
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'author', $this->author])
             ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'logo', $this->logo])
-            ->andFilterWhere(['IN', 'parent_mids', $this->parent_mids]);
+            ->andFilterWhere(['like', 'logo', $this->logo]);
+
+        if ($parent_mids) {
+            $query->andWhere("FIND_IN_SET($parent_mids,parent_mids)");
+        }
 
         $count = $query->count();
         $pageSize = $_GPC['pageSize'];
