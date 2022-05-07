@@ -22,7 +22,8 @@ use yii\data\Pagination;
 class DdAddons extends DdAddonsModel
 {
     public $module_names;
-
+	
+	/* 父级模块ID */
     public $parent_mid;
 
     public function __construct($item = null)
