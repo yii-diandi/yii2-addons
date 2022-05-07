@@ -32,7 +32,7 @@ class DdAddons extends DdAddonsModel
             $this->module_names = $item['module_names'];
         }
 
-        if ($item['parent_mid']) {
+        if (isset($item['parent_mid'])) {
             $this->parent_mid = $item['parent_mid'];
         }
     }
