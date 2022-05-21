@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:06:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-06-15 15:04:22
+ * @Last Modified time: 2022-05-21 11:28:17
  */
 
 namespace diandi\addons\models\searchs;
 
 use common\components\DataProvider\ArrayDataProvider;
+use common\helpers\ImageHelper;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use diandi\addons\models\BlocStore;
@@ -120,10 +121,10 @@ class BlocStoreSearch extends BlocStore
             ->asArray()
             ->all();
 
-        //foreach ($list as $key => &$value) {
-        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
+        foreach ($list as $key => &$value) {
+           $value['logo'] = ImageHelper::tomedia($value['logo']);
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //} 
+        } 
 
 
         $provider = new ArrayDataProvider([

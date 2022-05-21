@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 08:26:55
+ * @Last Modified time: 2022-05-12 16:36:00
  */
 
 namespace diandi\addons\services;
@@ -443,7 +443,7 @@ class addonsService extends BaseService
                 }
             }
 
-            $dirSql = Yii::getAlias("@addons/{$application['identifie']}/migrations");
+            $dirSql = Yii::getAlias("@addons/{$application['identifie']}/migrations/{$application['version']}");
 
             $dirFile = array_diff(scandir($dirSql), array('..', '.'));
 
