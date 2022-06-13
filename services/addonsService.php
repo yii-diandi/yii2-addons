@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 16:41:28
+ * @Last Modified time: 2022-06-13 18:16:01
  */
 
 namespace diandi\addons\services;
@@ -391,6 +391,7 @@ class addonsService extends BaseService
                         'name' => $item['name'],
                         'parent' => 0,
                         'level_type' => $item['level_type'],
+                        'is_show' => $item['is_show'],
                         'route' => $item['route'],
                         'order' => !empty($item['order']) ? $item['order'] : 0,
                         'type' => 'plugins',
@@ -401,6 +402,7 @@ class addonsService extends BaseService
 
                     $_Menu->setAttributes($MenuData);
                     $_Menu->save();
+
                     $parent = $_Menu['attributes']['id'];
                     self::createRoute($item['ruoter'], $parent);
 
@@ -411,6 +413,7 @@ class addonsService extends BaseService
                                 'name' => $child['name'],
                                 'parent' => $parent,
                                 'level_type' => $child['level_type'],
+                                'is_show' => $item['is_show'],
                                 'route' => $child['route'],
                                 'order' => intval($child['order']),
                                 'type' => 'plugins',
@@ -432,6 +435,7 @@ class addonsService extends BaseService
                                         'name' => $childs['name'],
                                         'parent' => $parentChild,
                                         'level_type' => $childs['level_type'],
+                                        'is_show' => $item['is_show'],
                                         'order' => intval($child['order']),
                                         'route' => $childs['route'],
                                         'type' => 'plugins',
