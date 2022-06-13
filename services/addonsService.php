@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 10:40:13
+ * @Last Modified time: 2022-06-13 15:31:08
  */
 
 namespace diandi\addons\services;
@@ -400,8 +400,7 @@ class addonsService extends BaseService
 
                     $_Menu->setAttributes($MenuData);
                     $_Menu->save();
-
-                    $parent = Yii::$app->db->getLastInsertID();
+                    $parent = $_Menu['attributes']['id'];
                     self::createRoute($item['ruoter'], $parent);
 
                     if (!empty($item['child'])) {
@@ -421,7 +420,7 @@ class addonsService extends BaseService
                             $_Menuchild->setAttributes($MenuData);
                             $_Menuchild->save();
 
-                            $parentChild = Yii::$app->db->getLastInsertID();
+                            $parentChild = $_Menuchild['attributes']['id'];
                             self::createRoute($child['ruoter'], $parentChild);
 
                             if (!empty($child['child'])) {
@@ -440,7 +439,7 @@ class addonsService extends BaseService
                                     // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
                                     $_Menuchild->setAttributes($MenuData);
                                     $_Menuchild->save();
-                                    $parentChilds = Yii::$app->db->getLastInsertID();
+                                    $parentChilds = $_Menuchild['attributes']['id'];
                                     self::createRoute($childs['ruoter'], $parentChilds);
                                 }
                             }
