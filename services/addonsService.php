@@ -441,7 +441,6 @@ class addonsService extends BaseService
                                     $_Menuchild->setAttributes($MenuData);
                                     $_Menuchild->save();
                                     $parentChilds = Yii::$app->db->getLastInsertID();
-
                                     self::createRoute($childs['ruoter'], $parentChilds);
                                 }
                             }
