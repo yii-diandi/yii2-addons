@@ -362,6 +362,7 @@ class addonsService extends BaseService
     // 根据数组结构执行安装
     public static function install($addons)
     {
+		
         // 写入基础信息进入模块目录
         $logPath = Yii::getAlias('@runtime/log/install');
         $application = $addons['application'];
