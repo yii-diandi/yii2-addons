@@ -397,7 +397,6 @@ class addonsService extends BaseService
                         'is_sys' => 'addons',
                         'module_name' => $application['identifie'],
                     ];
-
                     $_Menu->setAttributes($MenuData);
                     $_Menu->save();
                     $parent = $_Menu['attributes']['id'];
