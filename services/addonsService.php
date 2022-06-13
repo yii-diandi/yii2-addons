@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 18:16:01
+ * @Last Modified time: 2022-06-13 18:33:01
  */
 
 namespace diandi\addons\services;
@@ -362,7 +362,6 @@ class addonsService extends BaseService
     // 根据数组结构执行安装
     public static function install($addons)
     {
-		
         // 写入基础信息进入模块目录
         $logPath = Yii::getAlias('@runtime/log/install');
         $application = $addons['application'];
@@ -414,7 +413,7 @@ class addonsService extends BaseService
                                 'name' => $child['name'],
                                 'parent' => $parent,
                                 'level_type' => $child['level_type'],
-                                'is_show' => $item['is_show'],
+                                'is_show' => $child['is_show'],
                                 'route' => $child['route'],
                                 'order' => intval($child['order']),
                                 'type' => 'plugins',
@@ -436,7 +435,7 @@ class addonsService extends BaseService
                                         'name' => $childs['name'],
                                         'parent' => $parentChild,
                                         'level_type' => $childs['level_type'],
-                                        'is_show' => $item['is_show'],
+                                        'is_show' => $childs['is_show'],
                                         'order' => intval($child['order']),
                                         'route' => $childs['route'],
                                         'type' => 'plugins',
