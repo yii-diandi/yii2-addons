@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 16:03:55
+ * @Last Modified time: 2022-06-13 16:41:28
  */
 
 namespace diandi\addons\services;
@@ -33,7 +33,6 @@ class addonsService extends BaseService
         if (empty($xml)) {
             return [];
         }
-
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
         $root = $dom->getElementsByTagName('manifest')->item(0);
@@ -391,6 +390,7 @@ class addonsService extends BaseService
                     $MenuData = [
                         'name' => $item['name'],
                         'parent' => 0,
+                        'level_type' => $item['level_type'],
                         'route' => $item['route'],
                         'order' => !empty($item['order']) ? $item['order'] : 0,
                         'type' => 'plugins',
@@ -410,6 +410,7 @@ class addonsService extends BaseService
                             $MenuData = [
                                 'name' => $child['name'],
                                 'parent' => $parent,
+                                'level_type' => $child['level_type'],
                                 'route' => $child['route'],
                                 'order' => intval($child['order']),
                                 'type' => 'plugins',
@@ -430,6 +431,7 @@ class addonsService extends BaseService
                                     $MenuData = [
                                         'name' => $childs['name'],
                                         'parent' => $parentChild,
+                                        'level_type' => $childs['level_type'],
                                         'order' => intval($child['order']),
                                         'route' => $childs['route'],
                                         'type' => 'plugins',
