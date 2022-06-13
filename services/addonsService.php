@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-13 15:31:08
+ * @Last Modified time: 2022-06-13 16:03:55
  */
 
 namespace diandi\addons\services;
@@ -14,6 +14,7 @@ use common\services\BaseService;
 use diandi\addons\models\searchs\DdAddons;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
+use diandi\admin\models\Menu as ModelsMenu;
 use diandi\admin\models\Route;
 use diandi\admin\models\searchs\Menu;
 use Yii;
@@ -397,6 +398,7 @@ class addonsService extends BaseService
                         'is_sys' => 'addons',
                         'module_name' => $application['identifie'],
                     ];
+
                     $_Menu->setAttributes($MenuData);
                     $_Menu->save();
                     $parent = $_Menu['attributes']['id'];
@@ -530,20 +532,23 @@ class addonsService extends BaseService
     public static function createRoute($router = [], $menu_id)
     {
         if (!empty($router)) {
-            $Menu = new Menu();
+            $Menu = new ModelsMenu();
             $AuthRoute = new AuthRoute();
             $AuthRoute->load($router, '');
             $AuthRoute->save();
             $route_id = Yii::$app->db->getLastInsertID();
-            if ($Menu->findOne($menu_id) && $route_id) {
-                $Menu->route_id = $route_id;
-                $Menu->save();
+            $menuView = $Menu->find()->where(['module_name' => $router['module_name'], 'route' => $router['name']])->one();
+            if ($menuView && $route_id) {
+                $Menu->updateAll(['route_id' => $route_id], [
+                    'id' => $menuView['id'],
+                ]);
+
                 $AuthItem = new AuthItem();
                 if (!empty($router['item'])) {
                     $AuthItem->load($router['item'], '');
                     $AuthItem->save();
                     $item_id = Yii::$app->db->getLastInsertID();
-                    if ($AuthRoute->findOne($menu_id) && $item_id) {
+                    if ($AuthRoute->find()->where(['module_name' => $router['item']['module_name'], 'name' => $router['item']['name']])->one() && $item_id) {
                         $AuthRoute->item_id = $item_id;
                         $AuthRoute->save();
                     }
