@@ -4,19 +4,15 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 11:43:44
+ * @Last Modified time: 2022-06-21 14:55:45
  */
 
 namespace diandi\addons;
 
-use common\components\events\GlobalEvent;
-use common\helpers\StringHelper;
 use diandi\addons\models\searchs\DdAddons;
 use Yii;
 use yii\base\BootstrapInterface;
-use yii\base\Event;
 use yii\web\UnauthorizedHttpException;
-
 
 class Loader implements BootstrapInterface
 {
@@ -130,15 +126,17 @@ class Loader implements BootstrapInterface
      */
     public function getModulesByAddons()
     {
+        // 系统已经安装的
         $DdAddons = new DdAddons();
         $addons = $DdAddons->find()->asArray()->all();
+        // 合法渠道授权的
+        $authList = cloud::checkAuth(array_column($addons, 'identifie'));
+        $authListAddons = array_column($authList, 'identifie');
+
         $app_id = $this->id;
         $moduleFile = '';
 
         switch ($app_id) {
-            case 'app-backend':
-                $moduleFile = 'site';
-                break;
             case 'app-api':
                 $moduleFile = 'api';
                 break;
@@ -163,6 +161,12 @@ class Loader implements BootstrapInterface
         $extraPatterns = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
+
+            if (!in_array($name, $authListAddons)) {
+                // 没有授权不进行预加载
+                continue;
+            }
+
             $configPath = Yii::getAlias('@addons/'.$name.'/config/'.$moduleFile.'.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
@@ -189,12 +193,30 @@ class Loader implements BootstrapInterface
             // 服务定位器注册
             $ClassName = 'addons\\'.$name.'\\'.$moduleFile;
 
-            $modules[StringHelper::toUnderScore($name)] = [
+            $modules[self::toUnderScore($name)] = [
                 'class' => $ClassName,
             ];
         }
 
         return $modules;
+    }
+
+    public static function toUnderScore($str)
+    {
+        $array = [];
+        for ($i = 0; $i < strlen($str); ++$i) {
+            if ($str[$i] == strtolower($str[$i])) {
+                $array[] = $str[$i];
+            } else {
+                if ($i > 0) {
+                    $array[] = '-';
+                }
+
+                $array[] = strtolower($str[$i]);
+            }
+        }
+
+        return implode('', $array);
     }
 
     public function getArgv($argv)
