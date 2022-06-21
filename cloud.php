@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-21 14:56:07
+ * @Last Modified time: 2022-06-21 18:42:11
  */
 
 namespace diandi\addons;
@@ -15,7 +15,7 @@ use yii\base\InvalidCallException;
 
 class cloud extends BaseObject
 {
-    public static $apiUrl = 'http://dev.hopesfire.com';
+    public static $apiUrl = 'http://www.dandicloud.com';
 
     public static $username;
 

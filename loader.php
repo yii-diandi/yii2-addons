@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-21 14:55:45
+ * @Last Modified time: 2022-06-21 18:47:15
  */
 
 namespace diandi\addons;
@@ -131,7 +131,11 @@ class Loader implements BootstrapInterface
         $addons = $DdAddons->find()->asArray()->all();
         // 合法渠道授权的
         $authList = cloud::checkAuth(array_column($addons, 'identifie'));
-        $authListAddons = array_column($authList, 'identifie');
+        if (is_array($authList) && !empty($authList)) {
+            $authListAddons = array_column($authList, 'identifie');
+        } else {
+            $authListAddons = [];
+        }
 
         $app_id = $this->id;
         $moduleFile = '';
@@ -161,8 +165,7 @@ class Loader implements BootstrapInterface
         $extraPatterns = [];
         foreach ($addons as $addon) {
             $name = $addon['identifie'];
-
-            if (!in_array($name, $authListAddons)) {
+            if (!in_array($name, $authListAddons) || empty($authListAddons)) {
                 // 没有授权不进行预加载
                 continue;
             }
