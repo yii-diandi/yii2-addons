@@ -136,7 +136,6 @@ class Loader implements BootstrapInterface
         } else {
             $authListAddons = [];
         }
-        var_dump($authListAddons);
         $app_id = $this->id;
         $moduleFile = '';
 
