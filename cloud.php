@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 14:39:07
+ * @Last Modified time: 2022-06-27 17:11:23
  */
 
 namespace diandi\addons;
@@ -179,7 +179,13 @@ class cloud extends BaseObject
         $Res = self::postHttp($data, '/api/diandi_cloud/addons/authlist');
         if ($Res['code'] === 200) {
             return $Res['data'];
+        }elseif(in_array($Res['code'],[402,403])){
+            $key = self::$auth_key;
+            Yii::$app->cache->set($key,'');
+            self::__init();
+            return self::checkAuth($addons);
         }
+
     }
 
     public static function local_auth_config()
