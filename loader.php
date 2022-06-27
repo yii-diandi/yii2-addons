@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-21 18:53:29
+ * @Last Modified time: 2022-06-27 14:41:47
  */
 
 namespace diandi\addons;
@@ -129,14 +129,19 @@ class Loader implements BootstrapInterface
         // 系统已经安装的
         $DdAddons = new DdAddons();
         $addons = $DdAddons->find()->asArray()->all();
-        // 合法渠道授权的
-        $authList = cloud::checkAuth(array_column($addons, 'identifie'));
-        if (is_array($authList) && !empty($authList)) {
-            $authListAddons = array_column($authList, 'identifie');
-        } else {
-            $authListAddons = [];
-        }
         $app_id = $this->id;
+        $authListAddons = [];
+        // 合法渠道授权的
+        if(in_array($app_id,['app-api','app-admin','app-swoole','app-frontend']) ){
+            $authList = cloud::checkAuth(array_column($addons, 'identifie'));
+            if (is_array($authList) && !empty($authList)) {
+                $authListAddons = array_column($authList, 'identifie');
+            } else {
+                $authListAddons = [];
+            }    
+        }
+      
+        
         $moduleFile = '';
 
         switch ($app_id) {
@@ -162,13 +167,7 @@ class Loader implements BootstrapInterface
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
-        foreach ($addons as $addon) {
-            $name = $addon['identifie'];
-            if (!in_array($name, $authListAddons) || empty($authListAddons)) {
-                // 没有授权不进行预加载
-                continue;
-            }
-
+        foreach ($authListAddons as $name) {
             $configPath = Yii::getAlias('@addons/'.$name.'/config/'.$moduleFile.'.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
