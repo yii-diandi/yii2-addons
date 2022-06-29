@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 14:41:47
+ * @Last Modified time: 2022-06-29 17:46:24
  */
 
 namespace diandi\addons;
@@ -130,18 +130,8 @@ class Loader implements BootstrapInterface
         $DdAddons = new DdAddons();
         $addons = $DdAddons->find()->asArray()->all();
         $app_id = $this->id;
-        $authListAddons = [];
-        // 合法渠道授权的
-        if(in_array($app_id,['app-api','app-admin','app-swoole','app-frontend']) ){
-            $authList = cloud::checkAuth(array_column($addons, 'identifie'));
-            if (is_array($authList) && !empty($authList)) {
-                $authListAddons = array_column($authList, 'identifie');
-            } else {
-                $authListAddons = [];
-            }    
-        }
-      
-        
+        $authListAddons = array_column($addons, 'identifie');
+
         $moduleFile = '';
 
         switch ($app_id) {

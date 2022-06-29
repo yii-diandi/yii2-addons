@@ -4,13 +4,14 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-28 18:00:23
+ * @Last Modified time: 2022-06-29 17:48:58
  */
 
 namespace diandi\addons\services;
 
 use common\helpers\FileHelper;
 use common\services\BaseService;
+use diandi\addons\cloud;
 use diandi\addons\models\searchs\DdAddons;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
@@ -370,6 +371,11 @@ class addonsService extends BaseService
 
         try {
             $parent = [];
+            // 合法渠道授权的
+            $is_auth = cloud::checkAuth($application['identifie']);
+            if (!$is_auth) {
+                throw new BadRequestHttpException('请通过官方应用市场购买应用后安装，支持正版，保护自身权益');
+            }
             // 唯一标识是否重复
             $is_have = $DdAddons::findOne(['identifie' => $application['identifie']]);
             if ($is_have) {
