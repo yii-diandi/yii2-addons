@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-27 17:33:34
+ * @Last Modified time: 2022-06-30 16:01:14
  */
 
 namespace diandi\addons;
@@ -15,8 +15,7 @@ use yii\base\InvalidCallException;
 
 class cloud extends BaseObject
 {
-	
-    public static $apiUrl = 'http://www.dandicloud.com';
+    public static $apiUrl = 'https://addons.dandicloud.com';
 
     public static $username;
 
@@ -172,28 +171,29 @@ class cloud extends BaseObject
     public static function checkAuth($addons)
     {
         $key = Yii::$app->request->hostInfo;
-        
-        if(Yii::$app->cache->get($key)){
+
+        if (Yii::$app->cache->get($key)) {
             return Yii::$app->cache->get($key);
         }
-        
+
         $data = self::createData([
             'addons' => $addons,
             'url' => Yii::$app->request->hostInfo,
         ]);
         $Res = self::postHttp($data, '/api/diandi_cloud/addons/authlist');
         if ($Res['code'] === 200) {
-            Yii::$app->cache->set($key,$Res['data'],7200);
+            Yii::$app->cache->set($key, $Res['data'], 7200);
+
             return $Res['data'];
-        }elseif(in_array($Res['code'],[402,403])){
+        } elseif (in_array($Res['code'], [402, 403])) {
             $key = self::$auth_key;
-            Yii::$app->cache->set($key,'');
+            Yii::$app->cache->set($key, '');
             self::__init();
             $Res = self::checkAuth($addons);
-            Yii::$app->cache->set($key,$Res,7200);
+            Yii::$app->cache->set($key, $Res, 7200);
+
             return $Res;
         }
-
     }
 
     public static function local_auth_config()
