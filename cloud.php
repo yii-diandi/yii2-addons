@@ -15,6 +15,7 @@ use yii\base\InvalidCallException;
 
 class cloud extends BaseObject
 {
+	
     public static $apiUrl = 'https://addons.dandicloud.com';
 
     public static $username;
