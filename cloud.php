@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-30 16:01:14
+ * @Last Modified time: 2022-07-14 19:05:01
  */
 
 namespace diandi\addons;
@@ -15,7 +15,6 @@ use yii\base\InvalidCallException;
 
 class cloud extends BaseObject
 {
-	
     public static $apiUrl = 'http://www.dandicloud.cn';
 
     public static $username;
@@ -47,6 +46,7 @@ class cloud extends BaseObject
             self::$password = $config['password'];
             self::$bloc_id = (int) $config['bloc_id'];
             self::$store_id = (int) $config['store_id'];
+            self::$webkey = (int) $config['webkey'];
             // 鉴权
             self::apartmentLogin(self::$username, self::$password, self::$bloc_id, self::$store_id);
         } else {
@@ -180,8 +180,9 @@ class cloud extends BaseObject
         $data = self::createData([
             'addons' => $addons,
             'url' => Yii::$app->request->hostInfo,
+            'web_key'=>
         ]);
-        $Res = self::postHttp($data, '/api/diandi_cloud/addons/authlist');
+        $Res = self::postHttp($data, '/api/diandi_cloud/auth-addons/checkauth');
         if ($Res['code'] === 200) {
             Yii::$app->cache->set($key, $Res['data'], 7200);
 
