@@ -3,17 +3,14 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-19 00:24:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:01:58
+ * @Last Modified time: 2022-07-14 15:59:50
  */
- 
 
 namespace diandi\addons\models\searchs;
 
-use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
 use diandi\addons\models\StoreCategory as StoreCategoryModel;
-use yii\data\Pagination;
-
+use yii\base\Model;
 
 /**
  * StoreCategory represents the model behind the search form of `diandi\admin\models\StoreCategory`.
@@ -26,7 +23,7 @@ class StoreCategory extends StoreCategoryModel
     public function rules()
     {
         return [
-            [['category_id', 'parent_id', 'sort', 'create_time', 'update_time'], 'integer'],
+            [['category_id', 'parent_id', 'sort', 'create_time', 'update_time', 'bloc_id'], 'integer'],
             [['name', 'thumb'], 'safe'],
         ];
     }
@@ -41,19 +38,16 @@ class StoreCategory extends StoreCategoryModel
     }
 
     /**
-     * Creates data provider instance with search query applied
+     * Creates data provider instance with search query applied.
      *
      * @param array $params
      *
      * @return ActiveDataProvider
-
      */
     public function search($params)
     {
         global $_GPC;
         $query = StoreCategoryModel::find();
-
-        
 
         $this->load($params);
 
@@ -66,6 +60,7 @@ class StoreCategory extends StoreCategoryModel
         // grid filtering conditions
         $query->andFilterWhere([
             'category_id' => $this->category_id,
+            'bloc_id' => $this->bloc_id,
             'parent_id' => $this->parent_id,
             'sort' => $this->sort,
             'create_time' => $this->create_time,
@@ -74,24 +69,21 @@ class StoreCategory extends StoreCategoryModel
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'thumb', $this->thumb]);
-        
-    
 
         $list = $query
             ->asArray()
             ->all();
-        
+
         //foreach ($list as $key => &$value) {
         //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //} 
-            
+        //}
 
         $provider = new ArrayDataProvider([
-            'key'=>'category_id',
+            'key' => 'category_id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
-            'total'=> isset($count) ? $count : 0,
+            'total' => isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -100,10 +92,9 @@ class StoreCategory extends StoreCategoryModel
                     //'member_id' => SORT_DESC,
                 ],
             ],
-            'pagination' => false
+            'pagination' => false,
         ]);
-        
+
         return $provider;
-        
     }
 }
