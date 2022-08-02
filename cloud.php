@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-14 19:05:01
+ * @Last Modified time: 2022-08-02 17:20:55
  */
 
 namespace diandi\addons;
@@ -33,6 +33,9 @@ class cloud extends BaseObject
     public static $expires_in;
     public static $auth_key = 'diandi—auth-token';
 
+    public static $app_id = '';
+    public static $app_secret = '';
+
     public static $header = [
         'ContentType' => 'application/x-www-form-urlencoded',
     ];
@@ -46,7 +49,8 @@ class cloud extends BaseObject
             self::$password = $config['password'];
             self::$bloc_id = (int) $config['bloc_id'];
             self::$store_id = (int) $config['store_id'];
-            self::$webkey = (int) $config['webkey'];
+            self::$app_id = (int) $config['app_id'];
+            self::$app_secret = (int) $config['app_secret'];
             // 鉴权
             self::apartmentLogin(self::$username, self::$password, self::$bloc_id, self::$store_id);
         } else {
@@ -180,8 +184,9 @@ class cloud extends BaseObject
         $data = self::createData([
             'addons' => $addons,
             'url' => Yii::$app->request->hostInfo,
-            'web_key'=>
+            'web_key' => md5(self::$app_id.self::$app_secret),
         ]);
+
         $Res = self::postHttp($data, '/api/diandi_cloud/auth-addons/checkauth');
         if ($Res['code'] === 200) {
             Yii::$app->cache->set($key, $Res['data'], 7200);
