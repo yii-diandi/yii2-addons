@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 17:20:55
+ * @Last Modified time: 2022-08-08 17:13:29
  */
 
 namespace diandi\addons;
@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\InvalidCallException;
+use yii\web\BadRequestHttpException;
 
 class cloud extends BaseObject
 {
@@ -186,8 +187,8 @@ class cloud extends BaseObject
             'url' => Yii::$app->request->hostInfo,
             'web_key' => md5(self::$app_id.self::$app_secret),
         ]);
-
         $Res = self::postHttp($data, '/api/diandi_cloud/auth-addons/checkauth');
+
         if ($Res['code'] === 200) {
             Yii::$app->cache->set($key, $Res['data'], 7200);
 
@@ -200,7 +201,11 @@ class cloud extends BaseObject
             Yii::$app->cache->set($key, $Res, 7200);
 
             return $Res;
+        } else {
+            throw new BadRequestHttpException($Res['message'], $Res['code']);
         }
+
+        return false;
     }
 
     public static function local_auth_config()

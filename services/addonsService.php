@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-06-29 17:48:58
+ * @Last Modified time: 2022-08-08 16:59:31
  */
 
 namespace diandi\addons\services;
@@ -373,6 +373,8 @@ class addonsService extends BaseService
             $parent = [];
             // 合法渠道授权的
             $is_auth = cloud::checkAuth($application['identifie']);
+            var_dump($is_auth);
+            die;
             if (!$is_auth) {
                 throw new BadRequestHttpException('请通过官方应用市场购买应用后安装，支持正版，保护自身权益');
             }
