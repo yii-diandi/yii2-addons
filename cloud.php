@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2022-06-21 13:50:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-08 17:13:29
+ * @Last Modified time: 2022-08-09 15:55:19
  */
 
 namespace diandi\addons;
@@ -192,7 +192,7 @@ class cloud extends BaseObject
         if ($Res['code'] === 200) {
             Yii::$app->cache->set($key, $Res['data'], 7200);
 
-            return $Res['data'];
+            return true;
         } elseif (in_array($Res['code'], [402, 403])) {
             $key = self::$auth_key;
             Yii::$app->cache->set($key, '');
