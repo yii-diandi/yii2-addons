@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-02 11:54:34
+ * @Last Modified time: 2022-08-21 22:46:26
  */
 
 namespace diandi\addons;
@@ -98,7 +98,7 @@ class Loader implements BootstrapInterface
             }
             
             Yii::$app->service->commonMemberService->setAccessToken($access_token);
-
+            
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
     }
@@ -175,7 +175,7 @@ class Loader implements BootstrapInterface
 
                     Yii::$app->getUrlManager()->addRules($config);
 
-                    if (is_array($config['controllerMap']) && !empty($config['controllerMap'])) {
+                    if (isset($config['controllerMap']) && is_array($config['controllerMap'])) {
                         foreach ($config['controllerMap'] as $key => $val) {
                             Yii::$app->controllerMap[$key] = $val;
                         }

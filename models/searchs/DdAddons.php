@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-07 15:04:12
+ * @Last Modified time: 2022-08-21 22:42:33
  */
 
 namespace diandi\addons\models\searchs;
@@ -30,12 +30,14 @@ class DdAddons extends DdAddonsModel
 
     public function __construct($item = null)
     {
-        if ($item['module_names']) {
-            $this->module_names = $item['module_names'];
-        }
-
-        if (isset($item['parent_mids'])) {
-            $this->parent_mids = $item['parent_mids'];
+        if(!empty($item)){
+            if ($item['module_names']) {
+                $this->module_names = $item['module_names'];
+            }
+    
+            if (isset($item['parent_mids'])) {
+                $this->parent_mids = $item['parent_mids'];
+            }
         }
     }
 

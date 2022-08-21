@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-29 23:59:14
+ * @Last Modified time: 2022-08-21 22:28:19
  */
 
 /***
@@ -62,13 +62,15 @@ class Baidu extends Model
     {
         $conf = new BlocConfBaidu();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-
-        $this->APP_ID = $this->decodeConf($bloc['APP_ID']);
-        $this->API_KEY = $this->decodeConf($bloc['API_KEY']);
-        $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY']);
-        $this->name = $this->decodeConf($bloc['name']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+    
+            $this->APP_ID = $this->decodeConf($bloc['APP_ID']);
+            $this->API_KEY = $this->decodeConf($bloc['API_KEY']);
+            $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY']);
+            $this->name = $this->decodeConf($bloc['name']);
+        }
     }
 
     public function decodeConf($data){

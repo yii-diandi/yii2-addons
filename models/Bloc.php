@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-11 16:20:01
+ * @Last Modified time: 2022-08-21 20:53:51
  */
 
 namespace diandi\addons\models;
@@ -50,7 +50,7 @@ class Bloc extends \yii\db\ActiveRecord
 
     public function __construct($item = null)
     {
-        if ($item['extras']) {
+        if (!empty($item['extras'])) {
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';

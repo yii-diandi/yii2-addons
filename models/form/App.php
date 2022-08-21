@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-29 23:57:59
+ * @Last Modified time: 2022-08-21 22:29:06
  */
 
 namespace diandi\addons\models\form;
@@ -63,17 +63,20 @@ class App extends Model
     {
         $conf = new BlocConfApp();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-
-        $this->android_ver = $this->decodeConf($bloc['android_ver']);
-        $this->android_url = $this->decodeConf($bloc['android_url']);
-        $this->ios_ver = $this->decodeConf($bloc['ios_ver']);
-        $this->ios_url = $this->decodeConf($bloc['ios_url']);
-        $this->partner = $this->decodeConf($bloc['partner']);
-        $this->partner_key = $this->decodeConf($bloc['partner_key']);
-        $this->app_id = $this->decodeConf($bloc['app_id']);
-        $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+    
+            $this->android_ver = $this->decodeConf($bloc['android_ver']);
+            $this->android_url = $this->decodeConf($bloc['android_url']);
+            $this->ios_ver = $this->decodeConf($bloc['ios_ver']);
+            $this->ios_url = $this->decodeConf($bloc['ios_url']);
+            $this->partner = $this->decodeConf($bloc['partner']);
+            $this->partner_key = $this->decodeConf($bloc['partner_key']);
+            $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        }
+       
     }
 
     public function decodeConf($data){

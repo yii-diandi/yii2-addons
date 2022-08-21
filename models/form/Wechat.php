@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-04-19 15:12:49
+ * @Last Modified time: 2022-08-21 22:36:43
  */
 
 namespace diandi\addons\models\form;
@@ -49,13 +49,16 @@ class Wechat extends Model
     {
         $conf = new BlocConfWechat();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-        $this->app_id = $this->decodeConf($bloc['app_id']);
-        $this->token = $this->decodeConf($bloc['token']);
-        $this->aes_key = $this->decodeConf($bloc['aes_key']);
-        $this->secret = $this->decodeConf($bloc['secret']);
-        $this->headimg = $this->decodeConf($bloc['headimg']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->token = $this->decodeConf($bloc['token']);
+            $this->aes_key = $this->decodeConf($bloc['aes_key']);
+            $this->secret = $this->decodeConf($bloc['secret']);
+            $this->headimg = $this->decodeConf($bloc['headimg']);
+        }
+       
     }
 
     public function decodeConf($data)

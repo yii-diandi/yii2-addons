@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-30 00:00:27
+ * @Last Modified time: 2022-08-21 22:34:59
  */
 
 namespace diandi\addons\models\form;
@@ -51,16 +51,17 @@ class Wechatpay extends Model
     {
         $conf = new BlocConfWechatpay();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-      
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-        $this->mch_id = $this->decodeConf($bloc['mch_id']);
-        $this->app_id = $this->decodeConf($bloc['app_id']);
-        $this->server_mchid = $this->decodeConf($bloc['server_mchid']);
-        $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
-        $this->key = $this->decodeConf($bloc['key']);
-        $this->is_server = $bloc['is_server'];
-        $this->notify_url = $this->decodeConf($bloc['notify_url']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            $this->mch_id = $this->decodeConf($bloc['mch_id']);
+            $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->server_mchid = $this->decodeConf($bloc['server_mchid']);
+            $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
+            $this->key = $this->decodeConf($bloc['key']);
+            $this->is_server = $bloc['is_server'];
+            $this->notify_url = $this->decodeConf($bloc['notify_url']);
+        }
         
     }
     

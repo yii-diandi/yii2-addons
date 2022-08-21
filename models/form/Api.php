@@ -3,8 +3,8 @@
 /**
  * @Author: Radish minradish@163.com
  * @Date:   2022-07-18 16:15:31
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-07-18 16:52:04
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-08-21 22:40:00
  */
 
 namespace diandi\addons\models\form;
@@ -28,6 +28,10 @@ class Api extends Model
     public $app_id;
     public $app_secret;
 
+    public $member_id;
+    
+    public $swoole_member_id;
+
 
     /**
      * {@inheritdoc}
@@ -37,7 +41,7 @@ class Api extends Model
         return [
             [['app_id', 'app_secret'], 'string'],
             [['app_id', 'app_secret'], 'required'],
-            [['id', 'bloc_id'], 'integer'],
+            [['id', 'bloc_id','member_id','swoole_member_id'], 'integer'],
         ];
     }
 
@@ -78,6 +82,8 @@ class Api extends Model
         $conf->bloc_id = $bloc_id;
         $conf->app_id = $this->app_id;
         $conf->app_secret = $this->app_secret;
+        $conf->member_id = $this->member_id;
+        $conf->swoole_member_id = $this->swoole_member_id;
         if ($conf->save()) {
             return [
                 'code' => 200,

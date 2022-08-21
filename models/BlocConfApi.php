@@ -3,8 +3,8 @@
 /**
  * @Author: Radish minradish@163.com
  * @Date:   2022-07-18
- * @Last Modified by:   Radish minradish@163.com
- * @Last Modified time: 2022-07-18 16:49:08
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2022-08-21 22:40:25
  */
 
 namespace diandi\addons\models;
@@ -35,7 +35,7 @@ class BlocConfApi extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id'], 'integer'],
+            [['bloc_id','member_id','swoole_member_id'], 'integer'],
             [['app_id', 'app_secret'], 'required'],
             [['app_id', 'app_secret'], 'string', 'max' => 45],
             [['app_id'], 'unique'],
@@ -65,7 +65,7 @@ class BlocConfApi extends \yii\db\ActiveRecord
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                 $secretKey = Yii::$app->params['encryptKey'];
-                if (!in_array($value, ['id', 'bloc_id', 'create_time', 'update_time', 'app_id'])) {
+                if (!in_array($value, ['id', 'bloc_id', 'create_time', 'update_time','app_id','member_id','swoole_member_id'])) {
                     if (!$this->isNewRecord) {
                         // 更新的时候必须无星号才处理
                         if (strpos($this->attributes[$value], '*') === false) {
@@ -95,6 +95,8 @@ class BlocConfApi extends \yii\db\ActiveRecord
             'bloc_id' => '商户ID',
             'app_id' => 'APP ID',
             'app_secret' => 'APP SECRET',
+            'member_id' => '会员ID',
+            'swoole_member_id' => '控制台用户ID',
         ];
     }
 }

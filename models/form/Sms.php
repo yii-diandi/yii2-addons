@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  &#60;2192138785@qq.com&#62;
  * @Date:   2020-04-29 17:21:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-30 00:00:17
+ * @Last Modified time: 2022-08-21 22:36:09
  */
 
 namespace diandi\addons\models\form;
@@ -54,13 +54,16 @@ class Sms extends Model
     {
         $conf = new BlocConfSms();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-        $this->access_key_id = $this->decodeConf($bloc['access_key_id']);
-        $this->access_key_secret = $this->decodeConf($bloc['access_key_secret']);
-        $this->sign_name = $this->decodeConf($bloc['sign_name']);
-        $this->template_code = $this->decodeConf($bloc['template_code']);
-        $this->is_login = $this->decodeConf($bloc['is_login']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            $this->access_key_id = $this->decodeConf($bloc['access_key_id']);
+            $this->access_key_secret = $this->decodeConf($bloc['access_key_secret']);
+            $this->sign_name = $this->decodeConf($bloc['sign_name']);
+            $this->template_code = $this->decodeConf($bloc['template_code']);
+            $this->is_login = $this->decodeConf($bloc['is_login']);
+        }
+        
     }
 
     public function decodeConf($data){

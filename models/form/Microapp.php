@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-29 23:59:53
+ * @Last Modified time: 2022-08-21 22:37:15
  */
 
 namespace diandi\addons\models\form;
@@ -61,16 +61,19 @@ class Microapp extends Model
     {
         $conf = new BlocConfMicroapp();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-
-        $this->name = $this->decodeConf($bloc['name']);
-        $this->description = $this->decodeConf($bloc['description']);
-        $this->original = $this->decodeConf($bloc['original']);
-        $this->AppId = $this->decodeConf($bloc['AppId']);
-        $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
-        $this->headimg = $this->decodeConf($bloc['headimg']);
-        $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+    
+            $this->name = $this->decodeConf($bloc['name']);
+            $this->description = $this->decodeConf($bloc['description']);
+            $this->original = $this->decodeConf($bloc['original']);
+            $this->AppId = $this->decodeConf($bloc['AppId']);
+            $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
+            $this->headimg = $this->decodeConf($bloc['headimg']);
+            $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
+        }
+      
     }
 
     public function decodeConf($data){
