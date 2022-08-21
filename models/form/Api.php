@@ -4,7 +4,7 @@
  * @Author: Radish minradish@163.com
  * @Date:   2022-07-18 16:15:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 22:40:00
+ * @Last Modified time: 2022-08-21 23:01:13
  */
 
 namespace diandi\addons\models\form;
@@ -49,11 +49,48 @@ class Api extends Model
     {
         $conf = new BlocConfApi();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-        // $this->app_id = $this->decodeConf($bloc['app_id']);
-        $this->app_id = $bloc['app_id'];
-        $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            // $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->app_id = $bloc['member_id'];
+            $this->app_id = $bloc['swoole_member_id'];
+            $this->app_id = $bloc['app_id'];
+            $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        }
+        
+    }
+
+    public function getConfByMember($member_id)
+    {
+        $conf = new BlocConfApi();
+        $bloc = $conf::find()->where(['member_id' => $member_id])->asArray()->one();
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            // $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->app_id = $bloc['member_id'];
+            $this->app_id = $bloc['swoole_member_id'];
+            $this->app_id = $bloc['app_id'];
+            $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        }
+        
+    }
+
+    public function getConfBySwoole($swoole_member_id)
+    {
+        $conf = new BlocConfApi();
+        $bloc = $conf::find()->where(['swoole_member_id' => $swoole_member_id])->asArray()->one();
+        if(!empty($bloc)){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            // $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->app_id = $bloc['member_id'];
+            $this->app_id = $bloc['swoole_member_id'];
+            $this->app_id = $bloc['app_id'];
+            $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        }
+        
     }
 
     public function decodeConf($data)
