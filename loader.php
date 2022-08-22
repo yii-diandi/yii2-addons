@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 22:46:26
+ * @Last Modified time: 2022-08-22 14:06:53
  */
 
 namespace diandi\addons;
@@ -89,15 +89,9 @@ class Loader implements BootstrapInterface
                 }
             }
 
-            // 后台数据
-            if (Yii::$app->id == 'app-backend') {
-                $key = Yii::$app->user->identity->id.'globalBloc';
-                $backendCache = Yii::$app->cache->get($key);
-                $bloc_id = $backendCache['bloc_id'];
-                $store_id = $backendCache['store_id'];
+            if($access_token){
+                Yii::$app->service->commonMemberService->setAccessToken($access_token);
             }
-            
-            Yii::$app->service->commonMemberService->setAccessToken($access_token);
             
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
@@ -154,6 +148,7 @@ class Loader implements BootstrapInterface
             default:
                 $moduleFile = 'api';
         }
+        
 
         $modules = [];
         $extendMethod = 'OPTIONS,';
@@ -172,7 +167,7 @@ class Loader implements BootstrapInterface
                             $value['extraPatterns'] = $extraPatterns;
                         }
                     }
-
+                    
                     Yii::$app->getUrlManager()->addRules($config);
 
                     if (isset($config['controllerMap']) && is_array($config['controllerMap'])) {
@@ -189,7 +184,6 @@ class Loader implements BootstrapInterface
                 'class' => $ClassName,
             ];
         }
-
         return $modules;
     }
 
