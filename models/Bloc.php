@@ -4,12 +4,13 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 20:53:51
+ * @Last Modified time: 2022-08-29 11:46:39
  */
 
 namespace diandi\addons\models;
 
 use common\helpers\ArrayHelper;
+use common\helpers\HashidsHelper;
 use common\models\DdRegion;
 use diandi\region\Region;
 
@@ -81,7 +82,7 @@ class Bloc extends \yii\db\ActiveRecord
             ['register_level', 'default', 'value' => 0],
             [['pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group', 'level_num'], 'integer'],
             [['other_files'], 'string'],
-            [['business_name', 'address', 'open_time', 'sosomap_poi_uid'], 'string', 'max' => 50],
+            [['business_name', 'address', 'open_time', 'sosomap_poi_uid','invitation_code','invitation_code'], 'string', 'max' => 50],
             [['category', 'recommend', 'special', 'introduction'], 'string', 'max' => 255],
             [['province', 'city', 'district', 'longitude', 'latitude'], 'string', 'max' => 15],
             [['telephone'], 'string', 'max' => 20],
@@ -90,6 +91,19 @@ class Bloc extends \yii\db\ActiveRecord
             [['is_group'], 'checkGroup'],
             [['license_name'], 'string', 'max' => 100],
         ];
+    }
+
+    
+        /**
+     * @param bool  $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            empty($this->invitation_code) && Bloc::updateAll(['invitation_code' => HashidsHelper::encode($this->bloc_id)], ['bloc_id' => $this->bloc_id]);
+        }
+        parent::afterSave($insert, $changedAttributes);
     }
 
     public function beforeValidate()

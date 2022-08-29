@@ -4,7 +4,7 @@
  * @Author: Radish minradish@163.com
  * @Date:   2022-07-18 16:15:31
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 14:16:36
+ * @Last Modified time: 2022-08-29 11:38:37
  */
 
 namespace diandi\addons\models\form;
@@ -59,6 +59,21 @@ class Api extends Model
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
         }
         
+    }
+
+    public function getApiConf($appId)
+    {
+        $conf = new BlocConfApi();
+        $bloc = $conf::find()->where(['app_id' => $appId])->asArray()->one();
+        if (!empty($bloc)) {
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            // $this->app_id = $this->decodeConf($bloc['app_id']);
+            $this->member_id = $bloc['member_id'];
+            $this->swoole_member_id = $bloc['swoole_member_id'];
+            $this->app_id = $bloc['app_id'];
+            $this->app_secret = $this->decodeConf($bloc['app_secret']);
+        }
     }
 
     public function getConfByMember($member_id)
