@@ -37,6 +37,7 @@ class Loader implements BootstrapInterface
             // 迁移不执行相关的全局方法
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
+			
             if (isset($argvs['--app']) && in_array($argvs['--app'], ['ddswoole'])) {
                 Yii::$app->id = 'app-' . $argvs['--app'];
             }
