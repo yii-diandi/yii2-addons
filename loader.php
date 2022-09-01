@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 10:18:37
+ * @Last Modified time: 2022-09-01 11:25:41
  */
 
 namespace diandi\addons;
@@ -40,6 +40,8 @@ class Loader implements BootstrapInterface
 			
             if (isset($argvs['--app']) && in_array($argvs['--app'], ['ddswoole'])) {
                 Yii::$app->id = 'app-' . $argvs['--app'];
+                // 启用连接池
+                $this->dbPools();
             }
             if (strpos($argvStr, 'migrate') == false && strpos($argvStr, 'install') == false) {
                 $this->afreshLoad($argvs['--bloc_id'], $argvs['--store_id'], $argvs['--addons']);
@@ -132,7 +134,6 @@ class Loader implements BootstrapInterface
         $authListAddons = array_column($addons, 'identifie');
 
         $moduleFile = '';
-
         switch ($app_id) {
             case 'app-api':
                 $moduleFile = 'api';
@@ -140,7 +141,7 @@ class Loader implements BootstrapInterface
             case 'app-admin':
                 $moduleFile = 'admin';
                 break;
-            case 'app-swooleServer':
+            case 'app-ddswoole':
                 $moduleFile = 'api';
                 break;
             case 'app-frontend':
@@ -221,5 +222,17 @@ class Loader implements BootstrapInterface
         }
 
         return $list;
+    }
+
+    // 重新载入sql配置，启用连接池
+    public function dbPools()
+    {
+        $db = require Yii::getAlias('@common/config/db.php');
+        $db['class'] = 'ddswoole\db\Connection';
+        Yii::$app->setComponents([
+            'db'=>$db
+        ]);
+        var_dump(1);
+        print_r(Yii::$app->db);
     }
 }
