@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 09:12:57
+ * @Last Modified time: 2022-09-01 09:29:10
  */
 
 namespace diandi\addons;
@@ -158,7 +158,7 @@ class Loader implements BootstrapInterface
                 $config = require $configPath;
                 if (!empty($config)) {
                     foreach ($config as $key => &$value) {
-                        if (is_array($value['extraPatterns']) && !empty($value['extraPatterns'])) {
+                        if (!empty($value['extraPatterns']) && is_array($value['extraPatterns'])) {
                             foreach ($value['extraPatterns'] as $k => $val) {
                                 $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod . $k;
                                 $extraPatterns[$newK] = $val;
