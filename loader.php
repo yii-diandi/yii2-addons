@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 11:27:13
+ * @Last Modified time: 2022-09-01 15:58:04
  */
 
 namespace diandi\addons;
@@ -13,6 +13,7 @@ use diandi\addons\models\searchs\DdAddons;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
+use Swoole\Coroutine\Context;
 
 class Loader implements BootstrapInterface
 {
@@ -37,7 +38,6 @@ class Loader implements BootstrapInterface
             // 迁移不执行相关的全局方法
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
-			
             if (isset($argvs['--app']) && in_array($argvs['--app'], ['ddswoole'])) {
                 Yii::$app->id = 'app-' . $argvs['--app'];
                 // 启用连接池
@@ -46,6 +46,8 @@ class Loader implements BootstrapInterface
             if (strpos($argvStr, 'migrate') == false && strpos($argvStr, 'install') == false) {
                 $this->afreshLoad($argvs['--bloc_id'], $argvs['--store_id'], $argvs['--addons']);
             }
+        }else if(Yii::$app->id == 'app-ddswoole'){
+            $this->dbPools();
         } else {
             $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
 
