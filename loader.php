@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 15:58:04
+ * @Last Modified time: 2022-09-01 19:43:01
  */
 
 namespace diandi\addons;
@@ -31,35 +31,42 @@ class Loader implements BootstrapInterface
     public function bootstrap($application)
     {
         global $_W, $_GPC;
-
         $_W = Yii::$app->params;
         $this->id = Yii::$app->id;
-        if (Yii::$app->id == 'app-console') {
+        if (Yii::$app->id == 'app-api') {
+            $response = Yii::$app->response;
+            if (Yii::$app->request->getMethod() == 'OPTIONS') {
+                $response->data = 'options请求 快速响应';
+                $response->statusCode = 200;
+                $response->send();
+                Yii::$app->end();
+                die;
+            }
+        }
+
+        // 命令行类的入口
+        if (in_array(Yii::$app->id,['app-console','app-ddswoole'])) {
             // 迁移不执行相关的全局方法
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
-            if (isset($argvs['--app']) && in_array($argvs['--app'], ['ddswoole'])) {
-                Yii::$app->id = 'app-' . $argvs['--app'];
-                // 启用连接池
-                $this->dbPools();
+            if (isset($argvs['-app']) && in_array($argvs['-app'], ['ddswoole'])) {
+                Yii::$app->id = 'app-' . $argvs['-app'];               
             }
             if (strpos($argvStr, 'migrate') == false && strpos($argvStr, 'install') == false) {
-                $this->afreshLoad($argvs['--bloc_id'], $argvs['--store_id'], $argvs['--addons']);
+                $this->afreshLoad(isset($argvs['-bloc_id'])??0,isset($argvs['-store_id'])??0,isset($argvs['-addons'])??0);
             }
-        }else if(Yii::$app->id == 'app-ddswoole'){
-            $this->dbPools();
-        } else {
+        }else {
             $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
 
             // 全局获取 优先从头部获取
             $bloc_id = Yii::$app->request->headers->get('bloc-id', 0);
-
+    
             $store_id = Yii::$app->request->headers->get('store-id', 0);
-
+    
             $access_token = Yii::$app->request->headers->get('access-token', 0);
-
+    
             $addons = Yii::$app->request->headers->get('addons', '');
-
+    
             if (empty($access_token)) {
                 $access_token = isset($_GPC['access-token']) ? $_GPC['access-token'] : 0;
                 // Yii::$app->request->get('bloc_id', 0);
@@ -72,37 +79,26 @@ class Loader implements BootstrapInterface
                 $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
                 //Yii::$app->request->get('store_id', 0);
             }
-
+    
             // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
             if (empty($_GPC['bloc_id'])) {
                 $_GPC['bloc_id'] = $bloc_id;
             }
-
+    
             if (empty($_GPC['store_id'])) {
                 $_GPC['store_id'] = $store_id;
             }
-
+    
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
             }
-
-            if (Yii::$app->id == 'app-api') {
-                $response = Yii::$app->response;
-                if (Yii::$app->request->getMethod() == 'OPTIONS') {
-                    $response->data = 'options请求 快速响应';
-                    $response->statusCode = 200;
-                    $response->send();
-                    Yii::$app->end();
-                    die;
-                }
-            }
-
+    
             if ($access_token) {
                 Yii::$app->service->commonMemberService->setAccessToken($access_token);
             }
-
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
+
     }
 
     /**
@@ -113,6 +109,8 @@ class Loader implements BootstrapInterface
     public function afreshLoad($bloc_id, $store_id, $addons)
     {
         try {
+            // 启用连接池
+            $this->dbPools();
             Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
@@ -134,7 +132,6 @@ class Loader implements BootstrapInterface
         $addons = $DdAddons->find()->asArray()->all();
         $app_id = $this->id;
         $authListAddons = array_column($addons, 'identifie');
-
         $moduleFile = '';
         switch ($app_id) {
             case 'app-api':
@@ -217,7 +214,7 @@ class Loader implements BootstrapInterface
         foreach ($argv as $key => $value) {
             if (strpos($value, '=') !== false) {
                 list($k, $v) = explode('=', $value);
-                if (!empty($v) && strpos($k, '--') !== false) {
+                if (!empty($v) && strpos($k, '-') !== false) {
                     $list[$k] = $v;
                 }
             }
