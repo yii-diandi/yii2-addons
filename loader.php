@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 11:25:41
+ * @Last Modified time: 2022-09-01 11:27:13
  */
 
 namespace diandi\addons;
@@ -232,7 +232,5 @@ class Loader implements BootstrapInterface
         Yii::$app->setComponents([
             'db'=>$db
         ]);
-        var_dump(1);
-        print_r(Yii::$app->db);
     }
 }
