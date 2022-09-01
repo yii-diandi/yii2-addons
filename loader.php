@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-22 14:06:53
+ * @Last Modified time: 2022-09-01 09:12:57
  */
 
 namespace diandi\addons;
@@ -30,7 +30,7 @@ class Loader implements BootstrapInterface
     public function bootstrap($application)
     {
         global $_W, $_GPC;
-        
+
         $_W = Yii::$app->params;
         $this->id = Yii::$app->id;
         if (Yii::$app->id == 'app-console') {
@@ -89,10 +89,10 @@ class Loader implements BootstrapInterface
                 }
             }
 
-            if($access_token){
+            if ($access_token) {
                 Yii::$app->service->commonMemberService->setAccessToken($access_token);
             }
-            
+
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
     }
@@ -148,26 +148,25 @@ class Loader implements BootstrapInterface
             default:
                 $moduleFile = 'api';
         }
-        
 
         $modules = [];
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
         foreach ($authListAddons as $name) {
-            $configPath = Yii::getAlias('@addons/'.$name.'/config/'.$moduleFile.'.php');
+            $configPath = Yii::getAlias('@addons/' . $name . '/config/' . $moduleFile . '.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
                 if (!empty($config)) {
                     foreach ($config as $key => &$value) {
                         if (is_array($value['extraPatterns']) && !empty($value['extraPatterns'])) {
                             foreach ($value['extraPatterns'] as $k => $val) {
-                                $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod.$k;
+                                $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod . $k;
                                 $extraPatterns[$newK] = $val;
                             }
                             $value['extraPatterns'] = $extraPatterns;
                         }
                     }
-                    
+
                     Yii::$app->getUrlManager()->addRules($config);
 
                     if (isset($config['controllerMap']) && is_array($config['controllerMap'])) {
@@ -178,7 +177,7 @@ class Loader implements BootstrapInterface
                 }
             }
             // 服务定位器注册
-            $ClassName = 'addons\\'.$name.'\\'.$moduleFile;
+            $ClassName = 'addons\\' . $name . '\\' . $moduleFile;
 
             $modules[self::toUnderScore($name)] = [
                 'class' => $ClassName,
@@ -209,9 +208,11 @@ class Loader implements BootstrapInterface
     {
         $list = [];
         foreach ($argv as $key => $value) {
-            list($k, $v) = explode('=', $value);
-            if (!empty($v) && strpos($k, '--') !== false) {
-                $list[$k] = $v;
+            if (strpos($value, '=') !== false) {
+                list($k, $v) = explode('=', $value);
+                if (!empty($v) && strpos($k, '--') !== false) {
+                    $list[$k] = $v;
+                }
             }
         }
 
