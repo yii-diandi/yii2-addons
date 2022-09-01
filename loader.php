@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 09:50:25
+ * @Last Modified time: 2022-09-01 10:01:51
  */
 
 namespace diandi\addons;
@@ -139,7 +139,7 @@ class Loader implements BootstrapInterface
             case 'app-admin':
                 $moduleFile = 'admin';
                 break;
-            case 'app-swoole':
+            case 'app-swooleServer':
                 $moduleFile = 'api';
                 break;
             case 'app-frontend':
