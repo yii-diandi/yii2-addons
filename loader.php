@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 20:26:36
+ * @Last Modified time: 2022-09-01 20:28:49
  */
 
 namespace diandi\addons;
@@ -227,6 +227,7 @@ class Loader implements BootstrapInterface
     public function dbPools()
     {
         if(in_array(Yii::$app->id,['app-swoole'])){
+            \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]); 
             $db = require Yii::getAlias('@common/config/db.php');
             $db['class'] = 'ddswoole\db\Connection';
             Yii::$app->setComponents([
