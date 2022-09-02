@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-01 20:41:01
+ * @Last Modified time: 2022-09-02 10:08:07
  */
 
 namespace diandi\addons;
@@ -14,6 +14,7 @@ use Yii;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
 use Swoole\Coroutine\Context;
+use Swoole\Coroutine;
 
 class Loader implements BootstrapInterface
 {
@@ -43,7 +44,6 @@ class Loader implements BootstrapInterface
                 die;
             }
         }
-
         // 命令行类的入口
         if (in_array(Yii::$app->id,['app-console','app-ddswoole'])) {
             // 迁移不执行相关的全局方法
@@ -228,6 +228,7 @@ class Loader implements BootstrapInterface
     {
         if(in_array(Yii::$app->id,['app-ddswoole'])){
             \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]); 
+            echo "dbPools " . Coroutine::getcid() . " start\n";
             $db = require Yii::getAlias('@common/config/db.php');
             $db['class'] = 'ddswoole\db\Connection';
             Yii::$app->setComponents([
