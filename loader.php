@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-09-02 12:00:45
+ * @Last Modified time: 2022-09-02 13:34:03
  */
 
 namespace diandi\addons;
@@ -22,6 +22,8 @@ class Loader implements BootstrapInterface
      * 应用标识.
      */
     protected $id;
+
+    protected $app;
 
     /**
      * @param \yii\base\Application $application
@@ -44,11 +46,15 @@ class Loader implements BootstrapInterface
                 die;
             }
         }
+
         // 命令行类的入口
-        if (in_array(Yii::$app->id,['app-console','app-ddswoole'])) {
+        if (in_array(Yii::$app->id,['app-console'])) {
             // 迁移不执行相关的全局方法
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
+            if(isset($argvs['--app'])){
+                $this->app = $argvs['--app'];
+            }
             if (strpos($argvStr, 'migrate') == false && strpos($argvStr, 'install') == false) {
                 $this->afreshLoad(isset($argvs['--bloc_id'])??0,isset($argvs['--store_id'])??0,isset($argvs['--addons'])??0);
             }
@@ -106,7 +112,6 @@ class Loader implements BootstrapInterface
     public function afreshLoad($bloc_id, $store_id, $addons)
     {
         try {
-            // 启用连接池
             $this->dbPools();
             Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
@@ -222,9 +227,8 @@ class Loader implements BootstrapInterface
     // 重新载入sql配置，启用连接池
     public function dbPools()
     {
-        if(in_array(Yii::$app->id,['app-ddswoole'])){
-            \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]); 
-            echo "dbPools " . Coroutine::getcid() . " start\n";
+        if(in_array($this->app,['ddswoole'])){
+            \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]);
             $db = require Yii::getAlias('@common/config/db.php');
             $db['class'] = 'ddswoole\db\Connection';
             Yii::$app->setComponents([
