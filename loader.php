@@ -219,7 +219,6 @@ class Loader implements BootstrapInterface
                 }
             }
         }
-
         return $list;
     }
 
