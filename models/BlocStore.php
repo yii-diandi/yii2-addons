@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-23 00:56:53
+ * @Last Modified time: 2022-10-23 01:13:00
  */
 
 namespace diandi\addons\models;
@@ -118,7 +118,7 @@ class BlocStore extends \yii\db\ActiveRecord
     {
         $user_id = Yii::$app->user->identity->user_id;
 
-        return $this->hasOne(AddonsUser::className(), ['store_id' => 'store_id', 'user_id' => $user_id])->joinwith(['addons']);
+        return $this->hasOne(AddonsUser::className(), ['store_id' => 'store_id'])->andWhere(['user_id' => $user_id])->joinwith(['addons']);
     }
 
     /**
