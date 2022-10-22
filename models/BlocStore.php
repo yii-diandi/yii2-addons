@@ -4,10 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-16 10:05:53
+ * @Last Modified time: 2022-10-23 00:56:53
  */
 
 namespace diandi\addons\models;
+
+use Yii;
 
 /**
  * This is the model class for table "dd_diandi_store".
@@ -33,13 +35,11 @@ class BlocStore extends \yii\db\ActiveRecord
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';
-                $pas[] = 'extra[' . $value . ']';
+                $pas[] = 'extra['.$value.']';
             }
             $this->extra = $extra;
         }
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -48,8 +48,6 @@ class BlocStore extends \yii\db\ActiveRecord
     {
         return '{{%store}}';
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -68,7 +66,6 @@ class BlocStore extends \yii\db\ActiveRecord
         ];
     }
 
-
     /**
      * 行为.
      */
@@ -80,7 +77,7 @@ class BlocStore extends \yii\db\ActiveRecord
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
-                'noAttributes'     => ['store_id']
+                'noAttributes' => ['store_id'],
             ],
         ];
     }
@@ -117,6 +114,13 @@ class BlocStore extends \yii\db\ActiveRecord
         return $this->hasMany(StoreLabelLink::className(), ['store_id' => 'store_id']);
     }
 
+    public function getAddons()
+    {
+        $user_id = Yii::$app->user->identity->user_id;
+
+        return $this->hasOne(AddonsUser::className(), ['store_id' => 'store_id', 'user_id' => $user_id])->joinwith(['addons']);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -140,7 +144,7 @@ class BlocStore extends \yii\db\ActiveRecord
             'status' => '审核状态',
             'lng_lat' => '经纬度',
             'latitude' => '维度',
-            'longitude' => '经度'
+            'longitude' => '经度',
         ];
     }
 }
