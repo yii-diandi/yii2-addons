@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 19:30:05
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 22:42:33
+ * @Last Modified time: 2022-10-26 16:52:08
  */
 
 namespace diandi\addons\models\searchs;
@@ -24,17 +24,17 @@ class DdAddons extends DdAddonsModel
     public $module_names;
 
     /**
-     * 父级ID
+     * 父级ID.
      */
     public $parent_mids;
 
     public function __construct($item = null)
     {
-        if(!empty($item)){
+        if (!empty($item)) {
             if ($item['module_names']) {
                 $this->module_names = $item['module_names'];
             }
-    
+
             if (isset($item['parent_mids'])) {
                 $this->parent_mids = $item['parent_mids'];
             }
@@ -100,7 +100,7 @@ class DdAddons extends DdAddonsModel
             ->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'logo', $this->logo]);
 
-	    if (isset($parent_mids)) {
+        if (isset($parent_mids)) {
             $query->andWhere("FIND_IN_SET($parent_mids,parent_mids)");
         }
 
@@ -112,7 +112,7 @@ class DdAddons extends DdAddonsModel
             'totalCount' => $count,
             'pageSize' => $pageSize,
             'page' => $page - 1,
-            // 'pageParam'=>'page'
+            'pageParam' => 'page',
         ]);
 
         $list = $query->offset($pagination->offset)
@@ -123,7 +123,6 @@ class DdAddons extends DdAddonsModel
         foreach ($list as $key => &$value) {
             $value['logo'] = ImageHelper::tomedia($value['logo']);
         }
-
         $provider = new ArrayDataProvider([
             'key' => 'mid',
             'allModels' => $list,

@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-09 15:54:03
+ * @Last Modified time: 2022-10-26 17:14:28
  */
 
 namespace diandi\addons\services;
@@ -304,43 +304,40 @@ class addonsService extends BaseService
     }
 
     // 获取未安装的
-    public static function unAddons()
+    public static function unAddons($title = '')
     {
-        $unAddons = Yii::$app->cache->get('unAddons');
+        // 获取模块目录下所有的模块
+        $module_root = Yii::getAlias('@addons');
+        $module_path_list = glob($module_root.'/*');
+        // 获取所有已经安装的模块
+        $DdAddons = new DdAddons();
+        $addonsAll = $DdAddons->find()->select('identifie')->column();
 
-        if ($unAddons) {
-            return $unAddons;
-        } else {
-            // 获取模块目录下所有的模块
-            $module_root = Yii::getAlias('@addons');
-            $module_path_list = glob($module_root.'/*');
-            // 获取所有已经安装的模块
-            $DdAddons = new DdAddons();
-            $addonsAll = $DdAddons->find()->select('identifie')->column();
+        $list = [];
+        foreach ($module_path_list as $path) {
+            $modulename = pathinfo($path, PATHINFO_BASENAME);
+            if (!in_array($modulename, $addonsAll)) {
+                // 检查文件
+                addonsService::ext_file_check($modulename);
+                $xmlPath = trim($module_root.'/'.$modulename.'/manifest.xml');
+                // 检查配置
+                $xml = file_get_contents($module_root.'/'.$modulename.'/manifest.xml');
 
-            $list = [];
-            foreach ($module_path_list as $path) {
-                $modulename = pathinfo($path, PATHINFO_BASENAME);
+                $addonsXml = addonsService::ext_module_manifest_parse($xml);
 
-                if (!in_array($modulename, $addonsAll)) {
-                    // 检查文件
-                    addonsService::ext_file_check($modulename);
-                    $xmlPath = trim($module_root.'/'.$modulename.'/manifest.xml');
-                    // 检查配置
-                    $xml = file_get_contents($module_root.'/'.$modulename.'/manifest.xml');
-
-                    $addonsXml = addonsService::ext_module_manifest_parse($xml);
-
-                    if ($addonsXml['application']['identifie'] != $modulename) {
-                        continue;
-                    }
-                    $list[] = $addonsXml['application'];
+                if ($addonsXml['application']['identifie'] != $modulename) {
+                    continue;
                 }
-            }
-            $unAddons = Yii::$app->cache->set('unAddons', $list);
 
-            return $list;
+                if ($title && strpos($addonsXml['application']['title'], $title) === false) {
+                    continue;
+                }
+
+                $list[] = $addonsXml['application'];
+            }
         }
+
+        return $list;
     }
 
     // 后台使用logo
@@ -373,7 +370,7 @@ class addonsService extends BaseService
             $parent = [];
             // 合法渠道授权的
             $is_auth = cloud::checkAuth($application['identifie']);
-       
+
             if (!$is_auth) {
                 throw new BadRequestHttpException('请通过官方应用市场购买应用后安装，支持正版，保护自身权益');
             }
