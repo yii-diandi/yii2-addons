@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 10:51:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-02-11 08:53:09
+ * @Last Modified time: 2022-10-26 16:13:08
  */
 
 namespace diandi\addons\models;
@@ -11,7 +11,7 @@ namespace diandi\addons\models;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "dd_addons_user".
+ * This is the model class for table "dd_user_addons".
  *
  * @property int         $id
  * @property int|null    $type        用户类型
@@ -28,7 +28,7 @@ class AddonsUser extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%addons_user}}';
+        return '{{%user_addons}}';
     }
 
     /**
