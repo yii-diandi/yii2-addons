@@ -4,17 +4,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:06:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-05-21 11:28:17
+ * @Last Modified time: 2022-10-27 21:39:09
  */
 
 namespace diandi\addons\models\searchs;
 
 use common\components\DataProvider\ArrayDataProvider;
 use common\helpers\ImageHelper;
-use yii\base\Model;
-use yii\data\ActiveDataProvider;
 use diandi\addons\models\BlocStore;
 use Yii;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 
 /**
@@ -88,7 +88,7 @@ class BlocStoreSearch extends BlocStore
         // grid filtering conditions
         $query->andFilterWhere([
             // 'store_id' => $this->store_id,
-            'bloc_id' => $this->bloc_id,
+            // 'bloc_id' => $this->bloc_id,
             'status' => $this->status,
         ]);
 
@@ -104,8 +104,8 @@ class BlocStoreSearch extends BlocStore
             ->andFilterWhere(['like', 'lng_lat', $this->lng_lat]);
 
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize'];
-        $page       = $_GPC['page'];
+        $pageSize = $_GPC['pageSize'];
+        $page = $_GPC['page'];
 
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
@@ -115,17 +115,15 @@ class BlocStoreSearch extends BlocStore
             // 'pageParam'=>'page'
         ]);
 
-
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->asArray()
             ->all();
 
         foreach ($list as $key => &$value) {
-           $value['logo'] = ImageHelper::tomedia($value['logo']);
-        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        } 
-
+            $value['logo'] = ImageHelper::tomedia($value['logo']);
+            //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
+        }
 
         $provider = new ArrayDataProvider([
             'key' => 'store_id',
@@ -142,7 +140,7 @@ class BlocStoreSearch extends BlocStore
             ],
             'pagination' => [
                 'pageSize' => $pageSize,
-            ]
+            ],
         ]);
 
         return $provider;
