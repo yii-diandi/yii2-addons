@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-09 10:51:10
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 16:13:08
+ * @Last Modified time: 2022-10-31 17:37:55
  */
 
 namespace diandi\addons\models;
@@ -40,6 +40,7 @@ class AddonsUser extends \yii\db\ActiveRecord
             [['type', 'user_id', 'status', 'store_id', 'is_default'], 'integer'],
             [['is_default'], 'default', 'value' => 0],
             [['module_name', 'create_time', 'update_time'], 'string', 'max' => 50],
+            [['user_id', 'module_name', 'store_id'], 'unique', 'targetAttribute' => ['user_id', 'module_name', 'store_id']],
         ];
     }
 
