@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 14:46:54
+ * @Last Modified time: 2023-02-21 15:03:43
  */
 
 namespace diandi\addons\models\form;
@@ -46,9 +46,9 @@ class Wechatpay extends Model
                 'notify_url',
                 'server_mchid',
                 'server_signkey',
-                'apiclient_cert',
-                'apiclient_key'
+                
             ], 'string'],
+            [['apiclient_cert','apiclient_key'],'safe'],
             [['id', 'bloc_id','is_server'], 'integer'],
         ];
     }
@@ -89,6 +89,7 @@ class Wechatpay extends Model
         if (!$this->validate()) {
             return null;
         }
+     
         $conf = BlocConfWechatpay::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
