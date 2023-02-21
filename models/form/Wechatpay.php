@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 22:34:59
+ * @Last Modified time: 2023-02-21 14:46:54
  */
 
 namespace diandi\addons\models\form;
@@ -28,6 +28,10 @@ class Wechatpay extends Model
     public $server_signkey;
     public $is_server;
     public $server_mchid;
+    
+    public $apiclient_cert;
+    public $apiclient_key;
+
 
     /**
      * {@inheritdoc}
@@ -41,7 +45,9 @@ class Wechatpay extends Model
                 'key',
                 'notify_url',
                 'server_mchid',
-                'server_signkey'
+                'server_signkey',
+                'apiclient_cert',
+                'apiclient_key'
             ], 'string'],
             [['id', 'bloc_id','is_server'], 'integer'],
         ];
@@ -60,6 +66,8 @@ class Wechatpay extends Model
             $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
             $this->key = $this->decodeConf($bloc['key']);
             $this->is_server = $bloc['is_server'];
+            $this->apiclient_cert = unserialize($bloc['apiclient_cert']);
+            $this->apiclient_key =unserialize($bloc['apiclient_key']);
             $this->notify_url = $this->decodeConf($bloc['notify_url']);
         }
         
@@ -95,7 +103,8 @@ class Wechatpay extends Model
         $conf->notify_url = $this->notify_url;
         $conf->key = $this->key;
         $conf->app_id = $this->app_id;
-        
+        $conf->apiclient_cert = serialize($this->apiclient_cert);
+        $conf->apiclient_key  = serialize($this->apiclient_key);
        
         if($conf->save()){
             return [

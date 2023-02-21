@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:47:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 14:41:15
+ * @Last Modified time: 2023-02-21 14:44:11
  */
 
 namespace diandi\addons\models;
@@ -70,7 +70,7 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
                 foreach ($list as $key => $value) {
                     //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                     $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['id','bloc_id','create_time','update_time','is_server'])){
+                    if(!in_array($value,['id','bloc_id','create_time','update_time','is_server','apiclient_cert','apiclient_key'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
                             if(strpos($this->attributes[$value],'*') === false){
