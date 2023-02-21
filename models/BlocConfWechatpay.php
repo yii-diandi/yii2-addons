@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 22:47:41
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-12-28 16:12:28
+ * @Last Modified time: 2023-02-21 14:41:15
  */
 
 namespace diandi\addons\models;
@@ -56,7 +56,8 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
             [['bloc_id', 'mch_id'], 'required'],
             [['bloc_id', 'create_time', 'update_time', 'is_server'], 'integer'],
             [['notify_url', 'app_id', 'mch_id','key', 'notify_url',  'server_mchid', 'server_signkey'], 'string', 'max' => 255],
-            [['bloc_id'], 'unique']
+            [['bloc_id'], 'unique'],
+            [['apiclient_cert','apiclient_key'],'safe']
         ];
     }
 
