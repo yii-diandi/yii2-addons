@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-29 11:46:39
+ * @Last Modified time: 2023-02-24 09:51:44
  */
 
 namespace diandi\addons\models;
@@ -12,7 +12,6 @@ namespace diandi\addons\models;
 use common\helpers\ArrayHelper;
 use common\helpers\HashidsHelper;
 use common\models\DdRegion;
-use diandi\region\Region;
 
 /**
  * This is the model class for table "diandi_bloc".
@@ -69,7 +68,6 @@ class Bloc extends \yii\db\ActiveRecord
         return '{{%bloc}}';
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -82,8 +80,8 @@ class Bloc extends \yii\db\ActiveRecord
             ['register_level', 'default', 'value' => 0],
             [['pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group', 'level_num'], 'integer'],
             [['other_files'], 'string'],
-            [['business_name', 'address', 'open_time', 'sosomap_poi_uid','invitation_code','invitation_code'], 'string', 'max' => 50],
-            [['category', 'recommend', 'special', 'introduction'], 'string', 'max' => 255],
+            [['business_name', 'address', 'open_time', 'sosomap_poi_uid', 'invitation_code', 'invitation_code'], 'string', 'max' => 50],
+            [['category', 'recommend', 'special', 'introduction', 'logo'], 'string', 'max' => 255],
             [['province', 'city', 'district', 'longitude', 'latitude'], 'string', 'max' => 15],
             [['telephone'], 'string', 'max' => 20],
             [['license_no'], 'string', 'max' => 30],
@@ -93,8 +91,7 @@ class Bloc extends \yii\db\ActiveRecord
         ];
     }
 
-    
-        /**
+    /**
      * @param bool  $insert
      * @param array $changedAttributes
      */
@@ -135,12 +132,11 @@ class Bloc extends \yii\db\ActiveRecord
         }
     }
 
-
     public function getChildList($pid)
     {
         $parents = $this->find()->asArray()->all();
 
-        $parentBloc =  ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', 'child');
+        $parentBloc = ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', 'child');
         foreach ($parentBloc as $key => $value) {
             if ($value['bloc_id'] == $pid) {
                 $childList[] = $value;
@@ -150,9 +146,9 @@ class Bloc extends \yii\db\ActiveRecord
         $bloc_ids = self::getChilds($childList, 'bloc_id');
 
         return $this->updateAll([
-            'group_bloc_id' => $this->group_bloc_id
+            'group_bloc_id' => $this->group_bloc_id,
         ], [
-            'bloc_id' => $bloc_ids
+            'bloc_id' => $bloc_ids,
         ]);
     }
 
@@ -169,7 +165,7 @@ class Bloc extends \yii\db\ActiveRecord
         return $arr;
     }
 
-    function checkGroup($attribute, $params)
+    public function checkGroup($attribute, $params)
     {
         $pid = $this->pid;
         if (!empty($pid) && $this->is_group == 1) {
@@ -187,7 +183,6 @@ class Bloc extends \yii\db\ActiveRecord
         return $this->extra;
     }
 
-
     public function getStore()
     {
         return $this->hasMany(BlocStore::className(), ['bloc_id' => 'bloc_id']);
@@ -198,7 +193,6 @@ class Bloc extends \yii\db\ActiveRecord
         return $this->hasMany(UserBloc::className(), ['bloc_id' => 'bloc_id']);
     }
 
-
     public function getParent()
     {
         return $this->hasOne(Bloc::className(), ['bloc_id' => 'pid'])->from(Bloc::tableName() . ' parent');
@@ -208,7 +202,6 @@ class Bloc extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Bloc::className(), ['bloc_id' => 'group_bloc_id'])->from(Bloc::tableName() . ' global');
     }
-
 
     /**
      * {@inheritdoc}
