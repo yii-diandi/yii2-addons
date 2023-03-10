@@ -1,9 +1,17 @@
 <?php
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2023-02-24 09:56:03
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-03-10 16:57:02
+ */
+
 
 namespace diandi\addons\models\searchs;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
+use common\helpers\ImageHelper;
 use diandi\addons\models\BlocLevel as BlocLevelModel;
 use yii\data\Pagination;
 
@@ -83,12 +91,14 @@ class BlocLevel extends BlocLevelModel
 
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
+            ->asArray()
             ->all();
         
-        //foreach ($list as $key => &$value) {
-        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
-        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //} 
+        foreach ($list as $key => &$value) {
+            $value['thumb'] = ImageHelper::tomedia($value['thumb']); 
+           $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
+           $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
+        } 
             
 
         $provider = new ArrayDataProvider([
