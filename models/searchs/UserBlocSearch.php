@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-07-07 15:59:19
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-16 23:22:13
+ * @Last Modified time: 2023-03-10 18:55:11
  */
  
 
@@ -34,7 +34,7 @@ class UserBlocSearch extends UserBloc
     public function rules()
     {
         return [
-            [['id', 'user_id', 'bloc_id', 'store_id'], 'integer'],
+            [['id', 'user_id', 'bloc_id'], 'integer'],
             [['create_time', 'update_time'], 'safe'],
         ];
     }
@@ -78,7 +78,6 @@ class UserBlocSearch extends UserBloc
             'id' => $this->id,
             'user_id' => $this->user_id,
             'bloc_id' => $this->bloc_id,
-            'store_id' => $this->store_id,
         ]);
 
         $query->andFilterWhere(['like', 'create_time', $this->create_time])
