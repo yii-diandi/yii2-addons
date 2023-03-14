@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-19 00:24:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-07-14 15:59:50
+ * @Last Modified time: 2023-03-14 17:31:32
  */
 
 namespace diandi\addons\models\searchs;
@@ -60,7 +60,7 @@ class StoreCategory extends StoreCategoryModel
         // grid filtering conditions
         $query->andFilterWhere([
             'category_id' => $this->category_id,
-            'bloc_id' => $this->bloc_id,
+            // 'bloc_id' => $this->bloc_id,
             'parent_id' => $this->parent_id,
             'sort' => $this->sort,
             'create_time' => $this->create_time,
