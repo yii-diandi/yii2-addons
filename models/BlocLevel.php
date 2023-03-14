@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-06-03 17:28:20
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-09-16 10:05:48
+ * @Last Modified time: 2023-03-14 18:53:24
  */
 
 
@@ -45,6 +45,7 @@ class BlocLevel extends \yii\db\ActiveRecord
             [['level_num'], 'integer'],
             [['name', 'thumb', 'extra'], 'string', 'max' => 255],
             [['create_time', 'update_time'], 'string', 'max' => 30],
+            [['level_num'], 'unique']
         ];
     }
 
