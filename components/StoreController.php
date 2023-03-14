@@ -3,17 +3,17 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:07:52
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 12:41:19
+ * @Last Modified time: 2023-03-13 13:50:28
  */
 
 namespace diandi\addons\components;
 
+use admin\controllers\AController;
 use Yii;
 use diandi\addons\models\BlocStore;
 use diandi\addons\models\searchs\BlocStoreSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\controllers\BaseController;
 use common\helpers\ErrorsHelper;
 use common\helpers\ImageHelper;
 use common\helpers\LevelTplHelper;
@@ -27,7 +27,7 @@ use yii\web\HttpException;
 /**
  * StoreController implements the CRUD actions for BlocStore model.
  */
-class StoreController extends BaseController
+class StoreController extends AController
 {
     public $bloc_id;
 

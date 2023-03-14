@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-13 12:16:06
+ * @Last Modified time: 2023-03-14 14:45:06
  */
 
 namespace diandi\addons\models;
@@ -80,7 +80,7 @@ class Bloc extends \yii\db\ActiveRecord
             ['register_level', 'default', 'value' => 0],
             [['pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group', 'level_num','store_num'], 'integer'],
             [['other_files'], 'string'],
-            [['business_name', 'address', 'open_time', 'sosomap_poi_uid', 'invitation_code', 'invitation_code'], 'string', 'max' => 50],
+            [['business_name', 'address', 'open_time', 'end_time','sosomap_poi_uid', 'invitation_code', 'invitation_code'], 'string', 'max' => 50],
             [['category', 'recommend', 'special', 'introduction', 'logo'], 'string', 'max' => 255],
             [['province', 'city', 'district', 'longitude', 'latitude'], 'string', 'max' => 15],
             [['telephone'], 'string', 'max' => 20],
