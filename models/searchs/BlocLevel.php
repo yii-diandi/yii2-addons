@@ -3,7 +3,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-02-24 09:56:03
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-10 16:57:02
+ * @Last Modified time: 2023-03-14 18:51:02
  */
 
 
@@ -67,8 +67,6 @@ class BlocLevel extends BlocLevelModel
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'bloc_id' => $this->bloc_id,
-            'global_bloc_id' => $this->global_bloc_id,
             'level_num' => $this->level_num,
         ]);
 
