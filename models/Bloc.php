@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-28 09:52:10
+ * @Last Modified time: 2023-04-04 13:07:48
  */
 
 namespace diandi\addons\models;
@@ -74,7 +74,7 @@ class Bloc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'avg_price', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
+            [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
             ['status', 'default', 'value' => 2],
             ['is_group', 'default', 'value' => 0],
             ['register_level', 'default', 'value' => 0],

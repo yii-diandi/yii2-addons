@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:04:04
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-08-21 22:36:43
+ * @Last Modified time: 2023-03-31 14:08:38
  */
 
 namespace diandi\addons\models\form;
@@ -49,7 +50,7 @@ class Wechat extends Model
     {
         $conf = new BlocConfWechat();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        if(!empty($bloc)){
+        if (!empty($bloc)) {
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
             $this->app_id = $this->decodeConf($bloc['app_id']);
@@ -58,7 +59,6 @@ class Wechat extends Model
             $this->secret = $this->decodeConf($bloc['secret']);
             $this->headimg = $this->decodeConf($bloc['headimg']);
         }
-       
     }
 
     public function decodeConf($data)
@@ -94,9 +94,9 @@ class Wechat extends Model
 
         if ($conf->save()) {
             return [
-                 'code' => 200,
-                 'message' => '保存成功',
-             ];
+                'code' => 200,
+                'message' => '保存成功',
+            ];
         } else {
             $msg = ErrorsHelper::getModelError($conf);
 

@@ -1,9 +1,10 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-19 00:24:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-03-14 17:31:32
+ * @Last Modified time: 2023-04-03 10:57:00
  */
 
 namespace diandi\addons\models\searchs;
@@ -67,8 +68,7 @@ class StoreCategory extends StoreCategoryModel
             'update_time' => $this->update_time,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'thumb', $this->thumb]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         $list = $query
             ->asArray()

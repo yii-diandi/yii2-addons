@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-14 01:25:51
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-02-21 15:03:43
+ * @Last Modified time: 2023-03-31 14:08:45
  */
 
 namespace diandi\addons\models\form;
@@ -16,11 +16,11 @@ use Yii;
 use yii\base\Model;
 
 class Wechatpay extends Model
-{  
+{
     public $is_showall = false;
 
     public $id;
-	public $bloc_id;
+    public $bloc_id;
     public $mch_id;
     public $app_id;
     public $notify_url;
@@ -28,7 +28,7 @@ class Wechatpay extends Model
     public $server_signkey;
     public $is_server;
     public $server_mchid;
-    
+
     public $apiclient_cert;
     public $apiclient_key;
 
@@ -46,10 +46,10 @@ class Wechatpay extends Model
                 'notify_url',
                 'server_mchid',
                 'server_signkey',
-                
+
             ], 'string'],
-            [['apiclient_cert','apiclient_key'],'safe'],
-            [['id', 'bloc_id','is_server'], 'integer'],
+            [['apiclient_cert', 'apiclient_key'], 'safe'],
+            [['id', 'bloc_id', 'is_server'], 'integer'],
         ];
     }
 
@@ -57,7 +57,7 @@ class Wechatpay extends Model
     {
         $conf = new BlocConfWechatpay();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        if(!empty($bloc)){
+        if (!empty($bloc)) {
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
             $this->mch_id = $this->decodeConf($bloc['mch_id']);
@@ -67,29 +67,28 @@ class Wechatpay extends Model
             $this->key = $this->decodeConf($bloc['key']);
             $this->is_server = $bloc['is_server'];
             $this->apiclient_cert = unserialize($bloc['apiclient_cert']);
-            $this->apiclient_key =unserialize($bloc['apiclient_key']);
+            $this->apiclient_key = unserialize($bloc['apiclient_key']);
             $this->notify_url = $this->decodeConf($bloc['notify_url']);
         }
-        
     }
-    
-    public function decodeConf($data){
+
+    public function decodeConf($data)
+    {
         $decodeKey = Yii::$app->params['encryptKey'];
-        if(!empty($data)){
-            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
-                
-        }else{
+        if (!empty($data)) {
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data), $decodeKey);
+            return $this->is_showall ? $val : addonsService::hideStr($val, 2, 5, 1);
+        } else {
             return '';
         }
     }
-    
+
     public function saveConf($bloc_id)
     {
         if (!$this->validate()) {
             return null;
         }
-     
+
         $conf = BlocConfWechatpay::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
@@ -106,21 +105,19 @@ class Wechatpay extends Model
         $conf->app_id = $this->app_id;
         $conf->apiclient_cert = serialize($this->apiclient_cert);
         $conf->apiclient_key  = serialize($this->apiclient_key);
-       
-        if($conf->save()){
-            return [
-                'code'=>200,
-                'message'=>'保存成功'
-            ];
-       }else{
-           $msg = ErrorsHelper::getModelError($conf);
-           return [
-               'code'=>400,
-               'message'=>$msg
-           ];
-           
-       }
 
+        if ($conf->save()) {
+            return [
+                'code' => 200,
+                'message' => '保存成功'
+            ];
+        } else {
+            $msg = ErrorsHelper::getModelError($conf);
+            return [
+                'code' => 400,
+                'message' => $msg
+            ];
+        }
     }
 
     /**
@@ -131,9 +128,9 @@ class Wechatpay extends Model
         return [
             'mch_id' => '支付商户号',
             'key' => '秘钥',
-            'is_server'=> '是否开启服务商',
-            'server_mchid'=>'服务商商户号',
-            'server_signkey'=>'服务商秘钥',
+            'is_server' => '是否开启服务商',
+            'server_mchid' => '服务商商户号',
+            'server_signkey' => '服务商秘钥',
         ];
     }
 }
