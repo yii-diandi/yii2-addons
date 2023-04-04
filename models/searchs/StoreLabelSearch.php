@@ -1,16 +1,18 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2021-01-17 01:42:12
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2021-01-17 01:43:26
+ * @Last Modified time: 2023-04-04 20:06:52
  */
- 
+
 
 namespace diandi\addons\models\searchs;
 
 use yii\base\Model;
 use common\components\DataProvider\ArrayDataProvider;
+use common\helpers\ImageHelper;
 use diandi\addons\models\StoreLabel;
 use yii\data\Pagination;
 
@@ -51,9 +53,9 @@ class StoreLabelSearch extends StoreLabel
     public function search($params)
     {
         global $_GPC;
-        $query = StoreLabel::find()->with(['store','bloc']);
+        $query = StoreLabel::find()->with(['store', 'bloc']);
 
-        
+
 
         $this->load($params);
 
@@ -77,7 +79,7 @@ class StoreLabelSearch extends StoreLabel
             ->andFilterWhere(['like', 'color', $this->color])
             ->andFilterWhere(['like', 'create_time', $this->create_time])
             ->andFilterWhere(['like', 'update_time', $this->update_time]);
-        
+
         $count = $query->count();
         $pageSize   = $_GPC['pageSize'];
         $page       = $_GPC['page'];
@@ -92,18 +94,19 @@ class StoreLabelSearch extends StoreLabel
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
-        
-        //foreach ($list as $key => &$value) {
-        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
-        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //} 
-            
+
+        foreach ($list as $key => &$value) {
+            $value['thumb'] = ImageHelper::tomedia($value['thumb']);
+            //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
+            //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
+        }
+
 
         $provider = new ArrayDataProvider([
-            'key'=>'id',
+            'key' => 'id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
-            'total'=> isset($count) ? $count : 0,
+            'total' => isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -116,8 +119,7 @@ class StoreLabelSearch extends StoreLabel
                 'pageSize' => $pageSize,
             ]
         ]);
-        
+
         return $provider;
-        
     }
 }
