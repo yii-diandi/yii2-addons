@@ -4,12 +4,13 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-11-19 00:24:21
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-03 10:57:00
+ * @Last Modified time: 2023-04-04 20:18:53
  */
 
 namespace diandi\addons\models\searchs;
 
 use common\components\DataProvider\ArrayDataProvider;
+use common\helpers\ImageHelper;
 use diandi\addons\models\StoreCategory as StoreCategoryModel;
 use yii\base\Model;
 
@@ -74,10 +75,11 @@ class StoreCategory extends StoreCategoryModel
             ->asArray()
             ->all();
 
-        //foreach ($list as $key => &$value) {
-        //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
-        //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
-        //}
+        foreach ($list as $key => &$value) {
+            $value['thumb'] = ImageHelper::tomedia($value['thumb']);
+            //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
+            //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
+        }
 
         $provider = new ArrayDataProvider([
             'key' => 'category_id',
