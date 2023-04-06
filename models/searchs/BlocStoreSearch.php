@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 15:06:25
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-27 21:39:09
+ * @Last Modified time: 2023-04-06 15:49:10
  */
 
 namespace diandi\addons\models\searchs;
@@ -26,17 +26,6 @@ class BlocStoreSearch extends BlocStore
     public $store_id;
 
     public $extra;
-
-    public function __construct($items = null)
-    {
-        if ($items['bloc_id']) {
-            $this->bloc_id = $items['bloc_id'];
-        }
-
-        if (Yii::$app->controller->module->id != 'addons') {
-            $this->store_id = Yii::$app->params['store_id'];
-        }
-    }
 
     /**
      * {@inheritdoc}
@@ -102,7 +91,7 @@ class BlocStoreSearch extends BlocStore
             ->andFilterWhere(['like', 'create_time', $this->create_time])
             ->andFilterWhere(['like', 'update_time', $this->update_time])
             ->andFilterWhere(['like', 'lng_lat', $this->lng_lat]);
-
+        $query->findBlocs();
         $count = $query->count();
         $pageSize = $_GPC['pageSize'];
         $page = $_GPC['page'];

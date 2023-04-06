@@ -4,11 +4,12 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-23 01:13:00
+ * @Last Modified time: 2023-04-06 15:48:41
  */
 
 namespace diandi\addons\models;
 
+use common\traits\ActiveQuery\StoreTrait;
 use Yii;
 
 /**
@@ -29,13 +30,15 @@ use Yii;
  */
 class BlocStore extends \yii\db\ActiveRecord
 {
+    use StoreTrait;
+
     public function __construct($item = null)
     {
         if ($item['extras']) {
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';
-                $pas[] = 'extra['.$value.']';
+                $pas[] = 'extra[' . $value . ']';
             }
             $this->extra = $extra;
         }
