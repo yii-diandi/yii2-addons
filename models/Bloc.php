@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-04 13:07:48
+ * @Last Modified time: 2023-04-12 10:49:35
  */
 
 namespace diandi\addons\models;
@@ -47,6 +47,8 @@ use common\models\DdRegion;
 class Bloc extends \yii\db\ActiveRecord
 {
     public $extra = [];
+
+    public static $group_bloc_id;
 
     public function __construct($item = null)
     {
@@ -97,46 +99,35 @@ class Bloc extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $this->getGroupBlocId($this->pid);
         if ($insert) {
-            empty($this->invitation_code) && Bloc::updateAll(['invitation_code' => HashidsHelper::encode($this->bloc_id)], ['bloc_id' => $this->bloc_id]);
+            empty($this->invitation_code) && Bloc::updateAll([
+                'invitation_code' => HashidsHelper::encode($this->bloc_id),
+                'group_bloc_id' => self::$group_bloc_id
+            ], ['bloc_id' => $this->bloc_id]);
         }
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function beforeValidate()
+    public function getGroupBlocId($pid)
     {
-        if (parent::beforeValidate()) {
-            $this->extra = serialize($this->extra);
-            //字段
-            if (!is_numeric($this->is_group)) {
-                $list = ['非集团' => 0, '集团' => 1];
-                $this->is_group = $list[$this->is_group];
-            }
-
-            if ($this->is_group == 1) {
-                $this->group_bloc_id = $this->bloc_id;
-                // 更新所有的子集
-                $this->getChildList($this->bloc_id);
-            } else {
-                // 获取上级的集团
-                $group_bloc_id = $this->find()->where(['pid' => $this->bloc_id])->select('group_bloc_id')->scalar();
-                $this->group_bloc_id = $group_bloc_id ? $group_bloc_id : 0;
-            }
-
-            if (empty($this->group_bloc_id)) {
-                $this->group_bloc_id = 0;
-            }
-            return true;
+        if (empty($pid)) {
+            return $this->bloc_id;
         } else {
-            return false;
+            $blocOne = $this->find()->where(['bloc_id' => $pid])->select(['bloc_id', 'pid'])->asArray()->one();
+            if (!empty($blocOne['pid'])) {
+                $this->getGroupBlocId($blocOne['pid']);
+            } else {
+                self::$group_bloc_id = $blocOne['bloc_id'];
+            }
         }
     }
 
     public function getChildList($pid)
     {
         $parents = $this->find()->asArray()->all();
-
         $parentBloc = ArrayHelper::itemsMerge($parents, 0, "bloc_id", 'pid', 'child');
+
         foreach ($parentBloc as $key => $value) {
             if ($value['bloc_id'] == $pid) {
                 $childList[] = $value;

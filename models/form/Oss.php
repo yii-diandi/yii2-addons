@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-04-30 17:03:38
@@ -48,23 +49,25 @@ class Oss extends Model
     public function rules(): array
     {
         return [
-            [['Aliyunoss_accessKeyId',
-            'Aliyunoss_resource',
-            'Aliyunoss_bucket',
-            'Aliyunoss_accessKeySecret',
-            'Aliyunoss_url',
-            'Aliyunoss_endPoint',
-            'Tengxunoss_APPID',
-            'Tengxunoss_SecretID',
-            'Tengxunoss_SecretKEY',
-            'Tengxunoss_Bucket',
-            'Tengxunoss_area',
-            'Tengxunoss_url',
-            'Qiniuoss_Accesskey',
-            'Qiniuoss_Secretkey',
-            'Qiniuoss_Bucket',
-            'remote_type',
-            'Qiniuoss_url', ], 'string'],
+            [[
+                'Aliyunoss_accessKeyId',
+                'Aliyunoss_resource',
+                'Aliyunoss_bucket',
+                'Aliyunoss_accessKeySecret',
+                'Aliyunoss_url',
+                'Aliyunoss_endPoint',
+                'Tengxunoss_APPID',
+                'Tengxunoss_SecretID',
+                'Tengxunoss_SecretKEY',
+                'Tengxunoss_Bucket',
+                'Tengxunoss_area',
+                'Tengxunoss_url',
+                'Qiniuoss_Accesskey',
+                'Qiniuoss_Secretkey',
+                'Qiniuoss_Bucket',
+                'remote_type',
+                'Qiniuoss_url',
+            ], 'string'],
             [['id', 'bloc_id'], 'integer'],
         ];
     }
@@ -73,13 +76,13 @@ class Oss extends Model
     {
         $conf = new BlocConfOss();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        if(!empty($bloc)){
+        if (!empty($bloc)) {
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
-            
+
             $this->remote_type = $bloc['remote_type'];
             $this->Aliyunoss_endPoint = $bloc['Aliyunoss_endPoint'];
-            
+
             $this->Aliyunoss_bucket = $this->decodeConf($bloc['Aliyunoss_bucket']);
             $this->Aliyunoss_accessKeyId = $this->decodeConf($bloc['Aliyunoss_accessKeyId']);
             $this->Aliyunoss_resource = $bloc['Aliyunoss_resource'];
@@ -96,15 +99,15 @@ class Oss extends Model
             $this->Qiniuoss_Bucket = $this->decodeConf($bloc['Qiniuoss_Bucket']);
             $this->Qiniuoss_url = $this->decodeConf($bloc['Qiniuoss_url']);
         }
-       
     }
 
-    public function decodeConf($data){
+    public function decodeConf($data)
+    {
         $decodeKey = Yii::$app->params['encryptKey'];
-        if(!empty($data)){
-            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
-        }else{
+        if (!empty($data)) {
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data), $decodeKey);
+            return $this->is_showall ? $val : addonsService::hideStr($val, 2, 5, 1);
+        } else {
             return '';
         }
     }
@@ -149,9 +152,9 @@ class Oss extends Model
             $msg = ErrorsHelper::getModelError($conf);
 
             return [
-               'code' => 400,
-               'message' => $msg,
-           ];
+                'code' => 400,
+                'message' => $msg,
+            ];
         }
     }
 
