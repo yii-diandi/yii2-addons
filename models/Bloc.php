@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-30 22:40:56
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-12 10:49:35
+ * @Last Modified time: 2023-04-12 10:58:23
  */
 
 namespace diandi\addons\models;
@@ -103,6 +103,10 @@ class Bloc extends \yii\db\ActiveRecord
         if ($insert) {
             empty($this->invitation_code) && Bloc::updateAll([
                 'invitation_code' => HashidsHelper::encode($this->bloc_id),
+                'group_bloc_id' => self::$group_bloc_id
+            ], ['bloc_id' => $this->bloc_id]);
+        } else {
+            Bloc::updateAll([
                 'group_bloc_id' => self::$group_bloc_id
             ], ['bloc_id' => $this->bloc_id]);
         }
