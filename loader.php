@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-26 12:59:45
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-08 18:37:06
+ * @Last Modified time: 2023-04-21 09:19:45
  */
 
 namespace diandi\addons;
@@ -13,8 +13,6 @@ use diandi\addons\models\searchs\DdAddons;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\web\UnauthorizedHttpException;
-use Swoole\Coroutine\Context;
-use Swoole\Coroutine;
 
 class Loader implements BootstrapInterface
 {
@@ -48,28 +46,28 @@ class Loader implements BootstrapInterface
         }
 
         // 命令行类的入口
-        if (in_array(Yii::$app->id,['app-console'])) {
+        if (in_array(Yii::$app->id, ['app-console'])) {
             // 迁移不执行相关的全局方法
             $argvStr = implode(',', $_SERVER['argv']);
             $argvs = $this->getArgv($_SERVER['argv']);
-            if(isset($argvs['--app'])){
+            if (isset($argvs['--app'])) {
                 $this->app = $argvs['--app'];
             }
             if (strpos($argvStr, 'migrate') == false && strpos($argvStr, 'install') == false) {
-                $this->afreshLoad(isset($argvs['--bloc_id'])??0,isset($argvs['--store_id'])??0,isset($argvs['--addons'])??0);
+                $this->afreshLoad(isset($argvs['--bloc_id']) ?? 0, isset($argvs['--store_id']) ?? 0, isset($argvs['--addons']) ?? 0);
             }
-        }else {
+        } else {
             $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
 
             // 全局获取 优先从头部获取
             $bloc_id = Yii::$app->request->headers->get('bloc-id', 0);
-    
+
             $store_id = Yii::$app->request->headers->get('store-id', 0);
-    
+
             $access_token = Yii::$app->request->headers->get('access-token', 0);
-    
+
             $addons = Yii::$app->request->headers->get('addons', '');
-    
+
             if (empty($access_token)) {
                 $access_token = isset($_GPC['access-token']) ? $_GPC['access-token'] : 0;
                 // Yii::$app->request->get('bloc_id', 0);
@@ -82,26 +80,25 @@ class Loader implements BootstrapInterface
                 $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
                 //Yii::$app->request->get('store_id', 0);
             }
-    
+
             // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
             if (empty($_GPC['bloc_id'])) {
                 $_GPC['bloc_id'] = $bloc_id;
             }
-    
+
             if (empty($_GPC['store_id'])) {
                 $_GPC['store_id'] = $store_id;
             }
-    
+
             if (empty($addons)) {
                 $addons = Yii::$app->request->get('addons', '');
             }
-    
+
             if ($access_token) {
                 Yii::$app->service->commonMemberService->setAccessToken($access_token);
             }
             $this->afreshLoad($bloc_id, $store_id, $addons);
         }
-
     }
 
     /**
@@ -112,7 +109,6 @@ class Loader implements BootstrapInterface
     public function afreshLoad($bloc_id, $store_id, $addons)
     {
         try {
-            $this->dbPools();
             Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
@@ -142,8 +138,6 @@ class Loader implements BootstrapInterface
             case 'app-admin':
                 $moduleFile = 'admin';
                 break;
-            case 'app-ddswoole':
-                $moduleFile = 'api';
                 break;
             case 'app-frontend':
                 $moduleFile = 'frontend';
@@ -222,18 +216,5 @@ class Loader implements BootstrapInterface
             }
         }
         return $list;
-    }
-
-    // 重新载入sql配置，启用连接池
-    public function dbPools()
-    {
-        if(in_array($this->app,['ddswoole'])){
-            \Co::set(['hook_flags'=> SWOOLE_HOOK_ALL]);
-            $db = require Yii::getAlias('@common/config/db.php');
-            $db['class'] = 'ddswoole\db\Connection';
-            Yii::$app->setComponents([
-                'db'=>$db
-            ]);
-        }
     }
 }
