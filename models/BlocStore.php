@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-04-06 15:48:41
+ * @Last Modified time: 2023-06-20 10:53:16
  */
 
 namespace diandi\addons\models;
@@ -61,7 +61,7 @@ class BlocStore extends \yii\db\ActiveRecord
             [['bloc_id', 'status', 'category_id', 'category_pid'], 'integer'],
             ['bloc_id', 'compare', 'compareValue' => 0, 'operator' => '!='],
             [['name', 'logo', 'address', 'longitude', 'latitude'], 'string', 'max' => 255],
-            [['province', 'city', 'county'], 'string', 'max' => 10],
+            [['province', 'city', 'county'], 'integer'],
             [['mobile'], 'string', 'max' => 11],
             [['lng_lat'], 'string'],
             [['extra'], 'safe'],
