@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2022-10-26 17:14:28
+ * @Last Modified time: 2023-07-04 14:41:24
  */
 
 namespace diandi\addons\services;
@@ -26,6 +26,15 @@ use yii\web\NotFoundHttpException;
 
 class addonsService extends BaseService
 {
+    /**
+     * 解析xml
+     * @param [type] $xml
+     * @return array
+     * @date 2023-07-04
+     * @example
+     * @author Wang Chunsheng
+     * @since
+     */
     public static function ext_module_manifest_parse($xml)
     {
         if (false === strpos($xml, '<manifest')) {
@@ -36,10 +45,12 @@ class addonsService extends BaseService
         }
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
+        
         $root = $dom->getElementsByTagName('manifest')->item(0);
         if (empty($root)) {
             return [];
         }
+        
         $vcode = explode(',', $root->getAttribute('versionCode'));
         $manifest['versions'] = [];
         if (is_array($vcode)) {
@@ -287,6 +298,7 @@ class addonsService extends BaseService
         // 获取所有已经安装的模块
         $DdAddons = new DdAddons();
         $addonsAll = $DdAddons->find()->all();
+        $addonsXml = [];
         foreach ($module_path_list as $path) {
             $modulename = pathinfo($path, PATHINFO_BASENAME);
             if (!in_array($modulename, $addonsAll) && $addon == $modulename) {
