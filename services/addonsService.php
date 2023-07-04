@@ -4,7 +4,7 @@
  * @Author: Wang Chunsheng 2192138785@qq.com
  * @Date:   2020-03-12 04:22:42
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-04 14:41:24
+ * @Last Modified time: 2023-07-04 15:08:52
  */
 
 namespace diandi\addons\services;
@@ -470,6 +470,13 @@ class addonsService extends BaseService
                     }
                 }
             }
+
+            // 更新二级菜单    
+            $route_main_id = AuthRoute::find()->where(['name'=>'/main/index.vue'])->select('id')->scalar();
+            $Menu->updateAll(['route_id' => $route_main_id], [
+                'route' => '/main/index.vue',
+                'module_name' => $application['identifie'],
+            ]);
 
             $dirSql = Yii::getAlias("@addons/{$application['identifie']}/migrations/{$application['version']}");
 
