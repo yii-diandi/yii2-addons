@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2020-05-11 16:05:29
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-06-20 10:53:16
+ * @Last Modified time: 2023-07-14 15:46:54
  */
 
 namespace diandi\addons\models;
@@ -34,7 +34,7 @@ class BlocStore extends \yii\db\ActiveRecord
 
     public function __construct($item = null)
     {
-        if ($item['extras']) {
+        if (!empty($item['extras'])) {
             $extra = [];
             foreach ($item['extras'] as $key => $value) {
                 $extra[$value] = '';

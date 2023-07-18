@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @Author: Wang chunsheng  email:2192138785@qq.com
+ * @Date:   2023-07-04 15:26:47
+ * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
+ * @Last Modified time: 2023-07-18 16:59:17
+ */
+
+
 namespace diandi\addons\models\searchs;
 
 use yii\base\Model;
@@ -46,7 +54,7 @@ class addonsStore extends addonsStoreModel
         global $_GPC;
         $query = addonsStoreModel::find();
 
-        
+
 
         $this->load($params);
 
@@ -68,10 +76,10 @@ class addonsStore extends addonsStoreModel
         ]);
 
         $query->andFilterWhere(['like', 'module_name', $this->module_name]);
-        
+
         $count = $query->count();
-        $pageSize   = $_GPC['pageSize'];
-        $page       = $_GPC['page'];
+        $pageSize   = $_GPC['pageSize'] ?? 10;
+        $page       = $_GPC['page']??1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,
@@ -83,18 +91,18 @@ class addonsStore extends addonsStoreModel
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
-        
+
         //foreach ($list as $key => &$value) {
         //    $value['create_time'] = date('Y-m-d H:i:s',$value['create_time']);
         //    $value['update_time'] = date('Y-m-d H:i:s',$value['update_time']);
         //} 
-            
+
 
         $provider = new ArrayDataProvider([
-            'key'=>'id',
+            'key' => 'id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
-            'total'=> isset($count) ? $count : 0,
+            'total' => isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
                     //'member_id',
@@ -107,8 +115,7 @@ class addonsStore extends addonsStoreModel
                 'pageSize' => $pageSize,
             ]
         ]);
-        
+
         return $provider;
-        
     }
 }
