@@ -4,7 +4,7 @@
  * @Author: Wang chunsheng  email:2192138785@qq.com
  * @Date:   2023-07-04 15:26:47
  * @Last Modified by:   Wang chunsheng  email:2192138785@qq.com
- * @Last Modified time: 2023-07-18 16:59:17
+ * @Last Modified time: 2023-07-18 17:04:12
  */
 
 
@@ -79,7 +79,7 @@ class addonsStore extends addonsStoreModel
 
         $count = $query->count();
         $pageSize   = $_GPC['pageSize'] ?? 10;
-        $page       = $_GPC['page']??1;
+        $page       = $_GPC['page'] ?? 1;
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([
             'totalCount' => $count,

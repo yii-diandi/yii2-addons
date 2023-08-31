@@ -75,6 +75,9 @@ class App extends Model
             $this->partner_key = $this->decodeConf($bloc['partner_key']);
             $this->app_id = $this->decodeConf($bloc['app_id']);
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
+            return $this;
+        }else{
+            return [];
         }
        
     }

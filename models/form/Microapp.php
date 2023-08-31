@@ -72,6 +72,9 @@ class Microapp extends Model
             $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
             $this->headimg = $this->decodeConf($bloc['headimg']);
             $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
+            return $this;
+        }else{
+            return [];
         }
       
     }

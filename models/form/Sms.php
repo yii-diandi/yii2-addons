@@ -62,6 +62,9 @@ class Sms extends Model
             $this->sign_name = $this->decodeConf($bloc['sign_name']);
             $this->template_code = $this->decodeConf($bloc['template_code']);
             $this->is_login = $this->decodeConf($bloc['is_login']);
+            return $this;
+        }else{
+            return [];
         }
         
     }

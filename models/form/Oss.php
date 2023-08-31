@@ -98,6 +98,9 @@ class Oss extends Model
             $this->Qiniuoss_Secretkey = $this->decodeConf($bloc['Qiniuoss_Secretkey']);
             $this->Qiniuoss_Bucket = $this->decodeConf($bloc['Qiniuoss_Bucket']);
             $this->Qiniuoss_url = $this->decodeConf($bloc['Qiniuoss_url']);
+            return $this;
+        }else{
+            return [];
         }
     }
 

@@ -55,6 +55,9 @@ class Email extends Model
             $this->password = $this->decodeConf($bloc['password']);
             $this->title = $this->decodeConf($bloc['title']);
             $this->encryption = $this->decodeConf($bloc['encryption']);
+            return $this;
+        }else{
+            return [];
         }
       
     }

@@ -58,6 +58,10 @@ class Baidu extends Model
         ];
     }
 
+    /**
+     * @param $bloc_id
+     * @return void
+     */
     public function getConf($bloc_id)
     {
         $conf = new BlocConfBaidu();
@@ -70,6 +74,9 @@ class Baidu extends Model
             $this->API_KEY = $this->decodeConf($bloc['API_KEY']);
             $this->SECRET_KEY = $this->decodeConf($bloc['SECRET_KEY']);
             $this->name = $this->decodeConf($bloc['name']);
+            return $this;
+        }else{
+                                return [];
         }
     }
 

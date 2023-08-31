@@ -58,6 +58,9 @@ class Wechat extends Model
             $this->aes_key = $this->decodeConf($bloc['aes_key']);
             $this->secret = $this->decodeConf($bloc['secret']);
             $this->headimg = $this->decodeConf($bloc['headimg']);
+            return $this;
+        }else{
+            return [];
         }
     }
 

@@ -50,11 +50,17 @@ class Map extends Model
     {
         $conf = new BlocConfMap();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        $this->id = $bloc['id'];
-        $this->bloc_id = $bloc['bloc_id'];
-        $this->baiduApk = $this->decodeConf($bloc['baiduApk']);
-        $this->amapApk = $this->decodeConf($bloc['amapApk']);
-        $this->tencentApk = $this->decodeConf($bloc['tencentApk']);
+        if ($bloc){
+            $this->id = $bloc['id'];
+            $this->bloc_id = $bloc['bloc_id'];
+            $this->baiduApk = $this->decodeConf($bloc['baiduApk']);
+            $this->amapApk = $this->decodeConf($bloc['amapApk']);
+            $this->tencentApk = $this->decodeConf($bloc['tencentApk']);
+            return $this;
+        }else{
+            return [];
+        }
+
     }
     
     
