@@ -66,8 +66,8 @@ class Wechatpay extends Model
             $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
             $this->key = $this->decodeConf($bloc['key']);
             $this->is_server = $bloc['is_server'];
-            $this->apiclient_cert = unserialize($bloc['apiclient_cert']);
-            $this->apiclient_key = unserialize($bloc['apiclient_key']);
+            $this->apiclient_cert = $bloc['apiclient_cert']? unserialize($bloc['apiclient_cert']):'';
+            $this->apiclient_key = $bloc['apiclient_key']? unserialize($bloc['apiclient_key']):'';
             $this->notify_url = $this->decodeConf($bloc['notify_url']);
             return $this;
         }else{

@@ -113,9 +113,75 @@ class Loader implements BootstrapInterface
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
+            Yii::$app->setModules($this->getPluginsByAddons());
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * 获取模块.
+     *
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function getPluginsByAddons()
+    {
+        $app_id = $this->id;
+        $authListAddons = ['diandi_cloud','diandi_hub'];
+        $moduleFile = '';
+        switch ($app_id) {
+            case 'app-api':
+                $moduleFile = 'api';
+                break;
+            case 'app-admin':
+                $moduleFile = 'admin';
+                break;
+                break;
+            case 'app-frontend':
+                $moduleFile = 'frontend';
+                break;
+            case 'app-console':
+                $moduleFile = 'console';
+                break;
+            default:
+                $moduleFile = 'api';
+        }
+
+        $modules = [];
+        $extendMethod = 'OPTIONS,';
+        $extraPatterns = [];
+        foreach ($authListAddons as $name) {
+            $configPath = Yii::getAlias('@addons/' . $name . '/config/' . $moduleFile . '.php');
+            if (file_exists($configPath)) {
+                $config = require $configPath;
+                if (!empty($config)) {
+                    foreach ($config as $key => &$value) {
+                        if (!empty($value['extraPatterns']) && is_array($value['extraPatterns'])) {
+                            foreach ($value['extraPatterns'] as $k => $val) {
+                                $newK = !(strpos($k, 'OPTIONS') === false) ? $k : $extendMethod . $k;
+                                $extraPatterns[$newK] = $val;
+                            }
+                            $value['extraPatterns'] = $extraPatterns;
+                        }
+                    }
+
+                    Yii::$app->getUrlManager()->addRules($config);
+
+                    if (isset($config['controllerMap']) && is_array($config['controllerMap'])) {
+                        foreach ($config['controllerMap'] as $key => $val) {
+                            Yii::$app->controllerMap[$key] = $val;
+                        }
+                    }
+                }
+            }
+            // 服务定位器注册
+            $ClassName = 'addons\\' . $name . '\\' . $moduleFile;
+
+            $modules[self::toUnderScore($name)] = [
+                'class' => $ClassName,
+            ];
+        }
+        return $modules;
     }
 
     /**
