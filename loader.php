@@ -151,7 +151,7 @@ class Loader implements BootstrapInterface
         $extendMethod = 'OPTIONS,';
         $extraPatterns = [];
         foreach ($authListAddons as $name) {
-            $configPath = Yii::getAlias('@addons/' . $name . '/config/' . $moduleFile . '.php');
+            $configPath = Yii::getAlias('@common/plugins/' . $name . '/config/' . $moduleFile . '.php');
             if (file_exists($configPath)) {
                 $config = require $configPath;
                 if (!empty($config)) {
@@ -175,7 +175,7 @@ class Loader implements BootstrapInterface
                 }
             }
             // 服务定位器注册
-            $ClassName = 'addons\\' . $name . '\\' . $moduleFile;
+            $ClassName = 'common\\plugins\\' . $name . '\\' . $moduleFile;
 
             $modules[self::toUnderScore($name)] = [
                 'class' => $ClassName,
