@@ -123,8 +123,7 @@ class StoreController extends AController
      * @return mixed
      */
     public function actionCreate()
-    {
-        global $_GPC;
+   {
         if ($this->module->id == 'addons') {
             $model = new BlocStore([
                 'extras' => $this->extras,
@@ -146,7 +145,7 @@ class StoreController extends AController
                 // $data['BlocStore']['lng_lat'] = implode(',',$data['BlocStore']['lng_lat']);
                 if ($model->load($data) && $model->save()) {
                     
-                    $StoreLabelLink = $_GPC['StoreLabelLink'];
+                    $StoreLabelLink =\Yii::$app->request->input('StoreLabelLink');
                    
                     if(!empty($StoreLabelLink['label_id'])){
                           foreach ($StoreLabelLink['label_id'] as $key => $label_id) {
@@ -200,8 +199,7 @@ class StoreController extends AController
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        global $_GPC;
+   {
 
         $model = $this->findModel($id);
         $model['extra'] = unserialize($model['extra']);
@@ -214,7 +212,7 @@ class StoreController extends AController
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
      
               
-                $StoreLabelLink = $_GPC['StoreLabelLink'];
+                $StoreLabelLink =\Yii::$app->request->input('StoreLabelLink');
                 $link->deleteAll([
                     'store_id'=>$store_id
                 ]);

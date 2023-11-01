@@ -31,7 +31,6 @@ class Loader implements BootstrapInterface
      */
     public function bootstrap($application)
     {
-        global $_W, $_GPC;
         $_W = Yii::$app->params;
         $this->id = Yii::$app->id;
         if (Yii::$app->id == 'app-api') {
@@ -57,8 +56,6 @@ class Loader implements BootstrapInterface
                 $this->afreshLoad(isset($argvs['--bloc_id']) ?? 0, isset($argvs['--store_id']) ?? 0, isset($argvs['--addons']) ?? 0);
             }
         } else {
-            $_GPC = array_merge(Yii::$app->request->get(), Yii::$app->request->post());
-
             // 全局获取 优先从头部获取
             $bloc_id = Yii::$app->request->headers->get('bloc-id', 0);
 
@@ -66,33 +63,17 @@ class Loader implements BootstrapInterface
 
             $access_token = Yii::$app->request->headers->get('access-token', 0);
 
-            $addons = Yii::$app->request->headers->get('addons', '');
-
             if (empty($access_token)) {
-                $access_token = isset($_GPC['access-token']) ? $_GPC['access-token'] : 0;
-                // Yii::$app->request->get('bloc_id', 0);
+                $access_token = Yii::$app->request->input('access-token','');
             }
             if (empty($bloc_id)) {
-                $bloc_id = isset($_GPC['bloc_id']) ? $_GPC['bloc_id'] : 0;
-                // Yii::$app->request->get('bloc_id', 0);
+                $bloc_id = Yii::$app->request->input('bloc_id',0);
             }
             if (empty($store_id)) {
-                $store_id = isset($_GPC['store_id']) ? $_GPC['store_id'] : 0;
-                //Yii::$app->request->get('store_id', 0);
+                $store_id = Yii::$app->request->input('store_id',0);
             }
 
-            // 如果提交的参数与头部不同，需要覆盖，方便扩展使用
-            if (empty($_GPC['bloc_id'])) {
-                $_GPC['bloc_id'] = $bloc_id;
-            }
-
-            if (empty($_GPC['store_id'])) {
-                $_GPC['store_id'] = $store_id;
-            }
-
-            if (empty($addons)) {
-                $addons = Yii::$app->request->get('addons', '');
-            }
+            $addons = Yii::$app->request->input('addons', '');
 
             if ($access_token) {
                 Yii::$app->service->commonMemberService->setAccessToken($access_token);

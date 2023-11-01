@@ -36,7 +36,7 @@ class SettingController extends BaseController
     public function actions()
     {
         global $_GPC,$_W;
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id =\Yii::$app->request->input('bloc_id',0);
         $bloc = Bloc::findOne($bloc_id);
     }
 
@@ -45,7 +45,7 @@ class SettingController extends BaseController
         global $_GPC,$_W;
 
         $model = new Baidu();
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id =\Yii::$app->request->input('bloc_id',0);
          
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());

@@ -167,12 +167,11 @@ class UserBlocController extends BaseController
     }
 
     public function actionGetstore()
-    {
-        global $_GPC;
+   {
         
-        $bloc_id = $_GPC['bloc_id'];
+        $bloc_id =\Yii::$app->request->input('bloc_id',0);
         
-        $user_id = $_GPC['user_id'];
+        $user_id =\Yii::$app->request->input('user_id');
         
         if(!$user_id){
             return ResultHelper::json(400,'请先选择管理员',[]);
@@ -200,9 +199,8 @@ class UserBlocController extends BaseController
     }
 
     public function actionGetuser()
-    {
-        global $_GPC;
-        $bloc_id = $_GPC['bloc_id'];
+   {
+        $bloc_id =\Yii::$app->request->input('bloc_id',0);
         // 查询普通的管理员
         $userlist =  ModelsUser::find()->where([])->select(['username','avatar','id'])->asArray()->all();
         foreach ($userlist as $key => &$value) {

@@ -55,8 +55,7 @@ class BlocStoreSearch extends BlocStore
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
 
         $query = BlocStore::find()->with(['bloc']);
 
@@ -93,8 +92,8 @@ class BlocStoreSearch extends BlocStore
             ->andFilterWhere(['like', 'lng_lat', $this->lng_lat]);
         $query->findBlocs();
         $count = $query->count();
-        $pageSize = $_GPC['pageSize']??10;
-        $page = $_GPC['page']??1;
+        $pageSize =\Yii::$app->request->input('pageSize',10);
+        $page = \Yii::$app->request->input('page',1);
 
         // 使用总数来创建一个分页对象
         $pagination = new Pagination([

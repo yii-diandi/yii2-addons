@@ -47,8 +47,7 @@ class StoreCategory extends StoreCategoryModel
      * @return ActiveDataProvider
      */
     public function search($params)
-    {
-        global $_GPC;
+   {
         $query = StoreCategoryModel::find();
 
         $this->load($params);
