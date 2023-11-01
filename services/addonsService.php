@@ -11,7 +11,6 @@ namespace diandi\addons\services;
 
 use common\helpers\FileHelper;
 use common\services\BaseService;
-use diandi\addons\cloud;
 use diandi\addons\models\searchs\DdAddons;
 use diandi\admin\acmodels\AuthItem;
 use diandi\admin\acmodels\AuthRoute;
@@ -380,13 +379,7 @@ class addonsService extends BaseService
 
         try {
             $parent = [];
-            // 合法渠道授权的
-            $is_auth = cloud::checkAuth($application['identifie']);
-
-            if (!$is_auth) {
-                throw new BadRequestHttpException('请通过官方应用市场购买应用后安装，支持正版，保护自身权益');
-            }
-            // 唯一标识是否重复
+                   // 唯一标识是否重复
             $is_have = $DdAddons::findOne(['identifie' => $application['identifie']]);
             if ($is_have) {
                 throw new BadRequestHttpException('模块标识'.$application['identifie'].'已经存在');
