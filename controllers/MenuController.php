@@ -74,7 +74,7 @@ class MenuController extends BaseController
         $rules = addonsService::addonsRules($addon);
         $parentMenu = Menu::findAll(['parent' => 0]);
 
-        $query = Menu::find()->where(['is_sys' => 'addons', 'module_name' => $addon]);
+        $query = Menu::find()->where(['is_sys' => 0, 'module_name' => $addon]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false

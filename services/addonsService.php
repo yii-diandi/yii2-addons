@@ -405,7 +405,7 @@ class addonsService extends BaseService
                         'order' => !empty($item['order']) ? $item['order'] : 0,
                         'type' => 'plugins',
                         'icon' => $item['icon'] ? $item['icon'] : '',
-                        'is_sys' => 'addons',
+                        'is_sys' => 0,
                         'module_name' => $application['identifie'],
                     ];
 
@@ -427,7 +427,7 @@ class addonsService extends BaseService
                                 'order' => intval($child['order']),
                                 'type' => 'plugins',
                                 'icon' => $child['icon'] ? $child['icon'] : '',
-                                'is_sys' => 'addons',
+                                'is_sys' => 0,
                                 'module_name' => $application['identifie'],
                             ];
                             // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
@@ -449,7 +449,7 @@ class addonsService extends BaseService
                                         'route' => $childs['route'],
                                         'type' => 'plugins',
                                         'icon' => $childs['icon'] ? $childs['icon'] : '',
-                                        'is_sys' => 'addons',
+                                        'is_sys' => 0,
                                         'module_name' => $application['identifie'],
                                     ];
                                     // FileHelper::writeLog($logPath, '子类菜单' . Json::encode($MenuData));
