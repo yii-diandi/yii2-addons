@@ -108,7 +108,7 @@ class Loader implements BootstrapInterface
     public function getPluginsByAddons()
     {
         $app_id = $this->id;
-        $authListAddons = ['diandi_website','diandi_hub'];
+        $authListAddons = ['diandi_website','diandi_auth'];
         $moduleFile = '';
         switch ($app_id) {
             case 'app-api':
