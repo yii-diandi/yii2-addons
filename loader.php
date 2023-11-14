@@ -73,12 +73,10 @@ class Loader implements BootstrapInterface
                 $store_id = Yii::$app->request->input('store_id',0);
             }
 
-            $addons = Yii::$app->request->input('addons', '');
-
             if ($access_token) {
                 Yii::$app->service->commonMemberService->setAccessToken($access_token);
             }
-            $this->afreshLoad($bloc_id, $store_id, $addons);
+            $this->afreshLoad($bloc_id, $store_id);
         }
     }
 
@@ -87,10 +85,10 @@ class Loader implements BootstrapInterface
      *
      * @throws UnauthorizedHttpException
      */
-    public function afreshLoad($bloc_id, $store_id, $addons)
+    public function afreshLoad($bloc_id, $store_id)
     {
         try {
-            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id, $addons);
+            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id);
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
