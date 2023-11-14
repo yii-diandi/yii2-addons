@@ -273,9 +273,6 @@ class addonsService extends BaseService
         if (!file_exists($module_path.'upgrade.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'upgrade.php文件是否存在！');
         }
-        if (!file_exists($module_path.'site.php')) {
-            throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'site.php文件是否存在！');
-        }
 
         if (!file_exists($module_path.'console.php')) {
             throw new NotFoundHttpException('模块缺失文件，请检查模块文件'.$module_path.'console.php文件是否存在！');

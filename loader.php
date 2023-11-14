@@ -162,6 +162,7 @@ class Loader implements BootstrapInterface
                 'class' => $ClassName,
             ];
         }
+
         return $modules;
     }
 
