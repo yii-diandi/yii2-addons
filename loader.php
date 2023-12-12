@@ -64,13 +64,13 @@ class Loader implements BootstrapInterface
             $access_token = Yii::$app->request->headers->get('access-token', 0);
 
             if (empty($access_token)) {
-                $access_token = Yii::$app->request->input('access-token','');
+                $access_token = Yii::$app->request->input('access-token', '');
             }
             if (empty($bloc_id)) {
-                $bloc_id = Yii::$app->request->input('bloc_id',0);
+                $bloc_id = Yii::$app->request->input('bloc_id', 0);
             }
             if (empty($store_id)) {
-                $store_id = Yii::$app->request->input('store_id',0);
+                $store_id = Yii::$app->request->input('store_id', 0);
             }
 
             if ($access_token) {
@@ -88,7 +88,7 @@ class Loader implements BootstrapInterface
     public function afreshLoad($bloc_id, $store_id)
     {
         try {
-            Yii::$app->service->commonGlobalsService->initId($bloc_id, $store_id);
+            Yii::$app->service->commonGlobalsService->initId((int)$bloc_id, (int)$store_id);
             Yii::$app->service->commonGlobalsService->getConf($bloc_id);
             // 初始化模块
             Yii::$app->setModules($this->getModulesByAddons());
@@ -106,7 +106,7 @@ class Loader implements BootstrapInterface
     public function getPluginsByAddons()
     {
         $app_id = $this->id;
-        $authListAddons = ['diandi_website','diandi_auth'];
+        $authListAddons = ['diandi_website', 'diandi_auth'];
         $moduleFile = '';
         switch ($app_id) {
             case 'app-api':
