@@ -410,7 +410,7 @@ class addonsService extends BaseService
                     $_Menu->save();
 
                     $parent = $_Menu['attributes']['id'];
-                    self::createRoute($item['ruoter'], $parent);
+                    self::createRoute($item['router'], $parent);
 
                     if (!empty($item['child'])) {
                         foreach ($item['child'] as $child) {
