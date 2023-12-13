@@ -432,7 +432,7 @@ class addonsService extends BaseService
                             $_Menuchild->save();
 
                             $parentChild = $_Menuchild['attributes']['id'];
-                            self::createRoute($child['ruoter'], $parentChild);
+                            self::createRoute($child['router'], $parentChild);
 
                             if (!empty($child['child'])) {
                                 foreach ($child['child'] as $childs) {
@@ -453,7 +453,7 @@ class addonsService extends BaseService
                                     $_Menuchild->setAttributes($MenuData);
                                     $_Menuchild->save();
                                     $parentChilds = $_Menuchild['attributes']['id'];
-                                    self::createRoute($childs['ruoter'], $parentChilds);
+                                    self::createRoute($childs['router'], $parentChilds);
                                 }
                             }
                         }
