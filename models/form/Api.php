@@ -126,10 +126,17 @@ class Api extends Model
                 'message' => current($this->getFirstErrors()) ?? '未知错误'
             ];
         }
-        $conf = BlocConfApi::findOne(['bloc_id' => $bloc_id]);
+        $BlocConfApi = new BlocConfApi([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfApi::findOne(['bloc_id' => $bloc_id]);
         if (!$conf) {
-            $conf = new BlocConfApi();
+            $conf = new BlocConfApi([
+                'scenario'=>'create'
+            ]);
         }
+
+
         $conf->bloc_id = $bloc_id;
         $conf->app_id = $this->app_id;
         $conf->app_secret = $this->app_secret;

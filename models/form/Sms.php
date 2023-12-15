@@ -85,9 +85,14 @@ class Sms extends Model
             return null;
         }
 
-        $conf = BlocConfSms::findOne(['bloc_id' => $bloc_id]);
+        $BlocConfSms = new BlocConfSms([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfSms::findOne(['bloc_id' => $bloc_id]);
         if (!$conf) {
-            $conf = new BlocConfSms();
+            $conf = new BlocConfSms([
+                'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
         $conf->access_key_id = $this->access_key_id;

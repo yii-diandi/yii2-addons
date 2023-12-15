@@ -82,10 +82,15 @@ class Wechat extends Model
             return $this->validate();
         }
 
-        $conf = BlocConfWechat::findOne(['bloc_id' => $bloc_id]);
+        $BlocConfWechat = new BlocConfWechat([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfWechat::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
-            $conf = new BlocConfWechat();
+            $conf = new BlocConfWechat([
+                'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
 

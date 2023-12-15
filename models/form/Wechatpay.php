@@ -91,11 +91,15 @@ class Wechatpay extends Model
         if (!$this->validate()) {
             return null;
         }
-
-        $conf = BlocConfWechatpay::findOne(['bloc_id' => $bloc_id]);
+        $BlocConfWechatpay = new BlocConfWechatpay([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfWechatpay::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
-            $conf = new BlocConfWechatpay();
+            $conf = new BlocConfWechatpay([
+                'scenario'=>'create'
+            ]);
         }
 
         $conf->bloc_id = $bloc_id;

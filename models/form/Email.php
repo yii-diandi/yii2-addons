@@ -78,10 +78,14 @@ class Email extends Model
         if (!$this->validate()) {
             return null;
         }
-
-        $conf = BlocConfEmail::findOne(['bloc_id' => $bloc_id]);
+        $BlocConfEmail = new BlocConfEmail([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfEmail::findOne(['bloc_id' => $bloc_id]);
         if (!$conf) {
-            $conf = new BlocConfEmail();
+            $conf = new BlocConfEmail([
+                'scenario'=>'create'
+            ]);
         }
 
         $conf->bloc_id = $bloc_id;

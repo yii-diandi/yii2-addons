@@ -27,6 +27,16 @@ use Yii;
  */
 class BlocConfWechat extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','app_id','secret','token','aes_key','headimg','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['app_id','secret','token','aes_key','headimg','update_time','create_time'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

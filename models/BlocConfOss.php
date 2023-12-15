@@ -34,6 +34,16 @@ use Yii;
  */
 class BlocConfOss extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','remote_type','Aliyunoss_accessKeyId','Aliyunoss_resource','Aliyunoss_accessKeySecret','Aliyunoss_bucket','Aliyunoss_url','Aliyunoss_endPoint','Tengxunoss_APPID','Tengxunoss_SecretID','Tengxunoss_SecretKEY','Tengxunoss_Bucket','Tengxunoss_area','Tengxunoss_url','Qiniuoss_Accesskey','Qiniuoss_Secretkey','Qiniuoss_Bucket','Qiniuoss_url','create_time','update_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['remote_type','Aliyunoss_accessKeyId','Aliyunoss_resource','Aliyunoss_accessKeySecret','Aliyunoss_bucket','Aliyunoss_url','Aliyunoss_endPoint','Tengxunoss_APPID','Tengxunoss_SecretID','Tengxunoss_SecretKEY','Tengxunoss_Bucket','Tengxunoss_area','Tengxunoss_url','Qiniuoss_Accesskey','Qiniuoss_Secretkey','Qiniuoss_Bucket','Qiniuoss_url','create_time','update_time'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

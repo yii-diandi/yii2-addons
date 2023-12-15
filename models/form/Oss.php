@@ -120,11 +120,16 @@ class Oss extends Model
         if (!$this->validate()) {
             return null;
         }
+        $BlocConfOss = new BlocConfOss([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfOss::findOne(['bloc_id' => $bloc_id]);
 
-        $conf = BlocConfOss::findOne(['bloc_id' => $bloc_id]);
-
+        $conf->scenario = 'update';
         if (!$conf) {
-            $conf = new BlocConfOss();
+            $conf = new BlocConfOss([
+                'scenario'=>'create'
+            ]);
         }
 
         $conf->bloc_id = $bloc_id;

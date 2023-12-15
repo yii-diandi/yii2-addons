@@ -22,6 +22,16 @@ use Yii;
  */
 class BlocConfMap extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','baiduApk','amapApk','tencentApk'];
+        $scenarios[self::SCENARIO_UPDATE] = ['baiduApk','amapApk','tencentApk'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

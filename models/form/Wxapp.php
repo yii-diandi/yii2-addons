@@ -35,7 +35,9 @@ class Wxapp extends Model
     public $AppSecret;
     public $headimg;
     public $codeUrl;
-    
+    public $share_title;
+    public $share_path;
+    public $share_image;
 
     /**
      * {@inheritdoc}
@@ -51,6 +53,9 @@ class Wxapp extends Model
                 'AppSecret',
                 'headimg',
                 'codeUrl',
+                'share_title',
+                'share_path',
+                'share_image'
             ], 'string'],
             [['id', 'bloc_id'], 'integer'],
         ];
@@ -71,6 +76,9 @@ class Wxapp extends Model
             $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
             $this->headimg = $this->decodeConf($bloc['headimg']);
             $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
+            $this->share_title = $bloc['share_title'];
+            $this->share_path = $bloc['share_path'];
+            $this->share_image = $bloc['share_image'];
             return $this;
         }else{
             return [];
@@ -93,11 +101,15 @@ class Wxapp extends Model
         if (!$this->validate()) {
             return $this->validate();
         }
+        $BlocConfWxapp = new BlocConfWxapp([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfWxapp::findOne(['bloc_id' => $bloc_id]);
 
-        $conf = BlocConfWxapp::findOne(['bloc_id' => $bloc_id]);
-      
         if (!$conf) {
-            $conf = new BlocConfWxapp();
+            $conf = new BlocConfWxapp([
+                                            'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
         $conf->name = $this->name;
@@ -107,6 +119,9 @@ class Wxapp extends Model
         $conf->AppSecret = $this->AppSecret;
         $conf->headimg = $this->headimg;
         $conf->codeUrl = $this->codeUrl;
+        $conf->share_title = $this->share_title;
+        $conf->share_path = $this->share_path;
+        $conf->share_image = $this->share_image;
     
         if($conf->save()){
              return [

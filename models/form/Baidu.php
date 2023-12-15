@@ -18,6 +18,7 @@
 
 namespace diandi\addons\models\form;
 
+use diandi\addons\models\BlocConfApp;
 use diandi\addons\models\BlocConfBaidu;
 use Yii;
 use yii\base\Model;
@@ -97,10 +98,15 @@ class Baidu extends Model
         if (!$this->validate()) {
             return null;
         }
+        $BlocConfBaidu = new BlocConfBaidu([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfBaidu::findOne(['bloc_id' => $bloc_id]);
 
-        $conf = BlocConfBaidu::findOne(['bloc_id' => $bloc_id]);
         if (!$conf) {
-            $conf = new BlocConfBaidu();
+            $conf = new BlocConfBaidu([
+                'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
         $conf->APP_ID = $this->APP_ID;

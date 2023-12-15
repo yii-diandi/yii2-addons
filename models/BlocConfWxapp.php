@@ -27,6 +27,16 @@ use Yii;
  */
 class BlocConfWxapp extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','name','description','original','AppId','headimg','AppSecret','codeUrl','create_time','update_time','share_title','share_path','share_image'];
+        $scenarios[self::SCENARIO_UPDATE] = ['name','description','original','AppId','headimg','AppSecret','codeUrl','create_time','update_time','share_title','share_path','share_image'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */
@@ -56,8 +66,8 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'name', 'AppId', 'headimg', 'AppSecret'], 'required'],
             [['bloc_id', 'create_time', 'update_time'], 'integer'],
-            [[], 'string', 'max' => 50],
-            [['AppId',  'AppSecret','name','original', 'headimg', 'description', 'codeUrl'], 'string', 'max' => 255]
+            [['share_title'], 'string', 'max' => 50],
+            [['AppId',  'AppSecret','name','original', 'headimg', 'description', 'codeUrl','share_path','share_image'], 'string', 'max' => 255]
         ];
     }
 
@@ -70,7 +80,7 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
                 foreach ($list as $key => $value) {
                     //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                     $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['id','bloc_id','create_time','update_time'])){
+                    if(!in_array($value,['id','bloc_id','create_time','update_time','share_title','share_path','share_image'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
                             if(strpos($this->attributes[$value],'*') === false){

@@ -95,11 +95,15 @@ class Microapp extends Model
         if (!$this->validate()) {
             return $this->validate();
         }
+        $BlocConfMicroapp = new BlocConfMicroapp([
+            'scenario'=>'update'
+        ]);
+        $conf = $BlocConfMicroapp::findOne(['bloc_id' => $bloc_id]);
 
-        $conf = BlocConfMicroapp::findOne(['bloc_id' => $bloc_id]);
-      
         if (!$conf) {
-            $conf = new BlocConfMicroapp();
+            $conf = new BlocConfMicroapp([
+                'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
         $conf->name = $this->name;

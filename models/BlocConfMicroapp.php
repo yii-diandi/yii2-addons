@@ -27,6 +27,16 @@ use Yii;
  */
 class BlocConfMicroapp extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','name','description','original','AppId','headimg','AppSecret','codeUrl','create_time','update_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['name','description','original','AppId','headimg','AppSecret','codeUrl','create_time','update_time'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

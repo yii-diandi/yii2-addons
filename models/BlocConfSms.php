@@ -23,6 +23,16 @@ use Yii;
  */
 class BlocConfSms extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','access_key_id','access_key_secret','sign_name','template_code','is_login','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['access_key_id','access_key_secret','sign_name','template_code','is_login','update_time','create_time'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

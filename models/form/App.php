@@ -98,11 +98,16 @@ class App extends Model
         if (!$this->validate()) {
             return $this->validate();
         }
+        $BlocConfApp = new BlocConfApp([
+            'scenario'=>'update'
+        ]);
 
-        $conf = BlocConfApp::findOne(['bloc_id' => $bloc_id]);
-      
+        $conf = $BlocConfApp::findOne(['bloc_id' => $bloc_id]);
+
         if (!$conf) {
-            $conf = new BlocConfApp();
+            $conf = new BlocConfApp([
+                'scenario'=>'create'
+            ]);
         }
         $conf->bloc_id = $bloc_id;
         

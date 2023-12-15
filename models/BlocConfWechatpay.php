@@ -26,6 +26,16 @@ use Yii;
  */
 class BlocConfWechatpay extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','mch_id','app_id','key','notify_url','is_server','server_mchid','server_signkey','apiclient_cert','apiclient_key','create_time','update_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['mch_id','app_id','key','notify_url','is_server','server_mchid','server_signkey','apiclient_cert','apiclient_key','create_time','update_time'];
+        return $scenarios;
+    }
     /**
      * {@inheritdoc}
      */

@@ -31,6 +31,8 @@ use Yii;
  */
 class BlocConfApp extends \yii\db\ActiveRecord
 {
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
     /**
      * {@inheritdoc}
      */
