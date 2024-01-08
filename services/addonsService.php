@@ -79,6 +79,7 @@ class addonsService extends BaseService
             'description' => trim($application->getElementsByTagName('description')->item(0)->textContent),
             'author' => trim($application->getElementsByTagName('author')->item(0)->textContent),
             'url' => trim($application->getElementsByTagName('url')->item(0)->textContent),
+            'displayorder' => trim($application->getElementsByTagName('displayorder')->item(0)->textContent),
             'setting' => trim($application->getAttribute('setting')) == 'true',
         ];
         // $bindings = $root->getElementsByTagName('bindings')->item(0);
