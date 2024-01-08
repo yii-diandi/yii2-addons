@@ -42,7 +42,7 @@ class DdAddons extends \yii\db\ActiveRecord
         return [
             [['identifie', 'title', 'version', 'ability', 'description', 'author', 'url', 'settings', 'logo'], 'required'],
             [['type'], 'string'],
-            [['settings', 'is_install', 'is_nav'], 'integer'],
+            [['settings', 'is_install', 'is_nav','displayorder'], 'integer'],
             [['identifie', 'title'], 'string', 'max' => 100],
             [['version', 'versions'], 'string', 'max' => 15],
             [['ability'], 'string', 'max' => 500],
