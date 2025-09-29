@@ -7,7 +7,6 @@ use yii\helpers\FileHelper;
 
 define("LB_API_DEBUG", false);
 define("LB_SHOW_UPDATE_PROGRESS", true);
-
 define("LB_TEXT_CONNECTION_FAILED", '服务器目前无法使用，请重试。');
 define("LB_TEXT_INVALID_RESPONSE", '服务器返回无效响应，请联系支持。');
 define("LB_TEXT_VERIFIED_RESPONSE", '已验证！感谢您的购买。');
