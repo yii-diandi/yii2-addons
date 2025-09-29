@@ -14,6 +14,7 @@ use diandi\addons\models\BlocConfWechatpay;
 use diandi\addons\services\addonsService;
 use Yii;
 use yii\base\Model;
+use yii\helpers\FileHelper;
 
 class Wechatpay extends Model
 {
@@ -53,7 +54,7 @@ class Wechatpay extends Model
         ];
     }
 
-    public function getConf($bloc_id)
+    public function getConf($bloc_id,$pem=true)
     {
         $conf = new BlocConfWechatpay();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
@@ -66,8 +67,13 @@ class Wechatpay extends Model
             $this->server_signkey = $this->decodeConf($bloc['server_signkey']);
             $this->key = $this->decodeConf($bloc['key']);
             $this->is_server = $bloc['is_server'];
-            $this->apiclient_cert = $bloc['apiclient_cert']? unserialize($bloc['apiclient_cert']):'';
-            $this->apiclient_key = $bloc['apiclient_key']? unserialize($bloc['apiclient_key']):'';
+            if ($pem){
+                $this->apiclient_cert = $bloc['apiclient_cert']? $bloc['apiclient_cert']:'';
+                $this->apiclient_key = $bloc['apiclient_key']? $bloc['apiclient_key']:'';
+            }else{
+                $this->apiclient_cert = $bloc['apiclient_cert'] && file_exists($bloc['apiclient_cert'])? file_get_contents($bloc['apiclient_cert']):'';
+                $this->apiclient_key = $bloc['apiclient_key'] && file_exists($bloc['apiclient_key'])? file_get_contents($bloc['apiclient_key']):'';
+            }
             $this->notify_url = $this->decodeConf($bloc['notify_url']);
             return $this;
         }else{
@@ -98,8 +104,11 @@ class Wechatpay extends Model
 
         if (!$conf) {
             $conf = new BlocConfWechatpay([
-                'scenario'=>'create'
+                'scenario'=> 'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
 
         $conf->bloc_id = $bloc_id;
@@ -110,8 +119,17 @@ class Wechatpay extends Model
         $conf->notify_url = $this->notify_url;
         $conf->key = $this->key;
         $conf->app_id = $this->app_id;
-        $conf->apiclient_cert = serialize($this->apiclient_cert);
-        $conf->apiclient_key  = serialize($this->apiclient_key);
+
+        /**
+         * 将内容存储为pem文件
+         */
+        $apiclient_cert_file = Yii::getAlias('@attachment/wechatpay/'.$bloc_id.'/apiclient_cert.pem');
+        $apiclient_key_file = Yii::getAlias('@attachment/wechatpay/'.$bloc_id.'/apiclient_key.pem');
+        FileHelper::createDirectory(Yii::getAlias('@attachment/wechatpay/'.$bloc_id));
+        file_put_contents($apiclient_cert_file, $this->apiclient_cert);
+        file_put_contents($apiclient_key_file, $this->apiclient_key);
+        $conf->apiclient_cert = $apiclient_cert_file;
+        $conf->apiclient_key  = $apiclient_key_file;
 
         if ($conf->save()) {
             return [

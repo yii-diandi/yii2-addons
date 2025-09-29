@@ -9,7 +9,6 @@
 namespace diandi\addons\models\form;
 
 use common\helpers\ErrorsHelper;
-use common\helpers\ResultHelper;
 use diandi\addons\models\BlocConfWxapp;
 use diandi\addons\services\addonsService;
 use Yii;
@@ -65,33 +64,34 @@ class Wxapp extends Model
     {
         $conf = new BlocConfWxapp();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        if(!empty($bloc)){
+        if (!empty($bloc)) {
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
-    
-            $this->name = $this->decodeConf($bloc['name']);
-            $this->description = $this->decodeConf($bloc['description']);
+
+            $this->name = $bloc['name'];
+            $this->description = $bloc['description'];
             $this->original = $this->decodeConf($bloc['original']);
             $this->AppId = $this->decodeConf($bloc['AppId']);
             $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
-            $this->headimg = $this->decodeConf($bloc['headimg']);
-            $this->codeUrl = $this->decodeConf($bloc['codeUrl']);
+            $this->headimg = $bloc['headimg'];
+            $this->codeUrl = $bloc['codeUrl'];
             $this->share_title = $bloc['share_title'];
             $this->share_path = $bloc['share_path'];
             $this->share_image = $bloc['share_image'];
             return $this;
-        }else{
+        } else {
             return [];
         }
-       
+
     }
 
-    public function decodeConf($data){
+    public function decodeConf($data)
+    {
         $decodeKey = Yii::$app->params['encryptKey'];
-        if(!empty($data)){
-            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
-        }else{
+        if (!empty($data)) {
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data), $decodeKey);
+            return $this->is_showall ? $val : addonsService::hideStr($val, 2, 5, 1);
+        } else {
             return '';
         }
     }
@@ -102,14 +102,16 @@ class Wxapp extends Model
             return $this->validate();
         }
         $BlocConfWxapp = new BlocConfWxapp([
-            'scenario'=>'update'
+            'scenario' => 'update'
         ]);
         $conf = $BlocConfWxapp::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
             $conf = new BlocConfWxapp([
-                                            'scenario'=>'create'
+                'scenario' => 'create'
             ]);
+        }else{
+            $conf->setScenario('update');
         }
         $conf->bloc_id = $bloc_id;
         $conf->name = $this->name;
@@ -122,19 +124,19 @@ class Wxapp extends Model
         $conf->share_title = $this->share_title;
         $conf->share_path = $this->share_path;
         $conf->share_image = $this->share_image;
-    
-        if($conf->save()){
-             return [
-                 'code'=>200,
-                 'message'=>'保存成功'
-             ];
-        }else{
+
+        if ($conf->save()) {
+            return [
+                'code' => 200,
+                'message' => '保存成功'
+            ];
+        } else {
             $msg = ErrorsHelper::getModelError($conf);
             return [
-                'code'=>400,
-                'message'=>$msg
+                'code' => 400,
+                'message' => $msg
             ];
-            
+
         }
 
     }
@@ -145,13 +147,13 @@ class Wxapp extends Model
     public function attributeLabels(): array
     {
         return [
-           'name' => '小程序名称',
+            'name' => '小程序名称',
             'description' => '小程序描述',
             'original' => '原始id',
             'AppId' => 'AppId',
             'AppSecret' => 'AppSecret',
             'headimg' => '二维码',
-            'codeUrl'=>'普通二维码链接'
+            'codeUrl' => '普通二维码链接'
         ];
     }
 }

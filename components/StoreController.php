@@ -33,7 +33,7 @@ class StoreController extends AController
 
     public $extras = [];
 
-    public function actions()
+    public function actions(): array
     {
         $this->bloc_id = Yii::$app->request->get('bloc_id', 0);
         $actions = parent::actions();
@@ -45,27 +45,13 @@ class StoreController extends AController
         return $actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * Lists all BlocStore models.
      *
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex(): array
     {
         $bloc_id = $this->bloc_id ? $this->bloc_id : Yii::$app->params['bloc_id'];
         
@@ -84,7 +70,7 @@ class StoreController extends AController
       /**
      * @return string
      */
-    public function actionChildcate()
+    public function actionChildcate(): array
     {
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -105,7 +91,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($id): array
     {
         $model = $this->findModel($id);
         $model['logo'] = ImageHelper::tomedia($model['logo']);
@@ -122,7 +108,7 @@ class StoreController extends AController
      *
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate(): array
    {
         if ($this->module->id == 'addons') {
             $model = new BlocStore([
@@ -198,7 +184,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id): array
    {
 
         $model = $this->findModel($id);
@@ -276,7 +262,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($id): array
     {
         $this->findModel($id)->delete();
         $bloc_id = $this->bloc_id;
@@ -294,7 +280,7 @@ class StoreController extends AController
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected function findModel($id): yii\db\ActiveRecord|array
     {
         $BlocStore = new BlocStore([
             'extras' => $this->extras,

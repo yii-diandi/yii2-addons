@@ -116,6 +116,7 @@ class DdAddons extends DdAddonsModel
 
         $list = $query->offset($pagination->offset)
             ->limit($pagination->limit)
+            ->orderBy('displayorder')
             ->asArray()
             ->all();
 
@@ -140,6 +141,6 @@ class DdAddons extends DdAddonsModel
             ],
         ]);
 
-        return $provider;
+        return $provider->toArray();
     }
 }

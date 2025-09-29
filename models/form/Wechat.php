@@ -10,6 +10,7 @@
 namespace diandi\addons\models\form;
 
 use common\helpers\ErrorsHelper;
+use common\helpers\loggingHelper;
 use diandi\addons\models\BlocConfWechat;
 use diandi\addons\services\addonsService;
 use Yii;
@@ -91,6 +92,9 @@ class Wechat extends Model
             $conf = new BlocConfWechat([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
         $conf->bloc_id = $bloc_id;
 

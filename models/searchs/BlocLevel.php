@@ -116,7 +116,7 @@ class BlocLevel extends BlocLevelModel
             ]
         ]);
         
-        return $provider;
+        return $provider->toArray();
         
     }
 }

@@ -105,8 +105,11 @@ class Baidu extends Model
 
         if (!$conf) {
             $conf = new BlocConfBaidu([
-                'scenario'=>'create'
+               'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
         $conf->bloc_id = $bloc_id;
         $conf->APP_ID = $this->APP_ID;

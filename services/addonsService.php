@@ -44,12 +44,12 @@ class addonsService extends BaseService
         }
         $dom = new \DOMDocument();
         $dom->loadXML($xml);
-        
+
         $root = $dom->getElementsByTagName('manifest')->item(0);
         if (empty($root)) {
             return [];
         }
-        
+
         $vcode = explode(',', $root->getAttribute('versionCode'));
         $manifest['versions'] = [];
         if (is_array($vcode)) {
@@ -79,7 +79,7 @@ class addonsService extends BaseService
             'description' => trim($application->getElementsByTagName('description')->item(0)->textContent),
             'author' => trim($application->getElementsByTagName('author')->item(0)->textContent),
             'url' => trim($application->getElementsByTagName('url')->item(0)->textContent),
-            'displayorder' => trim($application->getElementsByTagName('displayorder')->item(0)->textContent),
+            'displayorder' => $application->getElementsByTagName('displayorder')->length > 0?trim($application->getElementsByTagName('displayorder')->item(0)->textContent):0,
             'setting' => trim($application->getAttribute('setting')) == 'true',
         ];
         // $bindings = $root->getElementsByTagName('bindings')->item(0);
@@ -353,7 +353,7 @@ class addonsService extends BaseService
     public static function getlogoUrl($addon)
     {
         // 生成模块资源文件夹
-        $addonsAtt = Yii::getAlias('@frontend/attachment/'.$addon);
+        $addonsAtt = Yii::getAlias('@public/attachment/'.$addon);
         HelpersFileHelper::createDirectory($addonsAtt);
         $logo = Yii::getAlias('@addons/'.$addon.'/logo.png');
 
@@ -393,9 +393,17 @@ class addonsService extends BaseService
             $baseMenus = require_once $menuFile;
             if (is_array($baseMenus) && !empty($baseMenus)) {
                 foreach ($baseMenus as $item) {
+                    $router =  $item['router'];
+                    $route = $router['name'];
+                    $route_name = $router['route_name'];
+                    $route_type = $router['route_type'];
+                    $title = $router['title'];
+                    $module_name = $router['module_name'];
+                    $route_id = self::createRoute($module_name,$route,$route_name,$route_type,$title);
                     $_Menu = clone  $Menu;
                     $MenuData = [
                         'name' => $item['name'],
+                        'route_id'=> $route_id,
                         'parent' => 0,
                         'level_type' => $item['level_type'],
                         'is_show' => $item['is_show'],
@@ -411,13 +419,21 @@ class addonsService extends BaseService
                     $_Menu->save();
 
                     $parent = $_Menu['attributes']['id'];
-                    self::createRoute($item['router'], $parent);
+//                    self::createRoute($item['router'], $parent);
 
                     if (!empty($item['child'])) {
                         foreach ($item['child'] as $child) {
+                            $router =  $child['router'];
+                            $route = $router['name'];
+                            $route_name = $router['route_name'];
+                            $route_type = $router['route_type'];
+                            $title = $router['title'];
+                            $module_name = $router['module_name'];
+                            $route_id = self::createRoute($module_name,$route,$route_name,$route_type,$title);
                             $_Menuchild = clone  $Menu;
                             $MenuData = [
                                 'name' => $child['name'],
+                                'route_id'=> $route_id,
                                 'parent' => $parent,
                                 'level_type' => $child['level_type'],
                                 'is_show' => $child['is_show'],
@@ -433,13 +449,20 @@ class addonsService extends BaseService
                             $_Menuchild->save();
 
                             $parentChild = $_Menuchild['attributes']['id'];
-                            self::createRoute($child['router'], $parentChild);
 
                             if (!empty($child['child'])) {
                                 foreach ($child['child'] as $childs) {
+                                    $router =  $childs['router'];
+                                    $route = $router['name'];
+                                    $route_name = $router['route_name'];
+                                    $route_type = $router['route_type'];
+                                    $title = $router['title'];
+                                    $module_name = $router['module_name'];
+                                    $route_id = self::createRoute($module_name,$route,$route_name,$route_type,$title);
                                     $_Menuchild = clone  $Menu;
                                     $MenuData = [
                                         'name' => $childs['name'],
+                                        'route_id'=> $route_id,
                                         'parent' => $parentChild,
                                         'level_type' => $childs['level_type'],
                                         'is_show' => $childs['is_show'],
@@ -454,7 +477,6 @@ class addonsService extends BaseService
                                     $_Menuchild->setAttributes($MenuData);
                                     $_Menuchild->save();
                                     $parentChilds = $_Menuchild['attributes']['id'];
-                                    self::createRoute($childs['router'], $parentChilds);
                                 }
                             }
                         }
@@ -540,7 +562,7 @@ class addonsService extends BaseService
     /**
      * 写入插件路由.
      *
-     * @return void
+     * @return int
      * @date 2022-06-13
      *
      * @example
@@ -549,31 +571,75 @@ class addonsService extends BaseService
      *
      * @since
      */
-    public static function createRoute($router = [], $menu_id)
+    public static function createRoute($module_name,$route,$route_name,$route_type,$title,$description='',$data = ''): int
     {
-        if (!empty($router)) {
-            $Menu = new ModelsMenu();
-            $AuthRoute = new AuthRoute();
-            $AuthRoute->load($router, '');
-            $AuthRoute->save();
-            $route_id = Yii::$app->db->getLastInsertID();
-            $menuView = $Menu->find()->where(['module_name' => $router['module_name'], 'route' => $router['name']])->one();
-            if ($menuView && $route_id) {
-                $Menu->updateAll(['route_id' => $route_id], [
-                    'id' => $menuView['id'],
-                ]);
+        $is_sys = strpos($module_name, 'sys');
+        $item_id = self::createRouteItem($route,0,0,0,$route_type,$module_name);
+        $routes = [
+            'name' => $route,
+            'item_id' => $item_id, //操作完更新
+            'route_name' => $route_name,
+            'is_sys' => $is_sys?1:0,
+            'route_type' => $route_type,
+            'description' => $description,
+            'title' => $title,
+            'pid' => 0,
+            'data' => $data,
+            'module_name' => $module_name,
+        ];
+        $AuthRoute = new AuthRoute();
+        $route_id = $AuthRoute::find()->where(['name' => $route])->select('id')->scalar();
+        if ($route_id){
+            ModelsMenu::updateAll(['route_id' => $route_id], [
+                'route' => $routes['name'],
+                'module_name' => $routes['module_name'],
+            ]);
+            return $route_id;
+        }
+        $AuthRoute->load($routes, '');
+        if ($AuthRoute->save()) {
+            $route_id = $AuthRoute->id;
 
-                $AuthItem = new AuthItem();
-                if (!empty($router['item'])) {
-                    $AuthItem->load($router['item'], '');
-                    $AuthItem->save();
-                    $item_id = Yii::$app->db->getLastInsertID();
-                    if ($AuthRoute->find()->where(['module_name' => $router['item']['module_name'], 'name' => $router['item']['name']])->one() && $item_id) {
-                        $AuthRoute->item_id = $item_id;
-                        $AuthRoute->save();
-                    }
-                }
-            }
+            ModelsMenu::updateAll(['route_id' => $route_id], [
+                'route' => $routes['name'],
+                'module_name' => $routes['module_name'],
+            ]);
+            return $route_id;
+        }else{
+            $msg = self::getModelError($AuthRoute);
+            throw new \Exception($msg);
+        }
+    }
+
+    /**
+     * 创建路由的权限item
+     * @return void
+     */
+    static function createRouteItem($name,$permission_type,$rule_name,$parent_id,$permission_level,$module_name,$type=0,$description='',$data = '')
+    {
+        $is_sys = strpos($module_name, 'sys');
+
+        $item = [
+            'name' => $name,
+            'is_sys' => $is_sys?1:0,
+            'permission_type' => $permission_type,
+            'description' => $description,
+            'rule_name' => $rule_name,
+            'parent_id' => $parent_id,
+            'permission_level' => $permission_level,
+            'data' => $data,
+            'module_name' => $module_name,
+            'type' => $type
+        ];
+
+        $AuthItem = new AuthItem();
+        $AuthItem->load($item, '');
+        if ($AuthItem->save()) {
+            $item_id = $AuthItem->id;
+            return $item_id;
+        }else{
+            $msg = self::getModelError($AuthItem);
+            throw new \Exception($msg);
         }
     }
 
@@ -692,5 +758,14 @@ class addonsService extends BaseService
         }
 
         return $string;
+    }
+
+    public static function getModelError(mixed $model)
+    {
+        $errors = $model->getErrors();    //得到所有的错误信息
+        if (!is_array($errors)) return '';
+        $firstError = array_shift($errors);
+        if (!is_array($firstError)) return '';
+        return array_shift($firstError);
     }
 }

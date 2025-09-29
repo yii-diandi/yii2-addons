@@ -40,7 +40,7 @@ class StoreLabelLink extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'store_id'], 'required'],
             [['bloc_id', 'store_id', 'label_id'], 'integer'],
-            [['create_time', 'update_time'], 'string', 'max' => 30],
+            [['create_time', 'update_time','label_name'], 'string', 'max' => 30],
         ];
     }
 

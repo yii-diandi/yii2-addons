@@ -83,7 +83,7 @@ class BlocConfWechatpay extends \yii\db\ActiveRecord
                     if(!in_array($value,['id','bloc_id','create_time','update_time','is_server','apiclient_cert','apiclient_key'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
-                            if(strpos($this->attributes[$value],'*') === false){
+                            if($this->attributes[$value] && is_string($this->attributes[$value]) && strpos($this->attributes[$value],'*') === false){
                                 $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
                             }else{
                                 // 原来的加密数据过滤不做更新

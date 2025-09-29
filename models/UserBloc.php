@@ -44,9 +44,9 @@ class UserBloc extends \yii\db\ActiveRecord
             [['create_time', 'update_time'], 'integer'],
             ['user_id', 'check', 'on' => ['create']],
             [
-                ['user_id', 'store_id'],
+                ['user_id', 'bloc_id'],
                 'unique',
-                'targetAttribute' => ['user_id', 'store_id'],
+                'targetAttribute' => ['user_id', 'bloc_id'],
                 'message' => '重复给用户进行店铺权限，请检查',
             ],
         ];

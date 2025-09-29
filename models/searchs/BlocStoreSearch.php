@@ -76,7 +76,7 @@ class BlocStoreSearch extends BlocStore
         // grid filtering conditions
         $query->andFilterWhere([
             // 'store_id' => $this->store_id,
-            // 'bloc_id' => $this->bloc_id,
+             'bloc_id' => $this->bloc_id,
             'status' => $this->status,
         ]);
 
@@ -117,6 +117,7 @@ class BlocStoreSearch extends BlocStore
             'key' => 'store_id',
             'allModels' => $list,
             'totalCount' => isset($count) ? $count : 0,
+            'sql'=>$query->createCommand()->getRawSql(),
             'total' => isset($count) ? $count : 0,
             'sort' => [
                 'attributes' => [
@@ -131,6 +132,6 @@ class BlocStoreSearch extends BlocStore
             ],
         ]);
 
-        return $provider;
+        return $provider->toArray();
     }
 }

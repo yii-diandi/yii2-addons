@@ -84,10 +84,14 @@ class Map extends Model
             'scenario'=>'update'
         ]);
         $conf = $BlocConfMap::findOne(['bloc_id' => $bloc_id]);
+
         if (!$conf) {
             $conf = new BlocConfMap([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
         $conf->bloc_id = $bloc_id;
 

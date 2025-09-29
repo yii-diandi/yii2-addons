@@ -80,7 +80,7 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
                 foreach ($list as $key => $value) {
                     //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                     $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['id','bloc_id','create_time','update_time','share_title','share_path','share_image'])){
+                    if(!in_array($value,['id','bloc_id','create_time','name','description','update_time','share_title','share_path','share_image', 'codeUrl', 'headimg'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
                             if(strpos($this->attributes[$value],'*') === false){

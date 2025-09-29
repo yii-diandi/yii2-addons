@@ -40,9 +40,9 @@ class DdAddons extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['identifie', 'title', 'version', 'ability', 'description', 'author', 'url', 'settings', 'logo'], 'required'],
-            [['type'], 'string'],
-            [['settings', 'is_install', 'is_nav','displayorder'], 'integer'],
+            [['identifie', 'title', 'version', 'ability', 'description', 'author', 'settings'], 'required'],
+            [['type'], 'integer'],
+            [['settings', 'is_install', 'is_nav','displayorder','is_left'], 'integer'],
             [['identifie', 'title'], 'string', 'max' => 100],
             [['version', 'versions'], 'string', 'max' => 15],
             [['ability'], 'string', 'max' => 500],

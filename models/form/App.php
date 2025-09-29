@@ -35,7 +35,14 @@ class App extends Model
     public $paysignkey;
     public $app_id;
     public $app_secret;
-    
+    public $supports_multiple_countries;
+    public $is_registration_open;
+    public $privacy_policy;
+    public $user_agreement;
+    public $privacy_policy_url;
+    public $user_agreement_url;
+
+
 
     /**
      * {@inheritdoc}
@@ -52,9 +59,13 @@ class App extends Model
                 'partner_key',
                 'paysignkey',
                 'app_id',
-                'app_secret'
+                'app_secret',
+                'privacy_policy_url',
+                'user_agreement_url',
+                'privacy_policy',
+                'user_agreement'
             ], 'string'],
-            [['id', 'bloc_id'], 'integer'],
+            [['bloc_id','is_registration_open','supports_multiple_countries'], 'integer'],
 
         ];
     }
@@ -66,15 +77,22 @@ class App extends Model
         if(!empty($bloc)){
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
-    
-            $this->android_ver = $this->decodeConf($bloc['android_ver']);
-            $this->android_url = $this->decodeConf($bloc['android_url']);
-            $this->ios_ver = $this->decodeConf($bloc['ios_ver']);
-            $this->ios_url = $this->decodeConf($bloc['ios_url']);
             $this->partner = $this->decodeConf($bloc['partner']);
             $this->partner_key = $this->decodeConf($bloc['partner_key']);
+            $this->paysignkey = $this->decodeConf($bloc['paysignkey']);
             $this->app_id = $this->decodeConf($bloc['app_id']);
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
+            $this->android_ver = $bloc['android_ver'];
+            $this->android_url = $bloc['android_url'];
+            $this->ios_ver = $bloc['ios_ver'];
+            $this->ios_url = $bloc['ios_url'];
+            $this->supports_multiple_countries = $bloc['supports_multiple_countries'];
+            $this->is_registration_open = $bloc['is_registration_open'];
+            $this->privacy_policy = $bloc['privacy_policy'];
+            $this->user_agreement = $bloc['user_agreement'];
+            $this->privacy_policy_url = $bloc['privacy_policy_url'];
+            $this->user_agreement_url = $bloc['user_agreement_url'];
+
             return $this;
         }else{
             return [];
@@ -106,21 +124,31 @@ class App extends Model
 
         if (!$conf) {
             $conf = new BlocConfApp([
-                'scenario'=>'create'
+               'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
+
         $conf->bloc_id = $bloc_id;
-        
         $conf->android_ver = $this->android_ver;
         $conf->android_url = $this->android_url;
         $conf->ios_ver = $this->ios_ver;
         $conf->ios_url = $this->ios_url;
-        
         $conf->partner = $this->partner;
         $conf->partner_key = $this->partner_key;
-        $conf->app_secret = $this->app_secret;
+        $conf->paysignkey = $this->paysignkey;
         $conf->app_id = $this->app_id;
         $conf->app_secret = $this->app_secret;
+        $conf->supports_multiple_countries = (int) $this->supports_multiple_countries;
+        $conf->is_registration_open = (int) $this->is_registration_open;
+        $conf->privacy_policy = $this->privacy_policy;
+        $conf->user_agreement = $this->user_agreement;
+        $conf->privacy_policy_url = $this->privacy_policy_url;
+        $conf->user_agreement_url = $this->user_agreement_url;
+
+
     
         if($conf->save()){
              return [

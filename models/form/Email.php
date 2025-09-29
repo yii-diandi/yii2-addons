@@ -86,6 +86,9 @@ class Email extends Model
             $conf = new BlocConfEmail([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
 
         $conf->bloc_id = $bloc_id;

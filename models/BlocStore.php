@@ -58,7 +58,7 @@ class BlocStore extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id', 'status', 'category_id', 'category_pid'], 'integer'],
+            [['bloc_id', 'status', 'category_id', 'category_pid','admin_id'], 'integer'],
             ['bloc_id', 'compare', 'compareValue' => 0, 'operator' => '!='],
             [['name', 'logo', 'address', 'longitude', 'latitude'], 'string', 'max' => 255],
             [['province', 'city', 'county'], 'integer'],
@@ -81,6 +81,8 @@ class BlocStore extends \yii\db\ActiveRecord
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
                 'noAttributes' => ['store_id'],
+                'snow_id' => 'store_id'
+
             ],
         ];
     }

@@ -104,6 +104,10 @@ class Microapp extends Model
             $conf = new BlocConfMicroapp([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+
+            $conf->setScenario('update');
         }
         $conf->bloc_id = $bloc_id;
         $conf->name = $this->name;

@@ -58,6 +58,7 @@ class StoreCategory extends \yii\db\ActiveRecord
                 'class' => \common\behaviors\SaveBehavior::className(),
                 'updatedAttribute' => 'update_time',
                 'createdAttribute' => 'create_time',
+                'snow_id' => 'category_id'
             ],
         ];
     }

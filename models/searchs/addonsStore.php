@@ -115,6 +115,6 @@ class addonsStore extends addonsStoreModel
             ]
         ]);
 
-        return $provider;
+        return $provider->toArray();
     }
 }

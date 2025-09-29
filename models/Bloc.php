@@ -76,15 +76,15 @@ class Bloc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['business_name', 'province', 'city', 'district', 'address', 'longitude', 'latitude', 'telephone', 'recommend', 'special', 'introduction', 'open_time', 'status'], 'required'],
+            [['business_name'], 'required'],
             ['status', 'default', 'value' => 2],
             ['is_group', 'default', 'value' => 0],
             ['register_level', 'default', 'value' => 0],
-            [['pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group', 'level_num', 'store_num', 'pay_bloc_id'], 'integer'],
+            [['category','type', 'business_type', 'pid', 'avg_price', 'status', 'store_id', 'register_level', 'group_bloc_id', 'is_group', 'level_num', 'store_num', 'pay_bloc_id','province', 'city', 'district'], 'integer'],
             [['other_files'], 'string'],
             [['business_name', 'address', 'open_time', 'end_time', 'sosomap_poi_uid', 'invitation_code', 'invitation_code'], 'string', 'max' => 50],
-            [['category', 'recommend', 'special', 'introduction', 'logo'], 'string', 'max' => 255],
-            [['province', 'city', 'district', 'longitude', 'latitude'], 'string', 'max' => 15],
+            [['recommend', 'special', 'introduction', 'logo'], 'string', 'max' => 255],
+            [['longitude', 'latitude'], 'string', 'max' => 15],
             [['telephone'], 'string', 'max' => 20],
             [['license_no'], 'string', 'max' => 30],
             [['extra'], 'safe'],

@@ -18,7 +18,7 @@ class AddonsTypeStatus extends BaseEnum
     const BUSINESS = 'business';
     const MARKETING = 'marketing';
     const MEMBER = 'member';
-    const SYSTEM = 'system';
+    const SYSTEM = 'sys';
     const ENTERPRISE = 'enterprise';
     const SERVICES = 'service';
     const OTHER = 'other';

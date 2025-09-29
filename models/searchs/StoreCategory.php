@@ -96,6 +96,6 @@ class StoreCategory extends StoreCategoryModel
             'pagination' => false,
         ]);
 
-        return $provider;
+        return $provider->toArray();
     }
 }

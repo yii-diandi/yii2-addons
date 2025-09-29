@@ -125,11 +125,13 @@ class Oss extends Model
         ]);
         $conf = $BlocConfOss::findOne(['bloc_id' => $bloc_id]);
 
-        $conf->scenario = 'update';
         if (!$conf) {
             $conf = new BlocConfOss([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
 
         $conf->bloc_id = $bloc_id;

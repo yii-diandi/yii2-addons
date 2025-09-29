@@ -119,6 +119,6 @@ class StoreLabelSearch extends StoreLabel
             ]
         ]);
 
-        return $provider;
+        return $provider->toArray();
     }
 }

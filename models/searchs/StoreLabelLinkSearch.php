@@ -105,7 +105,7 @@ class StoreLabelLinkSearch extends StoreLabelLink
             ]
         ]);
         
-        return $provider;
+        return $provider->toArray();
         
     }
 }

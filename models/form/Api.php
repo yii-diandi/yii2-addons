@@ -130,10 +130,14 @@ class Api extends Model
             'scenario'=>'update'
         ]);
         $conf = $BlocConfApi::findOne(['bloc_id' => $bloc_id]);
+
         if (!$conf) {
             $conf = new BlocConfApi([
                 'scenario'=>'create'
             ]);
+            $conf->setScenario('create');
+        }else{
+            $conf->setScenario('update');
         }
 
 
