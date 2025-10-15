@@ -9,6 +9,7 @@
 
 namespace diandi\addons\models\form;
 
+use diandi\addons\models\BlocConfWechatOpen;
 use Yii;
 use common\helpers\ErrorsHelper;
 use diandi\addons\models\BlocConfApi;
@@ -59,7 +60,7 @@ class WechatOpen extends Model
      */
     public function getConf($bloc_id)
     {
-        $conf = new BlocConfApi();
+        $conf = new BlocConfWechatOpen();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
         if (!empty($bloc)) {
             $this->id = $bloc['id'];
@@ -77,7 +78,7 @@ class WechatOpen extends Model
      */
     public function getApiConf($appId)
     {
-        $conf = new BlocConfApi();
+        $conf = new BlocConfWechatOpen();
         $bloc = $conf::find()->where(['app_id' => $appId])->asArray()->one();
         if (!empty($bloc)) {
             $this->id = $bloc['id'];
