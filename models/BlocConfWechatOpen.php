@@ -31,7 +31,7 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%bloc_conf_api}}';
+        return '{{%bloc_conf_wechat_open}}';
     }
 
     /**
