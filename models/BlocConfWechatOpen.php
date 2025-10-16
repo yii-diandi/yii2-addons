@@ -42,7 +42,7 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
         return [
             [['bloc_id', 'update_time', 'create_time'], 'integer'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'required'],
-            [['app_id', 'token', 'app_secret', 'aes_key'], 'string', 'max' => 255],
+            [['app_id', 'token', 'app_secret', 'aes_key'], 'safe'],
             [['app_id'], 'unique'],
         ];
     }
