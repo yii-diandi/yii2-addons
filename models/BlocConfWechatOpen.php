@@ -40,7 +40,7 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id'], 'integer'],
+            [['bloc_id', 'update_time', 'create_time'], 'integer'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'required'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'string', 'max' => 255],
             [['app_id'], 'unique'],
@@ -50,8 +50,8 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','app_id','secret','token','aes_key','headimg','update_time','create_time'];
-        $scenarios[self::SCENARIO_UPDATE] = ['app_id','secret','token','aes_key','headimg','update_time','create_time'];
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
         return $scenarios;
     }
 
