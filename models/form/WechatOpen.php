@@ -135,13 +135,13 @@ class WechatOpen extends Model
             ];
         }
 
-        $BlocConfApi = new BlocConfApi([
+        $BlocConfApi = new BlocConfWechatOpen([
             'scenario' => 'update'
         ]);
         $conf = $BlocConfApi::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
-            $conf = new BlocConfApi([
+            $conf = new BlocConfWechatOpen([
                 'scenario' => 'create'
             ]);
             $conf->setScenario('create');

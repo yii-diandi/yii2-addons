@@ -47,6 +47,14 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
         ];
     }
 
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','app_id','secret','token','aes_key','headimg','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['app_id','secret','token','aes_key','headimg','update_time','create_time'];
+        return $scenarios;
+    }
+
     /**
      * 行为.
      */
