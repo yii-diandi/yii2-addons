@@ -40,7 +40,7 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['bloc_id', 'update_time', 'create_time'], 'integer'],
+            [['bloc_id', 'update_time', 'create_time','wechat_login_type'], 'integer'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'required'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'safe']
         ];
