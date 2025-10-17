@@ -92,6 +92,7 @@ class WechatOpen extends Model
             $this->bloc_id = $bloc['bloc_id'];
             $this->app_id = $bloc['app_id'];
             $this->token = $bloc['token'];
+            $this->wechat_login_type = (int) $bloc['wechat_login_type'];
             $this->pc_appid = $this->decodeConf($bloc['pc_appid']);
             $this->pc_secret = $this->decodeConf($bloc['pc_secret']);
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
