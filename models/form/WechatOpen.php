@@ -45,6 +45,7 @@ class WechatOpen extends Model
     public $pc_appid;
 
     public $pc_secret;
+    public $wechat_login_type;
 
     /**
      * {@inheritdoc}
@@ -54,7 +55,7 @@ class WechatOpen extends Model
         return [
             [['app_id', 'token', 'app_secret', 'aes_key','pc_appid','pc_secret'], 'string'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'required'],
-            [['id', 'bloc_id'], 'integer'],
+            [['id', 'bloc_id','wechat_login_type'], 'integer'],
         ];
     }
 
@@ -161,10 +162,11 @@ class WechatOpen extends Model
         $conf->app_id = $this->app_id;
         $conf->token = $this->token;
         // 对敏感信息进行加密存储
-        $conf->app_secret = $this->encodeConf($this->app_secret);
-        $conf->aes_key = $this->encodeConf($this->aes_key);
-        $conf->pc_appid = $this->encodeConf($this->pc_appid);
-        $conf->pc_secret = $this->encodeConf($this->pc_secret);
+        $conf->app_secret = $this->app_secret;
+        $conf->aes_key = $this->aes_key;
+        $conf->pc_appid = $this->pc_appid;
+        $conf->pc_secret = $this->pc_secret;
+        $conf->wechat_login_type = $this->wechat_login_type;
 
         if ($conf->save()) {
             return [
