@@ -72,26 +72,6 @@ class WechatOpen extends Model
             $this->bloc_id = $bloc['bloc_id'];
             $this->app_id = $bloc['app_id'];
             $this->token = $bloc['token'];
-            $this->pc_appid = $this->decodeConf($bloc['pc_appid']);
-            $this->pc_secret = $this->decodeConf($bloc['pc_secret']);
-            $this->app_secret = $this->decodeConf($bloc['app_secret']);
-            $this->aes_key = $this->decodeConf($bloc['aes_key']);
-        }
-    }
-
-    /**
-     * 根据 app_id 获取配置信息
-     * @param string $appId
-     */
-    public function getApiConf($appId)
-    {
-        $conf = new BlocConfWechatOpen();
-        $bloc = $conf::find()->where(['app_id' => $appId])->asArray()->one();
-        if (!empty($bloc)) {
-            $this->id = $bloc['id'];
-            $this->bloc_id = $bloc['bloc_id'];
-            $this->app_id = $bloc['app_id'];
-            $this->token = $bloc['token'];
             $this->wechat_login_type = (int) $bloc['wechat_login_type'];
             $this->pc_appid = $this->decodeConf($bloc['pc_appid']);
             $this->pc_secret = $this->decodeConf($bloc['pc_secret']);
@@ -99,6 +79,7 @@ class WechatOpen extends Model
             $this->aes_key = $this->decodeConf($bloc['aes_key']);
         }
     }
+
 
     /**
      * 解密配置数据
