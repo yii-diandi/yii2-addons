@@ -49,8 +49,9 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
-        $scenarios[self::SCENARIO_UPDATE] = ['app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
+
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','pc_appid','pc_secret','app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['app_id', 'token', 'app_secret','pc_appid','pc_secret', 'aes_key','update_time','create_time'];
         return $scenarios;
     }
 

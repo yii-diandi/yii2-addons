@@ -42,13 +42,17 @@ class WechatOpen extends Model
      */
     public $aes_key;
 
+    public $pc_appid;
+
+    public $pc_secret;
+
     /**
      * {@inheritdoc}
      */
     public function rules(): array
     {
         return [
-            [['app_id', 'token', 'app_secret', 'aes_key'], 'string'],
+            [['app_id', 'token', 'app_secret', 'aes_key','pc_appid','pc_secret'], 'string'],
             [['app_id', 'token', 'app_secret', 'aes_key'], 'required'],
             [['id', 'bloc_id'], 'integer'],
         ];
@@ -67,6 +71,8 @@ class WechatOpen extends Model
             $this->bloc_id = $bloc['bloc_id'];
             $this->app_id = $bloc['app_id'];
             $this->token = $bloc['token'];
+            $this->pc_appid = $this->decodeConf($bloc['pc_appid']);
+            $this->pc_secret = $this->decodeConf($bloc['pc_secret']);
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
             $this->aes_key = $this->decodeConf($bloc['aes_key']);
         }
@@ -85,6 +91,8 @@ class WechatOpen extends Model
             $this->bloc_id = $bloc['bloc_id'];
             $this->app_id = $bloc['app_id'];
             $this->token = $bloc['token'];
+            $this->pc_appid = $this->decodeConf($bloc['pc_appid']);
+            $this->pc_secret = $this->decodeConf($bloc['pc_secret']);
             $this->app_secret = $this->decodeConf($bloc['app_secret']);
             $this->aes_key = $this->decodeConf($bloc['aes_key']);
         }
@@ -155,6 +163,8 @@ class WechatOpen extends Model
         // 对敏感信息进行加密存储
         $conf->app_secret = $this->encodeConf($this->app_secret);
         $conf->aes_key = $this->encodeConf($this->aes_key);
+        $conf->pc_appid = $this->encodeConf($this->pc_appid);
+        $conf->pc_secret = $this->encodeConf($this->pc_secret);
 
         if ($conf->save()) {
             return [
