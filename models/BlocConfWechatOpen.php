@@ -50,8 +50,8 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','pc_appid','wechatLoginType','pc_secret','app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
-        $scenarios[self::SCENARIO_UPDATE] = ['app_id', 'token','wechatLoginType', 'app_secret','pc_appid','pc_secret', 'aes_key','update_time','create_time'];
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','pc_appid','wechat_login_type','pc_secret','app_id', 'token', 'app_secret', 'aes_key','update_time','create_time'];
+        $scenarios[self::SCENARIO_UPDATE] = ['app_id', 'token','wechat_login_type', 'app_secret','pc_appid','pc_secret', 'aes_key','update_time','create_time'];
         return $scenarios;
     }
 
@@ -78,7 +78,7 @@ class BlocConfWechatOpen extends \yii\db\ActiveRecord
             foreach ($list as $key => $value) {
                 //$data:需要加密的信息,$secretKey:加密时使用的密钥(key)
                 $secretKey = Yii::$app->params['encryptKey'];
-                if (!in_array($value, ['id', 'bloc_id', 'create_time', 'update_time', 'app_id', 'token','wechatLoginType'])) {
+                if (!in_array($value, ['id', 'bloc_id', 'create_time', 'update_time', 'app_id', 'token','wechat_login_type'])) {
                     if (!$this->isNewRecord) {
                         // 更新的时候必须无星号才处理
                         if (strpos($this->attributes[$value], '*') === false) {
