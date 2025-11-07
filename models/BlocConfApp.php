@@ -44,8 +44,8 @@ class BlocConfApp extends \yii\db\ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret','create_time','update_time'];
-        $scenarios[self::SCENARIO_UPDATE] = ['android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret','create_time','update_time'];
+        $scenarios[self::SCENARIO_CREATE] = ['bloc_id','android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret','create_time','update_time','version_desc'];
+        $scenarios[self::SCENARIO_UPDATE] = ['android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret','create_time','update_time','version_desc'];
         return $scenarios;
     }
 
@@ -57,7 +57,7 @@ class BlocConfApp extends \yii\db\ActiveRecord
         return [
             [['partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret'],'required'],
             [['bloc_id', 'create_time', 'update_time'], 'integer'],
-            [['android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret'], 'string', 'max' => 255],
+            [['android_ver', 'android_url', 'ios_ver', 'ios_url', 'partner', 'partner_key', 'paysignkey', 'app_id', 'app_secret','version_desc'], 'string', 'max' => 255],
             [[
                 'supports_multiple_countries',
                 'is_registration_open',
@@ -84,32 +84,32 @@ class BlocConfApp extends \yii\db\ActiveRecord
         ];
     }
 
-    
-    	
+
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-                // 新增
-                $list = array_keys($this->attributes);
-                foreach ($list as $key => $value) {
-                    //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
-                    $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['bloc_id','android_ver','android_url','ios_ver','ios_url','create_time','update_time','supports_multiple_countries','is_registration_open','privacy_policy','user_agreement','privacy_policy_url','user_agreement_url'
-                    ])){
-                        if(!$this->isNewRecord){ 
-                            // 更新的时候必须无星号才处理
-                            if(strpos($this->attributes[$value],'*') === false){
-                                $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
-                            }else{
-                                // 原来的加密数据过滤不做更新
-                                unset($this->$value);
-                            }
+            // 新增
+            $list = array_keys($this->attributes);
+            foreach ($list as $key => $value) {
+                //$data:需要加密的信息,$secretKey:加密时使用的密钥(key)
+                $secretKey = Yii::$app->params['encryptKey'];
+                if(!in_array($value,['bloc_id','android_ver','android_url','ios_ver','ios_url','create_time','update_time','supports_multiple_countries','is_registration_open','privacy_policy','user_agreement','privacy_policy_url','user_agreement_url','version_desc'
+                ])){
+                    if(!$this->isNewRecord){
+                        // 更新的时候必须无星号才处理
+                        if(strpos($this->attributes[$value],'*') === false){
+                            $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
                         }else{
-                            $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));                     
+                            // 原来的加密数据过滤不做更新
+                            unset($this->$value);
                         }
-                           
+                    }else{
+                        $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
                     }
+
                 }
+            }
             return true;
         } else {
             return false;

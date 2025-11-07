@@ -41,7 +41,7 @@ class App extends Model
     public $user_agreement;
     public $privacy_policy_url;
     public $user_agreement_url;
-
+    public $version_desc;
 
 
     /**
@@ -63,9 +63,10 @@ class App extends Model
                 'privacy_policy_url',
                 'user_agreement_url',
                 'privacy_policy',
-                'user_agreement'
+                'user_agreement',
+                'version_desc'
             ], 'string'],
-            [['bloc_id','is_registration_open','supports_multiple_countries'], 'integer'],
+            [['bloc_id', 'is_registration_open', 'supports_multiple_countries'], 'integer'],
 
         ];
     }
@@ -74,7 +75,7 @@ class App extends Model
     {
         $conf = new BlocConfApp();
         $bloc = $conf::find()->where(['bloc_id' => $bloc_id])->asArray()->one();
-        if(!empty($bloc)){
+        if (!empty($bloc)) {
             $this->id = $bloc['id'];
             $this->bloc_id = $bloc['bloc_id'];
             $this->partner = $this->decodeConf($bloc['partner']);
@@ -92,24 +93,26 @@ class App extends Model
             $this->user_agreement = $bloc['user_agreement'];
             $this->privacy_policy_url = $bloc['privacy_policy_url'];
             $this->user_agreement_url = $bloc['user_agreement_url'];
+            $this->version_desc = $bloc['version_desc'];
 
             return $this;
-        }else{
+        } else {
             return [];
         }
-       
+
     }
 
-    public function decodeConf($data){
+    public function decodeConf($data)
+    {
         $decodeKey = Yii::$app->params['encryptKey'];
-        if(!empty($data)){
-            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data),$decodeKey);
-            return $this->is_showall?$val:addonsService::hideStr($val,2,5,1);    
-  
-        }else{
+        if (!empty($data)) {
+            $val = Yii::$app->getSecurity()->decryptByKey(base64_decode($data), $decodeKey);
+            return $this->is_showall ? $val : addonsService::hideStr($val, 2, 5, 1);
+
+        } else {
             return '';
         }
-   }
+    }
 
     public function saveConf($bloc_id)
     {
@@ -117,17 +120,17 @@ class App extends Model
             return $this->validate();
         }
         $BlocConfApp = new BlocConfApp([
-            'scenario'=>'update'
+            'scenario' => 'update'
         ]);
 
         $conf = $BlocConfApp::findOne(['bloc_id' => $bloc_id]);
 
         if (!$conf) {
             $conf = new BlocConfApp([
-               'scenario'=>'create'
+                'scenario' => 'create'
             ]);
             $conf->setScenario('create');
-        }else{
+        } else {
             $conf->setScenario('update');
         }
 
@@ -141,27 +144,27 @@ class App extends Model
         $conf->paysignkey = $this->paysignkey;
         $conf->app_id = $this->app_id;
         $conf->app_secret = $this->app_secret;
-        $conf->supports_multiple_countries = (int) $this->supports_multiple_countries;
-        $conf->is_registration_open = (int) $this->is_registration_open;
+        $conf->supports_multiple_countries = (int)$this->supports_multiple_countries;
+        $conf->is_registration_open = (int)$this->is_registration_open;
         $conf->privacy_policy = $this->privacy_policy;
         $conf->user_agreement = $this->user_agreement;
         $conf->privacy_policy_url = $this->privacy_policy_url;
         $conf->user_agreement_url = $this->user_agreement_url;
+        $conf->version_desc = $this->version_desc;
 
 
-    
-        if($conf->save()){
-             return [
-                 'code'=>200,
-                 'message'=>'保存成功'
-             ];
-        }else{
+        if ($conf->save()) {
+            return [
+                'code' => 200,
+                'message' => '保存成功'
+            ];
+        } else {
             $msg = ErrorsHelper::getModelError($conf);
             return [
-                'code'=>400,
-                'message'=>$msg
+                'code' => 400,
+                'message' => $msg
             ];
-            
+
         }
 
     }
@@ -172,15 +175,15 @@ class App extends Model
     public function attributeLabels(): array
     {
         return [
-            'android_ver'=>'安卓版本',
-            'android_url'=>'安卓最新版地址',
-            'ios_ver'=>'ios版本',
-            'ios_url'=>'ios最新版地址',
-            'partner'=>'财付通商户号',
-            'partner_key'=>'财付通密钥',
-            'paysignkey'=>'支付签名密钥',
-            'app_id'=>'微信开放平台app_id',
-            'app_secret'=>'微信开放平台app_secret'
+            'android_ver' => '安卓版本',
+            'android_url' => '安卓最新版地址',
+            'ios_ver' => 'ios版本',
+            'ios_url' => 'ios最新版地址',
+            'partner' => '财付通商户号',
+            'partner_key' => '财付通密钥',
+            'paysignkey' => '支付签名密钥',
+            'app_id' => '微信开放平台app_id',
+            'app_secret' => '微信开放平台app_secret'
         ];
     }
 }
