@@ -98,7 +98,7 @@ class BlocConfApp extends \yii\db\ActiveRecord
                 ])){
                     if(!$this->isNewRecord){
                         // 更新的时候必须无星号才处理
-                        if(strpos($this->attributes[$value],'*') === false){
+                        if(!empty($this->attributes[$value]) && strpos($this->attributes[$value],'*') === false){
                             $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
                         }else{
                             // 原来的加密数据过滤不做更新
