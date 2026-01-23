@@ -30,7 +30,7 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
 
-    public function scenarios()
+    public function scenarios(): array
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_CREATE] = ['bloc_id','name','description','original','AppId','headimg','AppSecret','codeUrl','create_time','update_time','share_title','share_path','share_image'];
@@ -40,7 +40,7 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%bloc_conf_wxapp}}';
     }
@@ -48,7 +48,7 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
     /**
      * 行为.
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         /*自动添加创建和修改时间*/
         return [
@@ -80,10 +80,10 @@ class BlocConfWxapp extends \yii\db\ActiveRecord
                 foreach ($list as $key => $value) {
                     //$data:需要加密的信息,$secretKey:加密时使用的密钥(key) 
                     $secretKey = Yii::$app->params['encryptKey'];
-                    if(!in_array($value,['id','bloc_id','create_time','name','description','update_time','share_title','share_path','share_image', 'codeUrl', 'headimg'])){
+                    if(!in_array($value,['id','bloc_id','original','AppId','create_time','name','description','update_time','share_title','share_path','share_image', 'codeUrl', 'headimg'])){
                         if(!$this->isNewRecord){ 
                             // 更新的时候必须无星号才处理
-                            if(strpos($this->attributes[$value],'*') === false){
+                            if(!str_contains($this->attributes[$value], '*')){
                                 $this->$value = base64_encode(Yii::$app->getSecurity()->encryptByKey($this->attributes[$value], $secretKey));
                             }else{
                                 // 原来的加密数据过滤不做更新

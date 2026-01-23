@@ -71,7 +71,7 @@ class Wxapp extends Model
             $this->name = $bloc['name'];
             $this->description = $bloc['description'];
             $this->original = $this->decodeConf($bloc['original']);
-            $this->AppId = $this->decodeConf($bloc['AppId']);
+            $this->AppId = $bloc['AppId'];
             $this->AppSecret = $this->decodeConf($bloc['AppSecret']);
             $this->headimg = $bloc['headimg'];
             $this->codeUrl = $bloc['codeUrl'];
@@ -96,7 +96,7 @@ class Wxapp extends Model
         }
     }
 
-    public function saveConf($bloc_id)
+    public function saveConf($bloc_id): bool|array
     {
         if (!$this->validate()) {
             return $this->validate();
