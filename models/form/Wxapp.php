@@ -104,8 +104,7 @@ class Wxapp extends Model
         $BlocConfWxapp = new BlocConfWxapp([
             'scenario' => 'update'
         ]);
-        $conf = $BlocConfWxapp::findOne(['bloc_id' => $bloc_id]);
-
+        $conf = $BlocConfWxapp::findOne(['bloc_id' => $bloc_id, 'AppId' => $this->AppId]);
         if (!$conf) {
             $conf = new BlocConfWxapp([
                 'scenario' => 'create'
